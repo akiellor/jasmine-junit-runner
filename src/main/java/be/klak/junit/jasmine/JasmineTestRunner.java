@@ -118,10 +118,7 @@ public class JasmineTestRunner extends Runner {
 	}
 
 	private void resetEnvjsWindowSpace() {
-		URL blankUrl = Thread
-			.currentThread()
-			.getContextClassLoader()
-			.getResource("js/lib/blank.html");
+		URL blankUrl = new ClasspathResource("js/lib/blank.html").getURL();
 
 		if (blankUrl == null) {
 			throw new IllegalStateException("Unable to load js/lib/blank.html from classpath");
