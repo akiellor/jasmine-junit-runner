@@ -2,6 +2,7 @@ package be.klak.junit.jasmine;
 
 import be.klak.junit.resources.ClasspathResource;
 import be.klak.junit.resources.FileResource;
+import be.klak.junit.resources.Resource;
 import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,12 +27,12 @@ public class JasmineTestRunner extends Runner {
 
 	private static final int SLEEP_TIME_MILISECONDS = 50;
 
-    private static final List<ClasspathResource> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
+    private static final List<? extends Resource> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
         new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js"),
         new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js")
     ));
 
-    public static final List<ClasspathResource> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
+    public static final List<? extends Resource> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
         new ClasspathResource("js/lib/env.rhino.1.2.js"),
         new ClasspathResource("js/lib/env.utils.js")
     ));
@@ -65,27 +67,25 @@ public class JasmineTestRunner extends Runner {
 
         pre(context);
 
+        List<Resource> resources = new ArrayList<Resource>();
         if (suiteAnnotation.envJs()) {
-            context.load(ENV_JS_LIBRARY);
-            context.load(new FileResource(new File(suiteAnnotation.jsRootDir(), "/envJsOptions.js")));
+            resources.addAll(ENV_JS_LIBRARY);
+            resources.add(new FileResource(new File(suiteAnnotation.jsRootDir(), "/envJsOptions.js")));
         } else {
-			context.load(new FileResource(new File(suiteAnnotation.jsRootDir(), "/lib/no-env.js")));
+            resources.add(new FileResource(new File(suiteAnnotation.jsRootDir(), "/lib/no-env.js")));
 		}
+        resources.addAll(JASMINE_LIBRARY);
+        resources.addAll(FileResource.files(new File(suiteAnnotation.sourcesRootDir()), suiteAnnotation.sources()));
+        resources.addAll(FileResource.files(new File(suiteAnnotation.jsRootDir(), "specs"), getJasmineSpecs(suiteAnnotation)));
 
-		setUpJasmine(context);
+        context.load(resources);
 
-		context.load(FileResource.files(new File(suiteAnnotation.sourcesRootDir()), suiteAnnotation.sources()));
-		context.load(FileResource.files(new File(suiteAnnotation.jsRootDir(), "specs"), getJasmineSpecs(suiteAnnotation)));
+        context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
 
-		return context;
+        return context;
 	}
 
     protected void pre(RhinoContext context) { }
-
-	private void setUpJasmine(RhinoContext context) {
-        context.load(JASMINE_LIBRARY);
-		context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
-	}
 
 	private Main createDebugger() {
 		Main debugger = new Main("JS Debugger");
