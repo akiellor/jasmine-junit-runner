@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileResource implements Resource {
     private final File file;
@@ -40,5 +43,17 @@ public class FileResource implements Resource {
             throw new RuntimeException(e);
         }
         return new FileResource(outputFile);
+    }
+
+    public static List<FileResource> files(File root, String... files) {
+        return files(root, Arrays.asList(files));
+    }
+
+    private static List<FileResource> files(File root, List<String> files) {
+        List<FileResource> resources = new ArrayList<FileResource>();
+        for(String file : files){
+            resources.add(new FileResource(new File(root, file)));
+        }
+        return resources;
     }
 }
