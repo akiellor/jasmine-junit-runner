@@ -1,12 +1,8 @@
 package be.klak.junit.jasmine;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
+import be.klak.junit.resources.ClasspathResource;
+import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;
-
-import java.net.URL;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.Description;
@@ -16,14 +12,20 @@ import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.tools.debugger.Main;
 
-import be.klak.rhino.RhinoContext;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 public class JasmineTestRunner extends Runner {
 
 	private static final int SLEEP_TIME_MILISECONDS = 50;
 
-	// relative to classpath
-	private static final String JASMINE_LIB_DIR = "js/lib/jasmine-1.0.2";
+    private static final List<ClasspathResource> jasmineLibrary = Arrays.asList(
+        new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js"),
+        new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js")
+    );
 
 	private JasmineDescriptions jasmineSuite;
 
@@ -72,9 +74,7 @@ public class JasmineTestRunner extends Runner {
     protected void pre(RhinoContext context) { }
 
 	private void setUpJasmine(RhinoContext context) {
-		context.loadFromClasspath(JASMINE_LIB_DIR + "/jasmine.js");
-		context.loadFromClasspath(JASMINE_LIB_DIR + "/jasmine.delegator_reporter.js");
-
+        context.load(jasmineLibrary);
 		context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
 	}
 

@@ -1,13 +1,13 @@
 package be.klak.rhino;
 
-import java.net.URL;
-
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import be.klak.junit.resources.ClasspathResource;
+import be.klak.junit.resources.Resource;
+import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 public class RhinoContext {
 
@@ -95,18 +95,31 @@ public class RhinoContext {
 	 * @param resource the resource to resolve from the classpath
 	 */
 	public void loadFromClasspath(final String resource) {
-	    URL rsrcUrl =
-	    	Thread.currentThread().getContextClassLoader().getResource(resource);
-
-	    if (rsrcUrl == null) {
-	    	throw new IllegalArgumentException("resource " + resource + " not found on classpath");
-	    }
-
-	    evalJS(String.format("load('%s')", rsrcUrl.toExternalForm()));
+	    load(new ClasspathResource(resource));
 	}
 	// }}}
 
-	public Object executeFunction(ScriptableObject object, String fnName, Object[] arguments) {
+    public void load(Resource resource) {
+        URL resourceURL = resource.getURL();
+
+        if (resourceURL == null) {
+            throw new IllegalArgumentException("resource " + resource + " not found");
+        }
+
+        evalJS(String.format("load('%s')", resourceURL.toExternalForm()));
+    }
+
+    public void load(Resource... resources){
+        load(Arrays.asList(resources));
+    }
+
+    public void load(List<? extends Resource> resources) {
+        for(Resource resource : resources){
+            load(resource);
+        }
+    }
+
+    public Object executeFunction(ScriptableObject object, String fnName, Object[] arguments) {
 		Object fnPointer = object.get(fnName, object);
 		if (fnPointer == null || !(fnPointer instanceof Function)) {
 			fnPointer = object.getPrototype().get(fnName, object);

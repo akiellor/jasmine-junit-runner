@@ -1,13 +1,11 @@
 package be.klak.rhino;
 
-import static org.fest.assertions.Assertions.assertThat;
-
+import be.klak.junit.resources.ClasspathResource;
 import org.junit.Test;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
 
-import be.klak.rhino.RhinoContext;
-import be.klak.rhino.RhinoRunnable;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class RhinoContextTest {
 
@@ -81,7 +79,6 @@ public class RhinoContextTest {
         assertThat(context.evalJS("loadedTwo")).isEqualTo(true);
     }
 
-    // {{{ loadsJSFilesFromClasspath
     @Test
     public void loadsJSFilesFromClasspath() {
         RhinoContext context = new RhinoContext();
@@ -89,5 +86,24 @@ public class RhinoContextTest {
 
         assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
     }
-    // }}}
+
+    @Test
+    public void loadsClasspathResourceFromClasspath() {
+        RhinoContext context = new RhinoContext();
+        context.load(new ClasspathResource("js/lib/loadsJSFilesFromClasspathTarget.js"));
+
+        assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
+    }
+
+    @Test
+    public void loadsManyClasspathResourcesFromClasspath() {
+        RhinoContext context = new RhinoContext();
+        context.load(
+                new ClasspathResource("js/lib/loadsJSFilesFromClasspathTarget.js"),
+                new ClasspathResource("js/lib/anotherLoadsJSFilesFromClasspathTarget.js")
+        );
+
+        assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
+        assertThat(context.evalJS("anotherTarget.theAnswer")).isEqualTo("fifty six");
+    }
 }
