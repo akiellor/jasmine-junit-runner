@@ -140,12 +140,6 @@ public class RhinoContext {
 		return jsScope;
 	}
 
-	public void loadEnv(String jsDir) {
-		loadFromClasspath("js/lib/env.rhino.1.2.js");
-		loadFromClasspath("js/lib/env.utils.js");
-		load(jsDir + "/envJsOptions.js");
-	}
-
 	private Global createJavascriptScopeForContext(Context jsContext) {
 		Global scope = new Global();
 		scope.init(jsContext);

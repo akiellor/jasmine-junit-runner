@@ -27,7 +27,12 @@ public class JasmineTestRunner extends Runner {
         new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js")
     );
 
-	private JasmineDescriptions jasmineSuite;
+    public static final List<ClasspathResource> ENV_JS_LIBRARY = Arrays.asList(
+            new ClasspathResource("js/lib/env.rhino.1.2.js"),
+            new ClasspathResource("js/lib/env.utils.js")
+    );
+
+    private JasmineDescriptions jasmineSuite;
 
 	protected final RhinoContext rhinoContext;
 	protected final JasmineSuite suiteAnnotation;
@@ -58,8 +63,9 @@ public class JasmineTestRunner extends Runner {
         pre(context);
 
         if (suiteAnnotation.envJs()) {
-			context.loadEnv(suiteAnnotation.jsRootDir());
-		} else {
+            context.load(ENV_JS_LIBRARY);
+            context.load(suiteAnnotation.jsRootDir() + "/envJsOptions.js");
+        } else {
 			context.load(suiteAnnotation.jsRootDir(), "/lib/no-env.js");
 		}
 
