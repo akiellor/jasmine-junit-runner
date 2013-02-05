@@ -16,21 +16,22 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class JasmineTestRunner extends Runner {
 
 	private static final int SLEEP_TIME_MILISECONDS = 50;
 
-    private static final List<ClasspathResource> jasmineLibrary = Arrays.asList(
+    private static final List<ClasspathResource> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
         new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js"),
         new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js")
-    );
+    ));
 
-    public static final List<ClasspathResource> ENV_JS_LIBRARY = Arrays.asList(
+    public static final List<ClasspathResource> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
             new ClasspathResource("js/lib/env.rhino.1.2.js"),
             new ClasspathResource("js/lib/env.utils.js")
-    );
+    ));
 
     private JasmineDescriptions jasmineSuite;
 
@@ -80,7 +81,7 @@ public class JasmineTestRunner extends Runner {
     protected void pre(RhinoContext context) { }
 
 	private void setUpJasmine(RhinoContext context) {
-        context.load(jasmineLibrary);
+        context.load(JASMINE_LIBRARY);
 		context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
 	}
 
