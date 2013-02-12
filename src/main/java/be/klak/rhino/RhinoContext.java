@@ -1,6 +1,5 @@
 package be.klak.rhino;
 
-import be.klak.junit.resources.ClasspathResource;
 import be.klak.junit.resources.Resource;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
@@ -76,17 +75,6 @@ public class RhinoContext {
 			throw new RuntimeException(e);
 		}
 	}
-
-    // {{{ loadFromClasspath
-	/**
-	 * Loads a resource from the classpath.
-	 *
-	 * @param resource the resource to resolve from the classpath
-	 */
-	public void loadFromClasspath(final String resource) {
-	    load(new ClasspathResource(resource));
-	}
-	// }}}
 
     public void load(Resource resource) {
         URL resourceURL = resource.getURL();

@@ -1,5 +1,6 @@
 package be.klak.env;
 
+import be.klak.junit.resources.ClasspathResource;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
@@ -13,7 +14,7 @@ public class EnvUtilsTest {
 
 	@Before
 	public void loadJasmineJQueryMatchers(RhinoContext context) {
-		context.loadFromClasspath("js/lib/jasmine-1.0.2/jasmine-jquery-rhino.js");
+		context.load(new ClasspathResource("js/lib/jasmine-1.0.2/jasmine-jquery-rhino.js"));
 	}
 
 }

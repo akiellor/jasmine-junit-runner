@@ -71,14 +71,6 @@ public class RhinoContextTest {
     }
 
     @Test
-    public void loadsJSFilesFromClasspath() {
-        RhinoContext context = new RhinoContext();
-        context.loadFromClasspath("js/lib/loadsJSFilesFromClasspathTarget.js");
-
-        assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
-    }
-
-    @Test
     public void loadsClasspathResourceFromClasspath() {
         RhinoContext context = new RhinoContext();
         context.load(new ClasspathResource("js/lib/loadsJSFilesFromClasspathTarget.js"));
