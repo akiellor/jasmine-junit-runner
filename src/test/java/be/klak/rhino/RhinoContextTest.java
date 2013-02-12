@@ -71,15 +71,6 @@ public class RhinoContextTest {
     }
 
     @Test
-    public void loadMultipleJSFiles() {
-        RhinoContext context = new RhinoContext();
-        context.load("src/test/javascript/", "loadTest.js", "loadTestTwo.js");
-
-        assertThat(context.evalJS("loaded")).isEqualTo(true);
-        assertThat(context.evalJS("loadedTwo")).isEqualTo(true);
-    }
-
-    @Test
     public void loadsJSFilesFromClasspath() {
         RhinoContext context = new RhinoContext();
         context.loadFromClasspath("js/lib/loadsJSFilesFromClasspathTarget.js");

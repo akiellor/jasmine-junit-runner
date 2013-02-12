@@ -77,18 +77,7 @@ public class RhinoContext {
 		}
 	}
 
-	public void load(String path, String... jsFiles) {
-		for (String jsFile : jsFiles) {
-			load(path + jsFile);
-		}
-	}
-
-	public void load(String fileName) {
-		evalJS("load('" + fileName + "')");
-		// Main.processFile(this.jsContext, this.jsScope, fileName);
-	}
-
-	// {{{ loadFromClasspath
+    // {{{ loadFromClasspath
 	/**
 	 * Loads a resource from the classpath.
 	 *
