@@ -44,4 +44,16 @@ public class AnnotationConfiguration {
         }
         return new File(outputPath.toString());
     }
+
+    public boolean generateSpecRunner() {
+        return annotation.generateSpecRunner();
+    }
+
+    public boolean debug() {
+        return annotation.debug();
+    }
+
+    public boolean envJs() {
+        return annotation.envJs();
+    }
 }

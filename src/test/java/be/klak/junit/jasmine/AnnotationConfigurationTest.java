@@ -73,4 +73,37 @@ public class AnnotationConfigurationTest {
 
         assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners/foo"));
     }
+
+    @Test
+    public void shouldDelegateToAnnotationForWhetherToGenerateHtmlRunner() {
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        when(annotation.generateSpecRunner()).thenReturn(true);
+        assertThat(configuration.generateSpecRunner()).isEqualTo(true);
+
+        when(annotation.generateSpecRunner()).thenReturn(false);
+        assertThat(configuration.generateSpecRunner()).isEqualTo(false);
+    }
+
+    @Test
+    public void shouldDelegateToAnnotationForWhetherToRunDebug() {
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        when(annotation.debug()).thenReturn(true);
+        assertThat(configuration.debug()).isEqualTo(true);
+
+        when(annotation.debug()).thenReturn(false);
+        assertThat(configuration.debug()).isEqualTo(false);
+    }
+
+    @Test
+    public void shouldDelegateToAnnotationForWhetherToRunEnvJS() {
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        when(annotation.envJs()).thenReturn(true);
+        assertThat(configuration.envJs()).isEqualTo(true);
+
+        when(annotation.envJs()).thenReturn(false);
+        assertThat(configuration.envJs()).isEqualTo(false);
+    }
 }
