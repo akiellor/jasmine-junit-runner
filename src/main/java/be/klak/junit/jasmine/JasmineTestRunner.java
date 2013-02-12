@@ -211,12 +211,11 @@ public class JasmineTestRunner extends Runner {
 
 	private void generateSpecRunnerIfNeeded() {
 		if (suiteAnnotation.generateSpecRunner()) {
-			Collection<? extends Resource> jasmineSpecs = getConfiguration().specs();
 			StringBuffer outputPath = new StringBuffer(suiteAnnotation.jsRootDir()).append("/runners");
 			if (StringUtils.isNotBlank(suiteAnnotation.specRunnerSubDir())) {
 			  outputPath.append('/').append(suiteAnnotation.specRunnerSubDir());
 			}
-			new JasmineSpecRunnerGenerator(jasmineSpecs, suiteAnnotation, outputPath.toString(),
+			new JasmineSpecRunnerGenerator(getConfiguration(), outputPath.toString(),
 					testClass.getSimpleName()
 							+ "Runner.html")
 					.generate();

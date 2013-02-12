@@ -9,19 +9,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 class JasmineSpecRunnerGenerator {
 
-    private final JasmineSuite suite;
-	private final Collection<? extends Resource> jasmineSpecs;
+    private final AnnotationConfiguration configuration;
 	private final String outputPath;
 	private final String outputFileName;
 
-    public JasmineSpecRunnerGenerator(Collection<? extends Resource> jasmineSpecs, JasmineSuite suite, String outputPath, String outputFileName) {
-		this.jasmineSpecs = jasmineSpecs;
-		this.suite = suite;
+    public JasmineSpecRunnerGenerator(AnnotationConfiguration configuration, String outputPath, String outputFileName) {
+        this.configuration = configuration;
 		this.outputPath = outputPath;
 		this.outputFileName = outputFileName;
 	}
@@ -33,10 +30,10 @@ class JasmineSpecRunnerGenerator {
                 new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js").asFileResource(),
                 new ClasspathResource("js/lib/jasmine-1.0.2/jasmine-html.js").asFileResource()));
 
-        for(String source : suite.sources()){
-            javascriptFiles.add(new FileResource(new File(suite.sourcesRootDir(), source)));
+        for(Resource source : configuration.sources()){
+            javascriptFiles.add(source.asFileResource());
         }
-        for(Resource spec : jasmineSpecs){
+        for(Resource spec : configuration.specs()){
             javascriptFiles.add(spec.asFileResource());
         }
 
