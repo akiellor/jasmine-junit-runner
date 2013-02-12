@@ -14,12 +14,10 @@ import java.util.List;
 class JasmineSpecRunnerGenerator {
 
     private final AnnotationConfiguration configuration;
-	private final String outputPath;
 	private final String outputFileName;
 
-    public JasmineSpecRunnerGenerator(AnnotationConfiguration configuration, String outputPath, String outputFileName) {
+    public JasmineSpecRunnerGenerator(AnnotationConfiguration configuration, String outputFileName) {
         this.configuration = configuration;
-		this.outputPath = outputPath;
 		this.outputFileName = outputFileName;
 	}
 
@@ -42,7 +40,7 @@ class JasmineSpecRunnerGenerator {
 
         HtmlPageRunner htmlPageRunner = new HtmlPageRunner(javascriptFiles, cssFiles);
         try {
-			FileUtils.writeStringToFile(new File(outputPath, outputFileName), htmlPageRunner.render());
+			FileUtils.writeStringToFile(new File(configuration.htmlRunnerOutputDir(), outputFileName), htmlPageRunner.render());
 		} catch (IOException e) {
 			throw new RuntimeException("unable to write spec runner contents to destination", e);
 		}

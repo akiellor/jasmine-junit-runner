@@ -54,4 +54,23 @@ public class AnnotationConfigurationTest {
 
         configuration.specs();
     }
+
+    @Test
+    public void shouldGetHtmlRunnerDirectory() {
+        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners"));
+    }
+
+    @Test
+    public void shouldGetHtmlRunnerDirectoryWhenSubDirSpecified() {
+        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+        when(annotation.specRunnerSubDir()).thenReturn("foo");
+
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners/foo"));
+    }
 }
