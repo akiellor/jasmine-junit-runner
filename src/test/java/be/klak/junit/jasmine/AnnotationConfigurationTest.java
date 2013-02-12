@@ -106,4 +106,12 @@ public class AnnotationConfigurationTest {
         when(annotation.envJs()).thenReturn(false);
         assertThat(configuration.envJs()).isEqualTo(false);
     }
+
+    @Test
+    public void shouldCreateFileResourceRelativeToJsRootDir() {
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        when(annotation.jsRootDir()).thenReturn("src/main/javascript");
+        assertThat(configuration.jsRootFile("blah.js")).isEqualTo(new FileResource("src/main/javascript/blah.js"));
+    }
 }

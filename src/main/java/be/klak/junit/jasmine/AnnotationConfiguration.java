@@ -56,4 +56,8 @@ public class AnnotationConfiguration {
     public boolean envJs() {
         return annotation.envJs();
     }
+
+    public Resource jsRootFile(String relativePath) {
+        return new FileResource(new File(annotation.jsRootDir(), relativePath));
+    }
 }

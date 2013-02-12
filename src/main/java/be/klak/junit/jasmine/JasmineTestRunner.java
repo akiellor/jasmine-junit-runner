@@ -1,7 +1,6 @@
 package be.klak.junit.jasmine;
 
 import be.klak.junit.resources.ClasspathResource;
-import be.klak.junit.resources.FileResource;
 import be.klak.junit.resources.Resource;
 import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;
@@ -14,11 +13,13 @@ import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.tools.debugger.Main;
 
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class JasmineTestRunner extends Runner {
 
@@ -37,24 +38,24 @@ public class JasmineTestRunner extends Runner {
     private JasmineDescriptions jasmineSuite;
 
 	protected final RhinoContext rhinoContext;
-	protected final JasmineSuite suiteAnnotation;
 	private final Class<?> testClass;
+    private final AnnotationConfiguration configuration;
 
-	@JasmineSuite
+    @JasmineSuite
 	private class DefaultSuite { }
 
 	public JasmineTestRunner(Class<?> testClass) {
 		this.testClass = testClass;
-		this.suiteAnnotation = getJasmineSuiteAnnotationFromTestClass();
+        this.configuration = new AnnotationConfiguration(getJasmineSuiteAnnotationFromTestClass(), StringUtils.uncapitalize(testClass.getSimpleName()).replace("Test", "Spec") + ".js");
 
-		Main debugger = null;
-		if (getConfiguration().debug()) {
+        Main debugger = null;
+        if (configuration.debug()) {
 			debugger = createDebugger();
 		}
 
 		this.rhinoContext = setUpRhinoScope();
 
-		if (getConfiguration().debug()) {
+        if (configuration.debug()) {
 			debugger.doBreak();
 		}
 	}
@@ -65,15 +66,15 @@ public class JasmineTestRunner extends Runner {
         pre(context);
 
         List<Resource> resources = new ArrayList<Resource>();
-        if (getConfiguration().envJs()) {
+        if (configuration.envJs()) {
             resources.addAll(ENV_JS_LIBRARY);
-            resources.add(new FileResource(new File(suiteAnnotation.jsRootDir(), "/envJsOptions.js")));
+            resources.add(configuration.jsRootFile("envJsOptions.js"));
         } else {
-            resources.add(new FileResource(new File(suiteAnnotation.jsRootDir(), "/lib/no-env.js")));
+            resources.add(configuration.jsRootFile("lib/no-env.js"));
 		}
         resources.addAll(JASMINE_LIBRARY);
-        resources.addAll(getConfiguration().sources());
-        resources.addAll(getConfiguration().specs());
+        resources.addAll(configuration.sources());
+        resources.addAll(configuration.specs());
 
         context.load(resources);
 
@@ -81,10 +82,6 @@ public class JasmineTestRunner extends Runner {
 
         return context;
 	}
-
-    private AnnotationConfiguration getConfiguration() {
-        return new AnnotationConfiguration(suiteAnnotation, StringUtils.uncapitalize(testClass.getSimpleName()).replace("Test", "Spec") + ".js");
-    }
 
     protected void pre(RhinoContext context) { }
 
@@ -163,7 +160,7 @@ public class JasmineTestRunner extends Runner {
 
 				reportSpecResultToNotifier(notifier, spec);
 
-				if (getConfiguration().envJs()) {
+                if (configuration.envJs()) {
 					resetEnvjsWindowSpace();
 				}
 			} finally {
@@ -210,8 +207,8 @@ public class JasmineTestRunner extends Runner {
 	}
 
 	private void generateSpecRunnerIfNeeded() {
-		if (getConfiguration().generateSpecRunner()) {
-			new JasmineSpecRunnerGenerator(getConfiguration(), testClass.getSimpleName() + "Runner.html").generate();
+        if (configuration.generateSpecRunner()) {
+            new JasmineSpecRunnerGenerator(configuration, testClass.getSimpleName() + "Runner.html").generate();
 		}
 	}
 
