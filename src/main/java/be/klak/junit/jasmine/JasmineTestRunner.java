@@ -75,7 +75,7 @@ public class JasmineTestRunner extends Runner {
             resources.add(new FileResource(new File(suiteAnnotation.jsRootDir(), "/lib/no-env.js")));
 		}
         resources.addAll(JASMINE_LIBRARY);
-        resources.addAll(FileResource.files(new File(suiteAnnotation.sourcesRootDir()), suiteAnnotation.sources()));
+        resources.addAll(new AnnotationConfiguration(suiteAnnotation).sources());
         resources.addAll(FileResource.files(new File(suiteAnnotation.jsRootDir(), "specs"), getJasmineSpecs(suiteAnnotation)));
 
         context.load(resources);

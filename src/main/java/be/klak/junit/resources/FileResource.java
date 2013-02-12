@@ -35,6 +35,23 @@ public class FileResource implements Resource {
         return external.substring(external.lastIndexOf("/") + 1);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FileResource that = (FileResource) o;
+
+        if (file != null ? !file.equals(that.file) : that.file != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return file != null ? file.hashCode() : 0;
+    }
+
     public static FileResource from(Resource initial, File output) {
         File outputFile = new File(output, initial.getBaseName());
         try {
