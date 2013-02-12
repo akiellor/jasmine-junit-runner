@@ -24,4 +24,34 @@ public class AnnotationConfigurationTest {
 
         assertThat(configuration.sources()).isEqualTo(FileResource.files(new File("src/main/javascript"), "one.js", "two.js"));
     }
+
+    @Test
+    public void shouldLoadSpecsAsFileResources() {
+        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+        when(annotation.specs()).thenReturn(new String[]{"one.js", "two.js"});
+
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        assertThat(configuration.specs()).isEqualTo(FileResource.files(new File("src/test/javascript/specs"), "one.js", "two.js"));
+    }
+
+    @Test
+    public void shouldUseDefaultSpecWhenNoSpecsAreResolved() {
+        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+        when(annotation.specs()).thenReturn(new String[]{});
+
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, "blah.js");
+
+        assertThat(configuration.specs()).isEqualTo(FileResource.files(new File("src/test/javascript/specs"), "blah.js"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldThrowWhenNoSpecsAreResolvedAndNoDefaultProvided() {
+        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+        when(annotation.specs()).thenReturn(new String[]{});
+
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+
+        configuration.specs();
+    }
 }

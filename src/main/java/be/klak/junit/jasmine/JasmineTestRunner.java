@@ -18,10 +18,7 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class JasmineTestRunner extends Runner {
 
@@ -75,8 +72,8 @@ public class JasmineTestRunner extends Runner {
             resources.add(new FileResource(new File(suiteAnnotation.jsRootDir(), "/lib/no-env.js")));
 		}
         resources.addAll(JASMINE_LIBRARY);
-        resources.addAll(new AnnotationConfiguration(suiteAnnotation).sources());
-        resources.addAll(FileResource.files(new File(suiteAnnotation.jsRootDir(), "specs"), getJasmineSpecs(suiteAnnotation)));
+        resources.addAll(getConfiguration().sources());
+        resources.addAll(getConfiguration().specs());
 
         context.load(resources);
 
@@ -84,6 +81,10 @@ public class JasmineTestRunner extends Runner {
 
         return context;
 	}
+
+    private AnnotationConfiguration getConfiguration() {
+        return new AnnotationConfiguration(suiteAnnotation, StringUtils.uncapitalize(testClass.getSimpleName()).replace("Test", "Spec") + ".js");
+    }
 
     protected void pre(RhinoContext context) { }
 
@@ -110,13 +111,6 @@ public class JasmineTestRunner extends Runner {
 			suiteAnnotation = DefaultSuite.class.getAnnotation(JasmineSuite.class);
 		}
 		return suiteAnnotation;
-	}
-
-	private String[] getJasmineSpecs(JasmineSuite suiteAnnotation) {
-		if (suiteAnnotation.specs().length == 0) {
-			return new String[] { StringUtils.uncapitalize(testClass.getSimpleName()).replace("Test", "Spec") + ".js" };
-		}
-		return suiteAnnotation.specs();
 	}
 
 	private void resetEnvjsWindowSpace() {
@@ -217,7 +211,7 @@ public class JasmineTestRunner extends Runner {
 
 	private void generateSpecRunnerIfNeeded() {
 		if (suiteAnnotation.generateSpecRunner()) {
-			String[] jasmineSpecs = getJasmineSpecs(suiteAnnotation);
+			Collection<? extends Resource> jasmineSpecs = getConfiguration().specs();
 			StringBuffer outputPath = new StringBuffer(suiteAnnotation.jsRootDir()).append("/runners");
 			if (StringUtils.isNotBlank(suiteAnnotation.specRunnerSubDir())) {
 			  outputPath.append('/').append(suiteAnnotation.specRunnerSubDir());

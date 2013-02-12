@@ -29,4 +29,11 @@ public class FileResourceTest {
         FileResource actual = FileResource.from(initial, outputDirectory);
         assertThat(outputDirectory.list()).contains(actual.getBaseName());
     }
+
+    @Test
+    public void shouldReturnSelfForFileResourceCoercion() {
+        FileResource resource = new FileResource("foo/bar.js");
+
+        assertThat(resource.asFileResource()).isEqualTo(resource);
+    }
 }

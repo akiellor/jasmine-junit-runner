@@ -1,5 +1,6 @@
 package be.klak.junit.resources;
 
+import java.io.File;
 import java.net.URL;
 
 public class ClasspathResource implements Resource {
@@ -22,5 +23,9 @@ public class ClasspathResource implements Resource {
     public String getBaseName() {
         String external = getURL().toExternalForm();
         return external.substring(external.lastIndexOf("/") + 1);
+    }
+
+    @Override public FileResource asFileResource() {
+        return FileResource.from(this, new File(System.getProperty("java.io.tmpdir")));
     }
 }

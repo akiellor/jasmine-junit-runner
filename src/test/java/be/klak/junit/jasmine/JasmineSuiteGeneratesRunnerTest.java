@@ -49,10 +49,10 @@ public class JasmineSuiteGeneratesRunnerTest {
         String runnerContent = FileUtils.readFileToString(runnerResult);
 
         assertJSFileIncluded(runnerContent,
-                "file://" + new File(runnerResult.getParent(), "jasmine.js").getAbsolutePath(),
-                "file://" + new File(runnerResult.getParent(), "jasmine-html.js").getAbsolutePath());
+                "file://" + new File(new File(System.getProperty("java.io.tmpdir")), "jasmine.js").getAbsolutePath(),
+                "file://" + new File(new File(System.getProperty("java.io.tmpdir")), "jasmine-html.js").getAbsolutePath());
         assertCssFileIncluded(runnerContent,
-                "file://" + new File(runnerResult.getParent(), "jasmine.css").getAbsolutePath());
+                "file://" + new File(new File(System.getProperty("java.io.tmpdir")), "jasmine.css").getAbsolutePath());
     }
 
     @Test

@@ -35,6 +35,10 @@ public class FileResource implements Resource {
         return external.substring(external.lastIndexOf("/") + 1);
     }
 
+    @Override public FileResource asFileResource() {
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
