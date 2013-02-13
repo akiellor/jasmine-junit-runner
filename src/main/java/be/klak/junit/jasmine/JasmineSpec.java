@@ -1,14 +1,15 @@
 package be.klak.junit.jasmine;
 
-import static junit.framework.Assert.assertTrue;
-
+import be.klak.rhino.RhinoContext;
+import be.klak.rhino.RhinoRunnable;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
-import be.klak.rhino.RhinoContext;
-import be.klak.rhino.RhinoRunnable;
+import java.util.UUID;
+
+import static junit.framework.Assert.assertTrue;
 
 
 // TODO rhinoContext als field zetten ipv altijd mee te geven?
@@ -26,7 +27,7 @@ class JasmineSpec {
     JasmineSpec(NativeObject spec) {
         this.spec = spec;
         String descriptionString = (String) spec.get("description", spec);
-        this.description = Description.createSuiteDescription(descriptionString);
+        this.description = Description.createSuiteDescription(descriptionString, UUID.randomUUID());
     }
 
     public Description getDescription() {
