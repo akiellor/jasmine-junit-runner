@@ -1,4 +1,5 @@
 # Jasmine Junit Runner
+![Build Status](https://api.travis-ci.org/akiellor/jasmine-junit-runner.png)
 
 ## What's this? 
 
