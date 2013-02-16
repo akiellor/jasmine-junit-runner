@@ -1,6 +1,7 @@
 package be.klak.rhino;
 
 import be.klak.junit.resources.Resource;
+import be.klak.utils.Exceptions;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
 
@@ -88,7 +89,7 @@ public class RhinoContext {
         try {
             this.jsContext.evaluateReader(this.jsScope, new InputStreamReader(resource.getURL().openStream()), resource.getBaseName(), 1, null);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw Exceptions.unchecked(e);
         }
     }
 

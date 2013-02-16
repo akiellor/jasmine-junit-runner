@@ -1,11 +1,12 @@
 package be.klak.rhino;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import be.klak.utils.Exceptions;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.tools.ToolErrorReporter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class ChainedErrorReporter implements ErrorReporter {
 
@@ -28,7 +29,7 @@ class ChainedErrorReporter implements ErrorReporter {
         }
 
         if (ex != null) {
-            throw new RuntimeException(ex);
+            throw Exceptions.unchecked(ex);
         }
     }
 
