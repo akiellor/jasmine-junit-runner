@@ -4,6 +4,8 @@ import be.klak.junit.resources.Resource;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +85,11 @@ public class RhinoContext {
             throw new IllegalArgumentException("resource " + resource + " not found");
         }
 
-        evalJS(String.format("load('%s')", resourceURL.toExternalForm()));
+        try {
+            this.jsContext.evaluateReader(this.jsScope, new InputStreamReader(resource.getURL().openStream()), resource.getBaseName(), 1, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void load(Resource... resources){
