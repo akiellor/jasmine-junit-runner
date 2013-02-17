@@ -1,37 +1,30 @@
 package be.klak.junit.jasmine.classes;
 
-import static junit.framework.Assert.fail;
-import static org.fest.assertions.Assertions.assertThat;
-
-import org.junit.After;
-import org.junit.Before;
-
 import be.klak.junit.jasmine.JasmineSuite;
 import be.klak.rhino.RhinoContext;
+import org.junit.After;
+import org.junit.Before;
 
 
 @JasmineSuite(specs = { "emptySpec.js" })
 public class JasmineTestRunnerBeforeAndAfterClass extends JasmineTestRunnerBeforeAndAfterSuperClass {
 
     @Before
-    public void runMij() {
-        assertThat(runs).isEmpty();
-        runs.add(RUN_MIJ_FLAG);
+    public void runMij() throws NoSuchMethodException {
+        runs.add(this.getClass().getMethod("runMij"));
     }
 
     @After
-    public void runMijAfter() {
-        assertThat(runs).containsOnly(RUN_MIJ_FLAG, RUN_MIJ_OOK_FLAG);
-        runs.remove((Object) RUN_MIJ_FLAG);
+    public void runMijAfter() throws NoSuchMethodException {
+        runs.add(this.getClass().getMethod("runMijAfter"));
     }
 
     @After
-    public void runMijAfterOok(RhinoContext context) {
-        assertThat(runs).containsOnly(RUN_MIJ_OOK_FLAG);
-        runs.remove((Object) RUN_MIJ_OOK_FLAG);
+    public void runMijAfterOok(RhinoContext context) throws NoSuchMethodException {
+        runs.add(this.getClass().getMethod("runMijAfterOok", RhinoContext.class));
     }
 
-    public void runMijNiet() {
-        fail("should not be run");
+    public void runMijNiet() throws NoSuchMethodException {
+        runs.add(this.getClass().getMethod("runMijNiet", RhinoContext.class));
     }
 }
