@@ -53,14 +53,7 @@ public class RhinoContext {
 		return this.jsContext.evaluateString(this.jsScope, js, "script", 1, null);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends ScriptableObject> T createClassInJS(Class<T> classToExport) {
-		exportClass(classToExport);
-		T newObj = (T) jsContext.newObject(jsScope, classToExport.getSimpleName());
-		return newObj;
-	}
-
-	public void setProperty(String objectToReceiveProperty, String property, Object value) {
+    public void setProperty(String objectToReceiveProperty, String property, Object value) {
 		Object obj = evalJS(objectToReceiveProperty);
 		if (obj == null || !(obj instanceof ScriptableObject)) {
 			throw new IllegalStateException("object to receive property is no ScriptableObject but a "
@@ -69,14 +62,6 @@ public class RhinoContext {
 
 		ScriptableObject objectToReceive = (ScriptableObject) obj;
 		objectToReceive.put(property, objectToReceive, value);
-	}
-
-	private void exportClass(Class<? extends ScriptableObject> classToExport) {
-		try {
-			ScriptableObject.defineClass(this.jsScope, classToExport);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
     public void load(Resource resource) {
@@ -114,14 +99,6 @@ public class RhinoContext {
 
 	public Object executeFunction(ScriptableObject object, String fnName) {
 		return executeFunction(object, fnName, new Object[] {});
-	}
-
-	public Context getJsContext() {
-		return jsContext;
-	}
-
-	public Scriptable getJsScope() {
-		return jsScope;
 	}
 
 	private Global createJavascriptScopeForContext(Context jsContext) {
