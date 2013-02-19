@@ -1,24 +1,22 @@
 package be.klak.rhino;
 
+import be.klak.junit.jasmine.Loader;
 import be.klak.junit.resources.Resource;
-import be.klak.utils.Exceptions;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 public class RhinoContext {
 
-	private Context jsContext;
-	private Scriptable jsScope;
+	private final Context jsContext;
+	private final Scriptable jsScope;
+    private final Loader loader;
 
-	public RhinoContext() {
+    public RhinoContext() {
 		this.jsContext = createJavascriptContext();
 		this.jsScope = createJavascriptScopeForContext(this.jsContext);
+        this.loader = new Loader(jsScope, jsContext);
 	}
 
 	public RhinoContext(Scriptable sharedScope) {
@@ -28,7 +26,8 @@ public class RhinoContext {
 		newScope.setParentScope(null);
 
 		this.jsScope = newScope;
-	}
+        this.loader = new Loader(jsScope, jsContext);
+    }
 
 	private RhinoContext createNewRhinoContextBasedOnPrevious() {
 		return new RhinoContext(this.jsScope);
@@ -64,30 +63,6 @@ public class RhinoContext {
 		objectToReceive.put(property, objectToReceive, value);
 	}
 
-    public void load(Resource resource) {
-        URL resourceURL = resource.getURL();
-
-        if (resourceURL == null) {
-            throw new IllegalArgumentException("resource " + resource + " not found");
-        }
-
-        try {
-            this.jsContext.evaluateReader(this.jsScope, new InputStreamReader(resource.getURL().openStream()), resource.getBaseName(), 1, null);
-        } catch (IOException e) {
-            throw Exceptions.unchecked(e);
-        }
-    }
-
-    public void load(Resource... resources){
-        load(Arrays.asList(resources));
-    }
-
-    public void load(List<? extends Resource> resources) {
-        for(Resource resource : resources){
-            load(resource);
-        }
-    }
-
     public Object executeFunction(ScriptableObject object, String fnName, Object[] arguments) {
 		Object fnPointer = object.get(fnName, object);
 		if (fnPointer == null || !(fnPointer instanceof Function)) {
@@ -118,4 +93,16 @@ public class RhinoContext {
 	public void exit() {
 		Context.exit();
 	}
+
+    public void load(List<? extends Resource> resources) {
+        loader.load(resources);
+    }
+
+    public void load(Resource resource) {
+        loader.load(resource);
+    }
+
+    public void load(Resource... resources) {
+        loader.load(resources);
+    }
 }
