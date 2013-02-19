@@ -46,6 +46,10 @@ public class Loader {
     }
 
     public void load(String... paths) {
-        for(String path : paths) { load(parser.parse(path)); }
+        for(String path : paths) { load(path); }
+    }
+
+    public void load(String path) {
+        load(parser.parse(path));
     }
 }
