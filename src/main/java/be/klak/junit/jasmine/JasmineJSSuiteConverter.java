@@ -1,14 +1,13 @@
 package be.klak.junit.jasmine;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-
+import be.klak.rhino.RhinoContext;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
-import be.klak.rhino.RhinoContext;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 
 class JasmineJSSuiteConverter {
 
@@ -30,7 +29,7 @@ class JasmineJSSuiteConverter {
 		for (Object idObj : suiteArray.getIds()) {
 			NativeObject suite = (NativeObject) suiteArray.get((Integer) idObj, suiteArray);
 
-			String description = (String) suite.get("description", suite);
+			String description = String.valueOf(suite.get("description", suite));
 			if (!processed.contains(description)) {
 				Description suiteDescription = addSuiteToDescription(rootDescription, processed, description);
 				specs.addAll(convertToJunitDescription(suite, suiteDescription));

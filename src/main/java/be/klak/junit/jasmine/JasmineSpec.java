@@ -26,7 +26,7 @@ class JasmineSpec {
 
     JasmineSpec(NativeObject spec) {
         this.spec = spec;
-        String descriptionString = (String) spec.get("description", spec);
+        String descriptionString = String.valueOf(spec.get("description", spec));
         this.description = Description.createSuiteDescription(descriptionString, UUID.randomUUID());
     }
 
