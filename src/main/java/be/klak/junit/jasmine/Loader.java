@@ -1,6 +1,7 @@
 package be.klak.junit.jasmine;
 
 import be.klak.junit.resources.Resource;
+import be.klak.junit.resources.ResourceParser;
 import be.klak.utils.Exceptions;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -14,10 +15,12 @@ import java.util.List;
 public class Loader {
     private final Scriptable scope;
     private final Context context;
+    private final ResourceParser parser;
 
     public Loader(Scriptable scope, Context context) {
         this.scope = scope;
         this.context = context;
+        this.parser = new ResourceParser();
     }
 
     public void load(Resource resource) {
@@ -39,8 +42,10 @@ public class Loader {
     }
 
     public void load(List<? extends Resource> resources) {
-        for(Resource resource : resources){
-            load(resource);
-        }
+        for(Resource resource : resources){ load(resource); }
+    }
+
+    public void load(String... paths) {
+        for(String path : paths) { load(parser.parse(path)); }
     }
 }

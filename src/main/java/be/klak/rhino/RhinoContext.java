@@ -98,11 +98,11 @@ public class RhinoContext {
         loader.load(resources);
     }
 
-    public void load(Resource resource) {
-        loader.load(resource);
-    }
-
     public void load(Resource... resources) {
         loader.load(resources);
+    }
+
+    public void load(String... paths) {
+        loader.load(paths);
     }
 }
