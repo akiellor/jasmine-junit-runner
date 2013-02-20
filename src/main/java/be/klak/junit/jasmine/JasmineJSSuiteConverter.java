@@ -5,9 +5,9 @@ import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 class JasmineJSSuiteConverter {
 
@@ -42,9 +42,9 @@ class JasmineJSSuiteConverter {
 		return specs;
 	}
 
-	private Description addSuiteToDescription(Description description, List<String> processed, String suiteName) {
+	public static Description addSuiteToDescription(Description description, List<String> processed, String suiteName) {
 		processed.add(suiteName);
-		Description suiteDescription = Description.createSuiteDescription(suiteName, (Annotation[]) null);
+		Description suiteDescription = Description.createSuiteDescription(suiteName, UUID.randomUUID());
 		description.addChild(suiteDescription);
 		return suiteDescription;
 	}
