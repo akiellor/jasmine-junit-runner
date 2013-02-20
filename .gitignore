@@ -5,3 +5,4 @@ eclipsecompiled
 .settings
 *.iml
 .idea
+atlassian-ide-plugin.xml
