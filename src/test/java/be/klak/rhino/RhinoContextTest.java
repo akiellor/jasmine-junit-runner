@@ -98,4 +98,27 @@ public class RhinoContextTest {
 
         assertThat(actual).isEqualTo("forty two");
     }
+
+    @Test
+    public void shouldLoadFromClasspathViaVirtualFileSystem() {
+        RhinoContext context = new RhinoContext();
+
+        context.loadFromVirtualFileSystem("js/lib/loadsJSFilesFromClasspathTarget.js");
+
+        assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
+    }
+
+    @Test
+    public void shouldLoadFromFileSystemViaVirtualFileSystem() {
+        RhinoContext context = new RhinoContext();
+
+        context.loadFromVirtualFileSystem("src/test/javascript/sources/source1.js");
+
+        assertThat(context.evalJS("source1")).isEqualTo(1.0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldFailToLoadFromVirtualFileSystem() {
+        new RhinoContext().loadFromVirtualFileSystem("some/unknown/file.js");
+    }
 }

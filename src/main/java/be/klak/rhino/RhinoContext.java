@@ -120,4 +120,8 @@ public class RhinoContext {
     public void load(String... paths) {
         loader.load(paths);
     }
+
+    public void loadFromVirtualFileSystem(String... paths) {
+        loader.loadFromVirtualFileSystem(paths);
+    }
 }
