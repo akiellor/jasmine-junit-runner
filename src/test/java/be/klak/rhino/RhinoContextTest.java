@@ -1,6 +1,5 @@
 package be.klak.rhino;
 
-import be.klak.junit.resources.ClasspathResource;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
 import org.junit.Test;
@@ -73,26 +72,6 @@ public class RhinoContextTest {
         context.setProperty("obj", "b", "b");
 
         assertThat(anObj.get("b", anObj)).isEqualTo("b");
-    }
-
-    @Test
-    public void loadsClasspathResourceFromClasspath() {
-        RhinoContext context = new RhinoContext();
-        context.load(new ClasspathResource("js/lib/loadsJSFilesFromClasspathTarget.js"));
-
-        assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
-    }
-
-    @Test
-    public void loadsManyClasspathResourcesFromClasspath() {
-        RhinoContext context = new RhinoContext();
-        context.load(
-                "classpath:js/lib/loadsJSFilesFromClasspathTarget.js",
-                "classpath:js/lib/anotherLoadsJSFilesFromClasspathTarget.js"
-        );
-
-        assertThat(context.evalJS("target.theAnswer")).isEqualTo("forty two");
-        assertThat(context.evalJS("anotherTarget.theAnswer")).isEqualTo("fifty six");
     }
 
     @Test

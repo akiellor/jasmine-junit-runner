@@ -32,15 +32,15 @@ public class VirtualFileSystem {
         }
     }
 
-    public Iterable<Vfs.File> find(final String... paths){
+    public Vfs.File find(final String path){
         Iterable<Vfs.File> files = Iterables.filter(this.files, new Predicate<Vfs.File>() {
             @Override public boolean apply(@Nullable Vfs.File input) {
-                return input != null && asList(paths).contains(input.getRelativePath());
+                return input != null && path.equals(input.getRelativePath());
             }
         });
 
-        if(Iterables.isEmpty(files)) { throw new IllegalArgumentException("Could not find resources: " + asList(paths)); }
+        if(Iterables.isEmpty(files)) { throw new IllegalArgumentException("Could not find resource: " + path); }
 
-        return files;
+        return files.iterator().next();
     }
 }

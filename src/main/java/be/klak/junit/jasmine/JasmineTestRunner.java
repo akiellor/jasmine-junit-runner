@@ -30,9 +30,9 @@ public class JasmineTestRunner extends Runner {
         new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js")
     ));
 
-    public static final List<? extends Resource> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
-        new ClasspathResource("js/lib/env.rhino.1.2.js"),
-        new ClasspathResource("js/lib/env.utils.js")
+    public static final List<String> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
+        "js/lib/env.rhino.1.2.js",
+        "js/lib/env.utils.js"
     ));
 
     private JasmineDescriptions jasmineSuite;
@@ -67,7 +67,7 @@ public class JasmineTestRunner extends Runner {
 
         List<Resource> resources = new ArrayList<Resource>();
         if (configuration.envJs()) {
-            resources.addAll(ENV_JS_LIBRARY);
+            context.loadFromVirtualFileSystem(ENV_JS_LIBRARY);
             resources.add(configuration.jsRootFile("envJsOptions.js"));
         } else {
             resources.add(configuration.jsRootFile("lib/no-env.js"));

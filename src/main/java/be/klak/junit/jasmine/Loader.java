@@ -3,14 +3,18 @@ package be.klak.junit.jasmine;
 import be.klak.junit.resources.Resource;
 import be.klak.junit.resources.ResourceParser;
 import be.klak.utils.Exceptions;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.reflections.vfs.Vfs;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class Loader {
@@ -56,8 +60,14 @@ public class Loader {
         load(parser.parse(path));
     }
 
-    public void loadFromVirtualFileSystem(final String... paths) {
-        for(Vfs.File file : fileSystem.find(paths)){
+    public void loadFromVirtualFileSystem(final List<String> paths) {
+        Collection<Vfs.File> files = Collections2.transform(paths, new Function<String, Vfs.File>() {
+            @Override public Vfs.File apply(@Nullable String input) {
+                return fileSystem.find(input);
+            }
+        });
+
+        for(Vfs.File file : files){
             try {
                 this.context.evaluateReader(this.scope, new InputStreamReader(file.openInputStream()), file.getRelativePath(), 1, null);
             } catch (IOException e) {

@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class RhinoContext {
 
     private final Context jsContext;
@@ -123,19 +125,11 @@ public class RhinoContext {
         loader.load(resources);
     }
 
-    public void load(Resource resource) {
-        loader.load(resource);
-    }
-
-    public void load(Resource... resources) {
-        loader.load(resources);
-    }
-
-    public void load(String... paths) {
-        loader.load(paths);
-    }
-
     public void loadFromVirtualFileSystem(String... paths) {
+        loadFromVirtualFileSystem(asList(paths));
+    }
+
+    public void loadFromVirtualFileSystem(List<String> paths){
         loader.loadFromVirtualFileSystem(paths);
     }
 
