@@ -1,5 +1,6 @@
 package be.klak.junit.jasmine;
 
+import be.klak.junit.jasmine.generator.JasmineSpecRunnerGenerator;
 import be.klak.junit.resources.ClasspathResource;
 import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;

@@ -1,5 +1,6 @@
-package be.klak.junit.jasmine;
+package be.klak.junit.jasmine.generator;
 
+import be.klak.junit.jasmine.AnnotationConfiguration;
 import be.klak.junit.resources.ClasspathResource;
 import be.klak.junit.resources.FileResource;
 import org.apache.commons.io.FileUtils;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class JasmineSpecRunnerGenerator {
+public class JasmineSpecRunnerGenerator {
 
     private final AnnotationConfiguration configuration;
 	private final String outputFileName;
