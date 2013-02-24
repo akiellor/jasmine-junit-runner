@@ -2,7 +2,6 @@ package be.klak.junit.jasmine;
 
 import be.klak.utils.Exceptions;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.reflections.util.ClasspathHelper;
@@ -18,10 +17,6 @@ import static java.util.Arrays.asList;
 
 public class VirtualFileSystem {
     private final Iterable<Vfs.File> files;
-
-    public VirtualFileSystem(){
-        this(Predicates.<Vfs.File>alwaysTrue());
-    }
 
     public VirtualFileSystem(Predicate<Vfs.File> candidateFilter){
         try {
