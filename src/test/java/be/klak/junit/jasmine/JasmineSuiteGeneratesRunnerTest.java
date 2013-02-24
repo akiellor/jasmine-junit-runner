@@ -26,6 +26,7 @@ public class JasmineSuiteGeneratesRunnerTest {
 
     @Before
     public void clearRunnersOutputDirectory() throws IOException {
+        new File(RUNNERS_OUTPUT_DIR).mkdirs();
         FileUtils.cleanDirectory(new File(RUNNERS_OUTPUT_DIR));
     }
 

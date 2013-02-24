@@ -6,3 +6,4 @@ eclipsecompiled
 *.iml
 .idea
 atlassian-ide-plugin.xml
+*Runner.html
