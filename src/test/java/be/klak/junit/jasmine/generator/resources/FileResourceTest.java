@@ -1,4 +1,4 @@
-package be.klak.junit.resources;
+package be.klak.junit.jasmine.generator.resources;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;

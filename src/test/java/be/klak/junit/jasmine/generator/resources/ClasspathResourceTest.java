@@ -1,4 +1,4 @@
-package be.klak.junit.resources;
+package be.klak.junit.jasmine.generator.resources;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

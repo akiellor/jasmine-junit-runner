@@ -1,4 +1,4 @@
-package be.klak.junit.resources;
+package be.klak.junit.jasmine.generator.resources;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

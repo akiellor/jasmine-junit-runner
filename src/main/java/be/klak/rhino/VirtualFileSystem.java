@@ -1,4 +1,4 @@
-package be.klak.junit.jasmine;
+package be.klak.rhino;
 
 import be.klak.utils.Exceptions;
 import com.google.common.base.Predicate;

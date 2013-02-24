@@ -1,6 +1,6 @@
 package be.klak.junit.jasmine.generator;
 
-import be.klak.junit.resources.FileResource;
+import be.klak.junit.jasmine.generator.resources.FileResource;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

@@ -1,7 +1,6 @@
 package be.klak.junit.jasmine;
 
 import be.klak.junit.jasmine.generator.JasmineSpecRunnerGenerator;
-import be.klak.junit.resources.ClasspathResource;
 import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
@@ -111,7 +110,7 @@ public class JasmineTestRunner extends Runner {
 	}
 
 	private void resetEnvjsWindowSpace() {
-		URL blankUrl = new ClasspathResource("js/lib/blank.html").getURL();
+		URL blankUrl = Thread.currentThread().getContextClassLoader().getResource("js/lib/blank.html");
 
 		if (blankUrl == null) {
 			throw new IllegalStateException("Unable to load js/lib/blank.html from classpath");

@@ -1,8 +1,5 @@
 package be.klak.rhino;
 
-import be.klak.junit.jasmine.Loader;
-import be.klak.junit.jasmine.VirtualFileSystem;
-import be.klak.junit.resources.ClasspathResource;
 import be.klak.utils.Exceptions;
 import com.google.common.base.Predicate;
 import org.mozilla.javascript.*;
@@ -11,6 +8,7 @@ import org.reflections.vfs.Vfs;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -100,7 +98,8 @@ public class RhinoContext {
         ScriptableObject.putProperty(scope, "__VIRTUAL_FILESYSTEM__", this.fileSystem);
 
         try {
-            jsContext.evaluateReader(scope, new InputStreamReader(new ClasspathResource("js/lib/loader.js").getURL().openStream()), "loader", 1, null);
+            InputStream loader = Thread.currentThread().getContextClassLoader().getResourceAsStream("js/lib/loader.js");
+            jsContext.evaluateReader(scope, new InputStreamReader(loader), "loader", 1, null);
         } catch (IOException e) {
             throw Exceptions.unchecked(e);
         }
