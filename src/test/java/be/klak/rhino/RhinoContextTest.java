@@ -78,7 +78,7 @@ public class RhinoContextTest {
     public void shouldBeAbleToLoadFromClasspathFromWithinContext() {
         RhinoContext context = new RhinoContext();
 
-        Object actual = context.evalJS("load('classpath:js/lib/loadsJSFilesFromClasspathTarget.js'); target.theAnswer;");
+        Object actual = context.evalJS("load('js/lib/loadsJSFilesFromClasspathTarget.js'); target.theAnswer;");
 
         assertThat(actual).isEqualTo("forty two");
     }

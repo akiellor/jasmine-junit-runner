@@ -1,7 +1,6 @@
 package be.klak.junit.jasmine;
 
 import be.klak.junit.resources.ClasspathResource;
-import be.klak.junit.resources.Resource;
 import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
@@ -25,9 +24,9 @@ public class JasmineTestRunner extends Runner {
 
 	private static final int SLEEP_TIME_MILISECONDS = 50;
 
-    private static final List<? extends Resource> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
-        new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js"),
-        new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js")
+    private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
+        "js/lib/jasmine-1.0.2/jasmine.js",
+        "js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js"
     ));
 
     public static final List<String> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
@@ -65,9 +64,9 @@ public class JasmineTestRunner extends Runner {
 
         pre(context);
 
-        List<Resource> resources = new ArrayList<Resource>();
+        List<String> resources = new ArrayList<String>();
         if (configuration.envJs()) {
-            context.loadFromVirtualFileSystem(ENV_JS_LIBRARY);
+            resources.addAll(ENV_JS_LIBRARY);
             resources.add(configuration.jsRootFile("envJsOptions.js"));
         } else {
             resources.add(configuration.jsRootFile("lib/no-env.js"));
@@ -76,7 +75,7 @@ public class JasmineTestRunner extends Runner {
         resources.addAll(configuration.sources());
         resources.addAll(configuration.specs());
 
-        context.load(resources);
+        context.loadFromVirtualFileSystem(resources);
 
         context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
 

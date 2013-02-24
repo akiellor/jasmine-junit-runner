@@ -1,12 +1,14 @@
 package be.klak.junit.jasmine;
 
-import be.klak.junit.resources.FileResource;
-import be.klak.junit.resources.Resource;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class AnnotationConfiguration {
     private final JasmineSuite annotation;
@@ -21,17 +23,26 @@ public class AnnotationConfiguration {
         this.defaultSpec = defaultSpec;
     }
 
-    public Collection<? extends Resource> sources() {
-        return FileResource.files(new File(annotation.sourcesRootDir()), annotation.sources());
+    public Collection<String> sources() {
+        return Collections2.transform(asList(annotation.sources()), new Function<String, String>() {
+            @Override public String apply(@Nullable String input) {
+                    return fromPwd(new File(annotation.sourcesRootDir(), input));
+            }
+        });
     }
 
-    public Collection<? extends Resource> specs() {
-        List<FileResource> specs = FileResource.files(new File(annotation.jsRootDir(), "specs"), annotation.specs());
+    public Collection<String> specs() {
+        Collection<String> specs = Collections2.transform(asList(annotation.specs()), new Function<String, String>() {
+            @Override public String apply(@Nullable String input) {
+                return fromPwd(new File(new File(annotation.jsRootDir(), "specs"), input));
+            }
+        });
+
         if (!specs.isEmpty()) {
             return specs;
         }
         if (defaultSpec != null) {
-            return FileResource.files(new File(annotation.jsRootDir(), "specs"), defaultSpec);
+            return asList(fromPwd(new File(new File(annotation.jsRootDir(), "specs"), defaultSpec)));
         }
 
         throw new IllegalStateException("No specs found.");
@@ -57,7 +68,11 @@ public class AnnotationConfiguration {
         return annotation.envJs();
     }
 
-    public Resource jsRootFile(String relativePath) {
-        return new FileResource(new File(annotation.jsRootDir(), relativePath));
+    private String fromPwd(File file){
+        return new File(".").toURI().relativize(file.toURI()).toString();
+    }
+
+    public String jsRootFile(String relativePath) {
+        return fromPwd(new File(annotation.jsRootDir(), relativePath));
     }
 }

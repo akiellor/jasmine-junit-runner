@@ -2,7 +2,6 @@ package be.klak.junit.jasmine;
 
 import be.klak.junit.resources.ClasspathResource;
 import be.klak.junit.resources.FileResource;
-import be.klak.junit.resources.Resource;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -28,11 +27,11 @@ class JasmineSpecRunnerGenerator {
                 new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js").asFileResource(),
                 new ClasspathResource("js/lib/jasmine-1.0.2/jasmine-html.js").asFileResource()));
 
-        for(Resource source : configuration.sources()){
-            javascriptFiles.add(source.asFileResource());
+        for(String source : configuration.sources()){
+            javascriptFiles.add(new FileResource(source));
         }
-        for(Resource spec : configuration.specs()){
-            javascriptFiles.add(spec.asFileResource());
+        for(String spec : configuration.specs()){
+            javascriptFiles.add(new FileResource(spec));
         }
 
         List<FileResource> cssFiles = new ArrayList<FileResource>();
