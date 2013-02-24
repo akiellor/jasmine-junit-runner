@@ -1,6 +1,5 @@
 package be.klak.junit.jasmine;
 
-import be.klak.junit.resources.Resource;
 import be.klak.utils.Exceptions;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -11,7 +10,6 @@ import org.reflections.vfs.Vfs;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,25 +26,7 @@ public class Loader {
         this.fileSystem = fileSystem;
     }
 
-    private void load(Resource resource) {
-        URL resourceURL = resource.getURL();
-
-        if (resourceURL == null) {
-            throw new IllegalArgumentException("resource " + resource + " not found");
-        }
-
-        try {
-            this.context.evaluateReader(this.scope, new InputStreamReader(resource.getURL().openStream()), resource.getBaseName(), 1, null);
-        } catch (IOException e) {
-            throw Exceptions.unchecked(e);
-        }
-    }
-
-    public void load(List<? extends Resource> resources) {
-        for(Resource resource : resources){ load(resource); }
-    }
-
-    public void loadFromVirtualFileSystem(final String path) {
+    @SuppressWarnings("UnusedDeclaration") public void loadFromVirtualFileSystem(final String path) {
         loadFromVirtualFileSystem(asList(path));
     }
 

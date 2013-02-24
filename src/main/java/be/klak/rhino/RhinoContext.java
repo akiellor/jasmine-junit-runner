@@ -3,7 +3,6 @@ package be.klak.rhino;
 import be.klak.junit.jasmine.Loader;
 import be.klak.junit.jasmine.VirtualFileSystem;
 import be.klak.junit.resources.ClasspathResource;
-import be.klak.junit.resources.Resource;
 import be.klak.utils.Exceptions;
 import com.google.common.base.Predicate;
 import org.mozilla.javascript.*;
@@ -119,10 +118,6 @@ public class RhinoContext {
 
     public void exit() {
         Context.exit();
-    }
-
-    public void load(List<? extends Resource> resources) {
-        loader.load(resources);
     }
 
     public void loadFromVirtualFileSystem(String... paths) {
