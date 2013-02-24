@@ -1,9 +1,14 @@
 package be.klak.rhino;
 
 import be.klak.junit.resources.ClasspathResource;
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.Timer;
 import org.junit.Test;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -120,5 +125,25 @@ public class RhinoContextTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailToLoadFromVirtualFileSystem() {
         new RhinoContext().loadFromVirtualFileSystem("some/unknown/file.js");
+    }
+
+    @Test
+    public void shouldTimeTheLoadSpeed() throws Exception {
+        final RhinoContext context = new RhinoContext();
+
+        final Timer loads = Metrics.newTimer(RhinoContext.class, "loads", TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+
+        for(int i = 0; i < 100; i++){
+            loads.time(new Callable<Void>() {
+                @Override public Void call() throws Exception {
+                    context.fork().loadFromVirtualFileSystem("src/test/javascript/sources/source1.js");
+                    return null;
+                }
+            });
+        }
+
+        loads.stop();
+
+        assertThat(loads.mean()).isLessThan(5.0);
     }
 }

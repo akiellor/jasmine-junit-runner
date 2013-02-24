@@ -138,4 +138,8 @@ public class RhinoContext {
     public void loadFromVirtualFileSystem(String... paths) {
         loader.loadFromVirtualFileSystem(paths);
     }
+
+    public RhinoContext fork() {
+        return createNewRhinoContextBasedOnPrevious();
+    }
 }

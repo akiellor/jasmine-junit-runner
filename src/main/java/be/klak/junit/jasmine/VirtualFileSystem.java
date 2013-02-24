@@ -26,7 +26,7 @@ public class VirtualFileSystem {
     public VirtualFileSystem(Predicate<Vfs.File> candidateFilter){
         try {
             List<URL> sources = Lists.newArrayList(Iterables.concat(ClasspathHelper.forJavaClassPath(), asList(new File(".").toURI().toURL())));
-            this.files = Vfs.findFiles(sources, candidateFilter);
+            this.files = Lists.newArrayList(Vfs.findFiles(sources, candidateFilter));
         } catch (MalformedURLException e) {
             throw Exceptions.unchecked(e);
         }
