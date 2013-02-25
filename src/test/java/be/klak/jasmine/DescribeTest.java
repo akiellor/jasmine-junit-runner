@@ -4,6 +4,7 @@ import be.klak.rhino.RhinoContext;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.junit.Test;
+import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.Collection;
@@ -19,6 +20,19 @@ public class DescribeTest {
         Describe describe = new Describe(object, context);
 
         assertThat(describe.getDescription().getDisplayName()).isEqualTo("DESCRIPTION");
+    }
+
+    @Test
+    public void shouldHaveConsistentDescription() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS("var object = {description: 'DESCRIPTION', suites: function(){ return []; }, specs: function(){ return [];}}; object;");
+
+        Describe describe = new Describe(object, context);
+
+        Description first = describe.getDescription();
+        Description second = describe.getDescription();
+
+        assertThat(first).isSameAs(second);
     }
 
     @Test
