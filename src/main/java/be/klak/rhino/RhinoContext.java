@@ -24,7 +24,7 @@ public class RhinoContext {
     public RhinoContext() {
         this.fileSystem = new VirtualFileSystem(new Predicate<Vfs.File>() {
             @Override public boolean apply(@Nullable Vfs.File input) {
-                return input.getRelativePath().endsWith("js");
+                return input != null && input.getRelativePath().endsWith("js");
             }
         });
 
