@@ -44,16 +44,12 @@ public class RhinoContext {
         this.loader = new Loader(jsScope, jsContext, fileSystem);
     }
 
-    private RhinoContext createNewRhinoContextBasedOnPrevious() {
-        return new RhinoContext(this.jsScope, this.fileSystem);
-    }
-
     public void runAsync(final RhinoRunnable runnable) {
         new Thread(new Runnable() {
 
             @Override
             public void run() {
-                RhinoContext newRhinoContextBasedOnPrevious = createNewRhinoContextBasedOnPrevious();
+                RhinoContext newRhinoContextBasedOnPrevious = fork();
                 try {
                     runnable.run(newRhinoContextBasedOnPrevious);
                 } finally {
@@ -128,6 +124,6 @@ public class RhinoContext {
     }
 
     public RhinoContext fork() {
-        return createNewRhinoContextBasedOnPrevious();
+        return new RhinoContext(this.jsScope, this.fileSystem);
     }
 }
