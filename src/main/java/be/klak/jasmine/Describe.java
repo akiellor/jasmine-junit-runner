@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
@@ -21,8 +22,15 @@ public class Describe {
         this.context = context;
     }
 
-    public String getDescription(){
-        return String.valueOf(object.get("description"));
+    public Description getDescription(){
+        Description description = Description.createSuiteDescription(String.valueOf(object.get("description")), object);
+        for(Describe describe : getDescribes()){
+            description.addChild(describe.getDescription());
+        }
+        for(It it : getIts()){
+            description.addChild(it.getDescription());
+        }
+        return description;
     }
 
     public Set<Describe> getDescribes() {

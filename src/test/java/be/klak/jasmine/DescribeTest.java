@@ -14,24 +14,50 @@ public class DescribeTest {
     @Test
     public void shouldHaveDescription() {
         RhinoContext context = new RhinoContext();
-        NativeObject object = (NativeObject) context.evalJS("var object = {description: 'DESCRIPTION'}; object;");
+        NativeObject object = (NativeObject) context.evalJS("var object = {description: 'DESCRIPTION', suites: function(){ return []; }, specs: function(){ return [];}}; object;");
 
         Describe describe = new Describe(object, context);
 
-        assertThat(describe.getDescription()).isEqualTo("DESCRIPTION");
+        assertThat(describe.getDescription().getDisplayName()).isEqualTo("DESCRIPTION");
     }
 
     @Test
     public void shouldHaveChildDescribes() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {suites: function(){ return [{description: 'CHILD'}]}}; object;"
+                "var object = {suites: function(){ return [{description: 'CHILD', suites: function(){ return []; }, specs: function(){ return [];}}]}}; object;"
         );
 
         Describe describe = new Describe(object, context);
 
         assertThat(describe.getDescribes()).hasSize(1);
-        assertThat(describe.getDescribes().iterator().next().getDescription()).isEqualTo("CHILD");
+        assertThat(describe.getDescribes().iterator().next().getDescription().getDisplayName()).isEqualTo("CHILD");
+    }
+
+    @Test
+    public void shouldHaveDescriptionWithChildrenDescribes() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {description: 'ROOT', specs: function() { return []; }, suites: function(){ return [{description: 'CHILD', suites: function(){ return []; }, specs: function(){ return [];}}]}}; object;"
+        );
+
+        Describe describe = new Describe(object, context);
+
+        assertThat(describe.getDescription().getChildren()).hasSize(1);
+        assertThat(describe.getDescription().getChildren().get(0).getDisplayName()).isEqualTo("CHILD");
+    }
+
+    @Test
+    public void shouldHaveDescriptionWithChildrenIts() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {description: 'ROOT', suites: function(){ return [];}, specs: function(){ return [{description: 'CHILD'}]}}; object;"
+        );
+
+        Describe describe = new Describe(object, context);
+
+        assertThat(describe.getDescription().getChildren()).hasSize(1);
+        assertThat(describe.getDescription().getChildren().get(0).getDisplayName()).isEqualTo("CHILD");
     }
 
     @Test
