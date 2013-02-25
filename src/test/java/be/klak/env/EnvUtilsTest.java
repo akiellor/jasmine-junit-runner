@@ -1,7 +1,7 @@
 package be.klak.env;
 
-import be.klak.junit.jasmine.JasmineSuite;
-import be.klak.junit.jasmine.JasmineTestRunner;
+import be.klak.jasmine.junit.JasmineSuite;
+import be.klak.jasmine.junit.JasmineTestRunner;
 import be.klak.rhino.RhinoContext;
 import org.junit.Before;
 import org.junit.runner.RunWith;

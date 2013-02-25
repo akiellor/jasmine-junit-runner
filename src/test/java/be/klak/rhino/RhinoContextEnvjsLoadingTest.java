@@ -1,6 +1,6 @@
 package be.klak.rhino;
 
-import be.klak.junit.jasmine.JasmineTestRunner;
+import be.klak.jasmine.junit.JasmineTestRunner;
 import org.junit.Test;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.NativeObject;
