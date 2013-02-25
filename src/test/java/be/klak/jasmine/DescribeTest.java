@@ -42,4 +42,33 @@ public class DescribeTest {
         assertThat(describe.getIts()).hasSize(1);
         assertThat(describe.getIts().iterator().next().getDescription().getDisplayName()).isEqualTo("CHILD");
     }
+
+    @Test
+    public void shouldTestBindingOfDescribe() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {specs: function(){ return [{description: 'CHILD'}]}}; object;"
+        );
+
+        Describe describe = new Describe(object, context);
+
+        assertThat(describe.isBoundTo(context)).isTrue();
+        assertThat(describe.isBoundTo(context.fork())).isFalse();
+    }
+
+    @Test
+    public void shouldRebindTreeToNewContext(){
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {suites: function(){ return [{description: 'CHILD'}]}}; object;"
+        );
+
+        Describe describe = new Describe(object, context);
+
+        RhinoContext newContext = context.fork();
+        Describe newDescribe = describe.bind(newContext);
+
+        assertThat(newDescribe.isBoundTo(newContext)).isTrue();
+        assertThat(newDescribe.getDescribes().iterator().next().isBoundTo(newContext)).isTrue();
+    }
 }

@@ -38,4 +38,12 @@ public class Describe {
         }
         return its;
     }
+
+    public boolean isBoundTo(RhinoContext context) {
+        return this.context.equals(context);
+    }
+
+    public Describe bind(RhinoContext newContext) {
+        return new Describe(object, newContext);
+    }
 }
