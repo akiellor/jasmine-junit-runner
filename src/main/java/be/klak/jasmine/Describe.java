@@ -1,6 +1,10 @@
 package be.klak.jasmine;
 
 import be.klak.rhino.RhinoContext;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
@@ -45,5 +49,15 @@ public class Describe {
 
     public Describe bind(RhinoContext newContext) {
         return new Describe(object, newContext);
+    }
+
+    public Set<It> getAllIts() {
+        Iterable<It> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, Set<It>>() {
+            @Override public Set<It> apply(Describe input) {
+                return input.getAllIts();
+            }
+        }));
+
+        return Sets.newHashSet(Iterables.concat(allChildren, getIts()));
     }
 }

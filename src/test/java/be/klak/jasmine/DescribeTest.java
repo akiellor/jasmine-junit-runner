@@ -1,8 +1,12 @@
 package be.klak.jasmine;
 
 import be.klak.rhino.RhinoContext;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import org.junit.Test;
 import org.mozilla.javascript.NativeObject;
+
+import java.util.Collection;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -70,5 +74,22 @@ public class DescribeTest {
 
         assertThat(newDescribe.isBoundTo(newContext)).isTrue();
         assertThat(newDescribe.getDescribes().iterator().next().isBoundTo(newContext)).isTrue();
+    }
+
+    @Test
+    public void shouldGetAllIts() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {specs: function(){ return [{description: 'CHILD IT'}]; }, suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return [{description: 'GRANDCHILD IT'}]; }}]}}; object;"
+        );
+
+        Describe describe = new Describe(object, context);
+        Collection<String> its = Collections2.transform(describe.getAllIts(), new Function<It, String>() {
+            @Override public String apply(It input) {
+                return input.getDescription().getDisplayName();
+            }
+        });
+
+        assertThat(its).containsOnly("CHILD IT", "GRANDCHILD IT");
     }
 }
