@@ -19,13 +19,13 @@ public class JasmineJSSuiteConverter {
 
 	public JasmineDescriptions convertToJunitDescriptions(Class<?> testClass, NativeArray baseSuites) {
 		Description rootDescription = Description.createSuiteDescription(testClass);
-		List<JasmineSpec> specs = convertSuiteArrayToDescriptions(baseSuites, rootDescription, new ArrayList<String>());
+		List<It> specs = convertSuiteArrayToDescriptions(baseSuites, rootDescription, new ArrayList<String>());
 		return new JasmineDescriptions(rootDescription, specs);
 	}
 
-	private List<JasmineSpec> convertSuiteArrayToDescriptions(NativeArray suiteArray, Description rootDescription,
+	private List<It> convertSuiteArrayToDescriptions(NativeArray suiteArray, Description rootDescription,
 			List<String> processed) {
-		List<JasmineSpec> specs = new ArrayList<JasmineSpec>();
+		List<It> specs = new ArrayList<It>();
 		for (Object idObj : suiteArray.getIds()) {
 			NativeObject suite = (NativeObject) suiteArray.get((Integer) idObj, suiteArray);
 
@@ -49,15 +49,15 @@ public class JasmineJSSuiteConverter {
 		return suiteDescription;
 	}
 
-	private List<JasmineSpec> convertToJunitDescription(NativeObject suite, Description description) {
-		List<JasmineSpec> specsMap = new ArrayList<JasmineSpec>();
+	private List<It> convertToJunitDescription(NativeObject suite, Description description) {
+		List<It> specsMap = new ArrayList<It>();
 		NativeArray specsArray = (NativeArray) context.executeFunction(suite, "specs");
 		for (Object idObj : specsArray.getIds()) {
 			NativeObject spec = (NativeObject) specsArray.get((Integer) idObj, specsArray);
 
-			JasmineSpec jasmineSpec = new JasmineSpec(spec);
-			specsMap.add(jasmineSpec);
-			description.addChild(jasmineSpec.getDescription());
+			It it = new It(spec);
+			specsMap.add(it);
+			description.addChild(it.getDescription());
 		}
 
 		return specsMap;

@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertTrue;
 
 
 // TODO rhinoContext als field zetten ipv altijd mee te geven?
-public class JasmineSpec {
+public class It {
 
     public enum JasmineSpecStatus {
         PASSED,
@@ -24,7 +24,7 @@ public class JasmineSpec {
     private final Description description;
     private final NativeObject spec;
 
-    JasmineSpec(NativeObject spec) {
+    It(NativeObject spec) {
         this.spec = spec;
         String descriptionString = String.valueOf(spec.get("description", spec));
         this.description = Description.createSuiteDescription(descriptionString, UUID.randomUUID());

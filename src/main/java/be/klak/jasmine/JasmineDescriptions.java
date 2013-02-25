@@ -7,9 +7,9 @@ import java.util.Collection;
 public class JasmineDescriptions {
 
 	private final Description rootDescription;
-	private final Collection<JasmineSpec> specs;
+	private final Collection<It> specs;
 
-	public JasmineDescriptions(Description rootDescription, Collection<JasmineSpec> specs) {
+	public JasmineDescriptions(Description rootDescription, Collection<It> specs) {
 		this.rootDescription = rootDescription;
 		this.specs = specs;
 	}
@@ -18,7 +18,7 @@ public class JasmineDescriptions {
 		return rootDescription;
 	}
 
-	public Collection<JasmineSpec> getSpecs() {
+	public Collection<It> getSpecs() {
 		return specs;
 	}
 }

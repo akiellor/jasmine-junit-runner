@@ -147,7 +147,7 @@ public class JasmineTestRunner extends Runner {
 	public void run(RunNotifier notifier) {
 		generateSpecRunnerIfNeeded();
 
-		for (JasmineSpec spec : getJasmineDescriptions().getSpecs()) {
+		for (It spec : getJasmineDescriptions().getSpecs()) {
 			Object testClassInstance = createTestClassInstance();
 			fireMethodsWithSpecifiedAnnotationIfAny(testClassInstance, Before.class);
 
@@ -212,7 +212,7 @@ public class JasmineTestRunner extends Runner {
 		}
 	}
 
-	private void reportSpecResultToNotifier(RunNotifier notifier, JasmineSpec spec) {
+	private void reportSpecResultToNotifier(RunNotifier notifier, It spec) {
 		if (spec.isPassed(rhinoContext)) {
 			notifier.fireTestFinished(spec.getDescription());
 		} else if (spec.isFailed(rhinoContext)) {

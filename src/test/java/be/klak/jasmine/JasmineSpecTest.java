@@ -15,8 +15,8 @@ public class JasmineSpecTest {
         NativeObject jsSpec2 = mock(NativeObject.class);
         when(jsSpec2.get("description", jsSpec2)).thenReturn("green");
 
-        JasmineSpec spec1 = new JasmineSpec(jsSpec1);
-        JasmineSpec spec2 = new JasmineSpec(jsSpec2);
+        It spec1 = new It(jsSpec1);
+        It spec2 = new It(jsSpec2);
 
         assertThat(spec1.getDescription()).isNotEqualTo(spec2.getDescription());
     }
