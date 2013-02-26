@@ -9,6 +9,7 @@ import org.mozilla.javascript.NativeObject;
 
 import java.util.Collection;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class DescribeTest {
@@ -131,5 +132,22 @@ public class DescribeTest {
         });
 
         assertThat(its).containsOnly("CHILD IT", "GRANDCHILD IT");
+    }
+
+    @Test
+    public void shouldDefineItsBeforeDescribes() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {description: 'ROOT', suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return []; }}]}, specs: function(){ return [{description: 'CHILD IT'}]; }}; object;"
+        );
+
+        Describe describe = new Describe(object, context);
+        Collection<String> its = newArrayList(Collections2.transform(describe.getDescription().getChildren(), new Function<Description, String>() {
+            @Override public String apply(Description input) {
+                return input.getDisplayName();
+            }
+        }));
+
+        assertThat(its).isEqualTo(newArrayList("CHILD IT", "CHILD DESCRIBE"));
     }
 }

@@ -6,14 +6,14 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
-import java.util.Set;
+import java.util.List;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class Describe {
     private final NativeObject object;
@@ -27,11 +27,11 @@ public class Describe {
         this.description = Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
                 Description description = Description.createSuiteDescription(String.valueOf(object.get("description")), object);
-                for(Describe describe : getDescribes()){
-                    description.addChild(describe.getDescription());
-                }
                 for(It it : getIts()){
                     description.addChild(it.getDescription());
+                }
+                for(Describe describe : getDescribes()){
+                    description.addChild(describe.getDescription());
                 }
                 return description;
             }
@@ -42,18 +42,18 @@ public class Describe {
         return description.get();
     }
 
-    public Set<Describe> getDescribes() {
+    public List<Describe> getDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
-        Set<Describe> describes = newHashSet();
+        List<Describe> describes = newArrayList();
         for(Object id : suites.getIndexIds()){
             describes.add(new Describe((NativeObject)suites.get(id), context));
         }
         return describes;
     }
 
-    public Set<It> getIts() {
+    public List<It> getIts() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "specs");
-        Set<It> its = newHashSet();
+        List<It> its = newArrayList();
         for(Object id : suites.getIndexIds()){
             its.add(new It((NativeObject) suites.get(id)));
         }
@@ -68,13 +68,33 @@ public class Describe {
         return new Describe(object, newContext);
     }
 
-    public Set<It> getAllIts() {
-        Iterable<It> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, Set<It>>() {
-            @Override public Set<It> apply(Describe input) {
+    public List<It> getAllIts() {
+        Iterable<It> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<It>>() {
+            @Override public List<It> apply(Describe input) {
                 return input.getAllIts();
             }
         }));
 
-        return Sets.newHashSet(Iterables.concat(allChildren, getIts()));
+        return Lists.newArrayList(Iterables.concat(allChildren, getIts()));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Describe describe = (Describe) o;
+
+        if (context != null ? !context.equals(describe.context) : describe.context != null) return false;
+        if (object != null ? !object.equals(describe.object) : describe.object != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = object != null ? object.hashCode() : 0;
+        result = 31 * result + (context != null ? context.hashCode() : 0);
+        return result;
     }
 }

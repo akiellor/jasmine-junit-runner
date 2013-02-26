@@ -1,6 +1,6 @@
 package be.klak.jasmine.junit;
 
-import be.klak.jasmine.*;
+import be.klak.jasmine.It;
 import be.klak.jasmine.generator.JasmineSpecRunnerGenerator;
 import be.klak.rhino.RhinoContext;
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +10,7 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.tools.debugger.Main;
 
 import java.lang.annotation.Annotation;
@@ -35,7 +35,7 @@ public class JasmineTestRunner extends Runner {
         "js/lib/env.utils.js"
     ));
 
-    private JasmineDescriptions jasmineSuite;
+    private be.klak.jasmine.Runner jasmineSuite;
 
 	protected final RhinoContext rhinoContext;
 	private final Class<?> testClass;
@@ -130,24 +130,24 @@ public class JasmineTestRunner extends Runner {
 		));
 	}
 
-	private JasmineDescriptions getJasmineDescriptions() {
+	private be.klak.jasmine.Runner getJasmineDescriptions() {
 		if (this.jasmineSuite == null) {
-			NativeArray baseSuites = (NativeArray) rhinoContext.evalJS("jasmine.getEnv().currentRunner().suites()");
-			this.jasmineSuite = new JasmineJSSuiteConverter(rhinoContext).convertToJunitDescriptions(testClass, baseSuites);
+            NativeObject baseSuites = (NativeObject) rhinoContext.evalJS("jasmine.getEnv().currentRunner()");
+			this.jasmineSuite = new be.klak.jasmine.Runner(baseSuites, rhinoContext, Description.createSuiteDescription(testClass));
 		}
 		return this.jasmineSuite;
-	}
+    }
 
 	@Override
 	public Description getDescription() {
-		return getJasmineDescriptions().getRootDescription();
+		return getJasmineDescriptions().getDescription();
 	}
 
 	@Override
 	public void run(RunNotifier notifier) {
 		generateSpecRunnerIfNeeded();
 
-		for (It spec : getJasmineDescriptions().getSpecs()) {
+		for (It spec : getJasmineDescriptions().getAllIts()) {
 			Object testClassInstance = createTestClassInstance();
 			fireMethodsWithSpecifiedAnnotationIfAny(testClassInstance, Before.class);
 

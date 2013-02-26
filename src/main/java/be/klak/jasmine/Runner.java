@@ -10,10 +10,9 @@ import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
-import javax.annotation.Nullable;
-import java.util.Set;
+import java.util.List;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class Runner {
     private final NativeObject object;
@@ -33,24 +32,38 @@ public class Runner {
         });
     }
 
-    public Set<Describe> getDescribes() {
-        NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
-        Set<Describe> describes = newHashSet();
-        for(Object id : suites.getIndexIds()){
-            describes.add(new Describe((NativeObject)suites.get(id), context));
-        }
-        return describes;
+    public List<Describe> getDescribes(){
+        List<Describe> allDescribes = getAllDescribes();
+        allDescribes.removeAll(getChildDescribes());
+        return allDescribes;
     }
 
     public Description getDescription(){
         return description.get();
     }
 
-    public Set<It> getAllIts() {
-        return newHashSet(Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, Set<It>>() {
-            @Override public Set<It> apply(@Nullable Describe input) {
+    public List<It> getAllIts() {
+        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<It>>() {
+            @Override public List<It> apply(Describe input) {
                 return input.getAllIts();
             }
         })));
+    }
+
+    private List<Describe> getChildDescribes(){
+        return newArrayList(Iterables.concat(Iterables.transform(getAllDescribes(), new Function<Describe, List<Describe>>() {
+            @Override public List<Describe> apply(Describe input) {
+                return input.getDescribes();
+            }
+        })));
+    }
+
+    private List<Describe> getAllDescribes() {
+        NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
+        List<Describe> describes = newArrayList();
+        for(Object id : suites.getIndexIds()){
+            describes.add(new Describe((NativeObject)suites.get(id), context));
+        }
+        return describes;
     }
 }
