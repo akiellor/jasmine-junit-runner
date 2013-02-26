@@ -7,7 +7,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class JasmineSpecTest {
+public class ItTest {
     @Test
     public void shouldSpecsWithTheSameNameShouldNotHaveTheSameDescription() {
         NativeObject jsSpec1 = mock(NativeObject.class);
