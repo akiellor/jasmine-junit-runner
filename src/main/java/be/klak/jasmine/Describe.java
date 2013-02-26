@@ -55,7 +55,7 @@ public class Describe {
         NativeArray suites = (NativeArray) context.executeFunction(object, "specs");
         List<It> its = newArrayList();
         for(Object id : suites.getIndexIds()){
-            its.add(new It((NativeObject) suites.get(id)));
+            its.add(new It((NativeObject) suites.get(id), context));
         }
         return its;
     }

@@ -2,6 +2,8 @@ package be.klak.jasmine;
 
 import be.klak.rhino.RhinoContext;
 import be.klak.rhino.RhinoRunnable;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.mozilla.javascript.NativeArray;
@@ -11,27 +13,34 @@ import java.util.UUID;
 
 import static junit.framework.Assert.assertTrue;
 
-
-// TODO rhinoContext als field zetten ipv altijd mee te geven?
 public class It {
-
     public enum JasmineSpecStatus {
         PASSED,
         FAILED,
         SKIPPED
     }
 
-    private final Description description;
+    private final Supplier<Description> description;
+    private final RhinoContext context;
     private final NativeObject spec;
 
-    It(NativeObject spec) {
+    It(final NativeObject spec, RhinoContext context) {
+        this(spec, context, Suppliers.memoize(new Supplier<Description>() {
+            @Override public Description get() {
+                final String descriptionString = String.valueOf(spec.get("description", spec));
+                return Description.createSuiteDescription(descriptionString, UUID.randomUUID());
+            }
+        }));
+    }
+
+    private It(NativeObject spec, RhinoContext context, Supplier<Description> description) {
         this.spec = spec;
-        String descriptionString = String.valueOf(spec.get("description", spec));
-        this.description = Description.createSuiteDescription(descriptionString, UUID.randomUUID());
+        this.context = context;
+        this.description = description;
     }
 
     public Description getDescription() {
-        return description;
+        return description.get();
     }
 
     public NativeObject getSpec() {
@@ -61,7 +70,15 @@ public class It {
 
     public Failure getJunitFailure(RhinoContext context) {
         assertTrue(isFailed(context));
-        return new Failure(description, getFirstFailedStacktrace(context));
+        return new Failure(description.get(), getFirstFailedStacktrace(context));
+    }
+
+    public boolean isBoundTo(RhinoContext context) {
+        return this.context.equals(context);
+    }
+
+    public It bind(RhinoContext context) {
+        return new It(this.spec, context, this.description);
     }
 
     private Throwable getFirstFailedStacktrace(RhinoContext context) {
@@ -98,6 +115,6 @@ public class It {
 
     @Override
     public String toString() {
-        return description.getDisplayName();
+        return description.get().getDisplayName();
     }
 }
