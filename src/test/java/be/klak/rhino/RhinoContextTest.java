@@ -35,22 +35,6 @@ public class RhinoContextTest {
         assertThat(context.executeFunction(obj, "actual")).isEqualTo(5.0);
     }
 
-    @Test
-    public void runAsyncUsesTheSameSharedGlobalScope() throws InterruptedException {
-        RhinoContext baseContext = new RhinoContext();
-        baseContext.evalJS("var base = 'base'");
-
-        baseContext.runAsync(new RhinoRunnable() {
-
-            @Override
-            public void run(RhinoContext context) {
-                assertThat(context.evalJS("base")).isEqualTo("base");
-            }
-        });
-
-        Thread.sleep(500);
-    }
-
     @Test(expected = IllegalStateException.class)
     public void setPropertyOnUndefinedNotPossible() {
         RhinoContext context = new RhinoContext();

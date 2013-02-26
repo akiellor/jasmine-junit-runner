@@ -1,15 +1,12 @@
 package be.klak.jasmine;
 
 import be.klak.rhino.RhinoContext;
-import be.klak.rhino.RhinoRunnable;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
-
-import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 
@@ -28,7 +25,7 @@ public class It {
         this(spec, context, Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
                 final String descriptionString = String.valueOf(spec.get("description", spec));
-                return Description.createSuiteDescription(descriptionString, UUID.randomUUID());
+                return Description.createSuiteDescription(descriptionString, spec);
             }
         }));
     }
@@ -100,12 +97,7 @@ public class It {
     }
 
     public void execute(){
-        context.runAsync(new RhinoRunnable() {
-            @Override
-            public void run(RhinoContext context) {
-                context.executeFunction(spec, "execute");
-            }
-        });
+        context.executeFunction(spec, "execute");
     }
 
     @Override

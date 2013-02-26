@@ -44,21 +44,6 @@ public class RhinoContext {
         this.loader = new Loader(jsScope, jsContext, fileSystem);
     }
 
-    public void runAsync(final RhinoRunnable runnable) {
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                RhinoContext newRhinoContextBasedOnPrevious = fork();
-                try {
-                    runnable.run(newRhinoContextBasedOnPrevious);
-                } finally {
-                    newRhinoContextBasedOnPrevious.exit();
-                }
-            }
-        }).start();
-    }
-
     public Object evalJS(String js) {
         return this.jsContext.evaluateString(this.jsScope, js, "script", 1, null);
     }
