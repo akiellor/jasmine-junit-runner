@@ -11,7 +11,7 @@ import org.mozilla.javascript.NativeObject;
 
 import java.util.UUID;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class It {
     public enum JasmineSpecStatus {
@@ -43,22 +43,18 @@ public class It {
         return description.get();
     }
 
-    public NativeObject getSpec() {
-        return spec;
+    public boolean isPassed() {
+        return getSpecResultStatus() == JasmineSpecStatus.PASSED;
     }
 
-    public boolean isPassed(RhinoContext context) {
-        return getSpecResultStatus(context) == JasmineSpecStatus.PASSED;
+    public boolean isFailed() {
+        return getSpecResultStatus() == JasmineSpecStatus.FAILED;
     }
 
-    public boolean isFailed(RhinoContext context) {
-        return getSpecResultStatus(context) == JasmineSpecStatus.FAILED;
-    }
-
-    public JasmineSpecStatus getSpecResultStatus(RhinoContext context) {
+    public JasmineSpecStatus getSpecResultStatus() {
         assertTrue(isDone());
 
-        NativeObject results = getSpecResults(context);
+        NativeObject results = getSpecResults();
         boolean passed = (Boolean) context.executeFunction(results, "passed");
         boolean skipped = (Boolean) results.get("skipped", results);
 
@@ -68,9 +64,9 @@ public class It {
         return passed ? JasmineSpecStatus.PASSED : JasmineSpecStatus.FAILED;
     }
 
-    public Failure getJunitFailure(RhinoContext context) {
-        assertTrue(isFailed(context));
-        return new Failure(description.get(), getFirstFailedStacktrace(context));
+    public Failure getJunitFailure() {
+        assertTrue(isFailed());
+        return new Failure(description.get(), getFirstFailedStacktrace());
     }
 
     public boolean isBoundTo(RhinoContext context) {
@@ -81,8 +77,8 @@ public class It {
         return new It(this.spec, context, this.description);
     }
 
-    private Throwable getFirstFailedStacktrace(RhinoContext context) {
-        NativeArray resultItems = (NativeArray) context.executeFunction(getSpecResults(context), "getItems");
+    private Throwable getFirstFailedStacktrace() {
+        NativeArray resultItems = (NativeArray) context.executeFunction(getSpecResults(), "getItems");
         for (Object resultItemId : resultItems.getIds()) {
             NativeObject resultItem = (NativeObject) resultItems.get((Integer) resultItemId, resultItems);
 
@@ -94,7 +90,7 @@ public class It {
         return null;
     }
 
-    private NativeObject getSpecResults(RhinoContext context) {
+    private NativeObject getSpecResults() {
         return (NativeObject) context.executeFunction(spec, "results");
     }
 
@@ -103,9 +99,8 @@ public class It {
         return doneResult instanceof Boolean && ((Boolean) doneResult);
     }
 
-    public void execute(RhinoContext baseContext) {
-        baseContext.runAsync(new RhinoRunnable() {
-
+    public void execute(){
+        context.runAsync(new RhinoRunnable() {
             @Override
             public void run(RhinoContext context) {
                 context.executeFunction(spec, "execute");

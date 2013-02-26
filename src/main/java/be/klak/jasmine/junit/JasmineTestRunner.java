@@ -153,7 +153,7 @@ public class JasmineTestRunner extends Runner {
 
 			try {
 				notifier.fireTestStarted(spec.getDescription());
-				spec.execute(rhinoContext);
+				spec.execute();
 				while (!spec.isDone()) {
 					waitALittle();
 				}
@@ -213,10 +213,10 @@ public class JasmineTestRunner extends Runner {
 	}
 
 	private void reportSpecResultToNotifier(RunNotifier notifier, It spec) {
-		if (spec.isPassed(rhinoContext)) {
+		if (spec.isPassed()) {
 			notifier.fireTestFinished(spec.getDescription());
-		} else if (spec.isFailed(rhinoContext)) {
-			notifier.fireTestFailure(spec.getJunitFailure(rhinoContext));
+		} else if (spec.isFailed()) {
+			notifier.fireTestFailure(spec.getJunitFailure());
 		} else {
 			throw new IllegalStateException("Unexpected spec status received: " + spec);
 		}
