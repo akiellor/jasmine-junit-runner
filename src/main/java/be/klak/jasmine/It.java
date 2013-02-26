@@ -11,6 +11,8 @@ import org.mozilla.javascript.NativeObject;
 import static org.junit.Assert.assertTrue;
 
 public class It {
+    private static final int SLEEP_TIME_MILISECONDS = 50;
+
     public enum JasmineSpecStatus {
         PASSED,
         FAILED,
@@ -98,10 +100,19 @@ public class It {
 
     public void execute(){
         context.executeFunction(spec, "execute");
+        while(!isDone()) { waitALittle(); }
     }
 
     @Override
     public String toString() {
         return description.get().getDisplayName();
+    }
+
+    private void waitALittle() {
+        try {
+            Thread.sleep(SLEEP_TIME_MILISECONDS);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
