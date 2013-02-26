@@ -18,13 +18,10 @@ import org.mozilla.javascript.tools.debugger.Main;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
 
 public class JasmineTestRunner extends Runner {
-
-    private static final int SLEEP_TIME_MILISECONDS = 50;
 
     private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
             "js/lib/jasmine-1.0.2/jasmine.js",
@@ -113,26 +110,6 @@ public class JasmineTestRunner extends Runner {
         return suiteAnnotation;
     }
 
-    private void resetEnvjsWindowSpace() {
-        URL blankUrl = Thread.currentThread().getContextClassLoader().getResource("js/lib/blank.html");
-
-        if (blankUrl == null) {
-            throw new IllegalStateException("Unable to load js/lib/blank.html from classpath");
-        }
-
-        String blankUrlStr = blankUrl.toExternalForm();
-
-        // "file:/path/to/file" is not legal, but "file:///path/to/file" is
-        if (blankUrlStr.startsWith("file:/") && (!blankUrlStr.startsWith("file:///"))) {
-            blankUrlStr = "file://" + blankUrlStr.substring(5);
-        }
-
-        this.rhinoContext.evalJS(String.format(
-                "window.location = '%s';",
-                blankUrlStr
-        ));
-    }
-
     private be.klak.jasmine.Runner getJasmineDescriptions() {
         if (this.jasmineSuite == null) {
             NativeObject baseSuites = (NativeObject) rhinoContext.evalJS("jasmine.getEnv().currentRunner()");
@@ -164,12 +141,6 @@ public class JasmineTestRunner extends Runner {
                         notifier.fireTestStarted(spec.getDescription());
 
                         spec.bind(fork).execute();
-
-                        while(!spec.isDone()) { waitALittle(); }
-
-                        if (configuration.envJs()) {
-                            JasmineTestRunner.this.resetEnvjsWindowSpace();
-                        }
 
                         return spec;
                     }
@@ -242,13 +213,4 @@ public class JasmineTestRunner extends Runner {
             throw new IllegalStateException("Unexpected spec status received: " + spec);
         }
     }
-
-    private void waitALittle() {
-        try {
-            Thread.sleep(SLEEP_TIME_MILISECONDS);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
