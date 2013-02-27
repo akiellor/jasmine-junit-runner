@@ -12,7 +12,7 @@ public class EnvUtilsTest {
 
 	@Before
 	public void loadJasmineJQueryMatchers(RhinoContext context) {
-		context.loadFromVirtualFileSystem("js/lib/jasmine-1.0.2/jasmine-jquery-rhino.js");
+		context.loadFromVirtualFileSystem("js/lib/jasmine-jquery-rhino.js");
 	}
 
 }

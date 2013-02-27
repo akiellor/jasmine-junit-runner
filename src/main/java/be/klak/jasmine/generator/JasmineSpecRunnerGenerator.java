@@ -25,8 +25,8 @@ public class JasmineSpecRunnerGenerator {
         List<FileResource> javascriptFiles = new ArrayList<FileResource>();
 
         javascriptFiles.addAll(Arrays.asList(
-                new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.js").asFileResource(),
-                new ClasspathResource("js/lib/jasmine-1.0.2/jasmine-html.js").asFileResource()));
+                new ClasspathResource("js/lib/jasmine-1.3.1/jasmine.js").asFileResource(),
+                new ClasspathResource("js/lib/jasmine-1.3.1/jasmine-html.js").asFileResource()));
 
         for(String source : configuration.sources()){
             javascriptFiles.add(new FileResource(source));
@@ -36,7 +36,7 @@ public class JasmineSpecRunnerGenerator {
         }
 
         List<FileResource> cssFiles = new ArrayList<FileResource>();
-        cssFiles.add(new ClasspathResource("js/lib/jasmine-1.0.2/jasmine.css").asFileResource());
+        cssFiles.add(new ClasspathResource("js/lib/jasmine-1.3.1/jasmine.css").asFileResource());
 
         HtmlPageRunner htmlPageRunner = new HtmlPageRunner(javascriptFiles, cssFiles);
         try {

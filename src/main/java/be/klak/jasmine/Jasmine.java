@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Jasmine {
     private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
-            "js/lib/jasmine-1.0.2/jasmine.js",
-            "js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js"
+            "js/lib/jasmine-1.3.1/jasmine.js",
+            "js/lib/jasmine.delegator_reporter.js"
     ));
 
     public static final List<String> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(

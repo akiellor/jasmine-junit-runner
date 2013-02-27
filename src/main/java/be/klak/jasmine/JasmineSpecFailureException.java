@@ -1,19 +1,17 @@
 package be.klak.jasmine;
 
 import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.ScriptableObject;
 
 public class JasmineSpecFailureException extends Exception {
+    private final NativeObject result;
 
-	private final ScriptableObject trace;
-
-	public JasmineSpecFailureException(NativeObject specResultItem) {
-		this.trace = (ScriptableObject) specResultItem.get("trace", specResultItem);
+    public JasmineSpecFailureException(NativeObject specResultItem) {
+        this.result = specResultItem;
 	}
 
 	@Override
 	public String getMessage() {
-		return (String) trace.get("message", trace);
+		return String.valueOf(result.get("message", result));
 	}
 
 }
