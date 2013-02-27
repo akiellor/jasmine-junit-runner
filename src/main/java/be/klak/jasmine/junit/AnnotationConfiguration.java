@@ -1,6 +1,6 @@
 package be.klak.jasmine.junit;
 
-import be.klak.jasmine.junit.JasmineSuite;
+import be.klak.jasmine.Configuration;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
@@ -11,7 +11,7 @@ import java.util.Collection;
 
 import static java.util.Arrays.asList;
 
-public class AnnotationConfiguration {
+public class AnnotationConfiguration implements Configuration {
     private final JasmineSuite annotation;
     private final String defaultSpec;
 
@@ -24,7 +24,7 @@ public class AnnotationConfiguration {
         this.defaultSpec = defaultSpec;
     }
 
-    public Collection<String> sources() {
+    @Override public Collection<String> sources() {
         return Collections2.transform(asList(annotation.sources()), new Function<String, String>() {
             @Override public String apply(@Nullable String input) {
                     return fromPwd(new File(annotation.sourcesRootDir(), input));
@@ -32,7 +32,7 @@ public class AnnotationConfiguration {
         });
     }
 
-    public Collection<String> specs() {
+    @Override public Collection<String> specs() {
         Collection<String> specs = Collections2.transform(asList(annotation.specs()), new Function<String, String>() {
             @Override public String apply(@Nullable String input) {
                 return fromPwd(new File(new File(annotation.jsRootDir(), "specs"), input));
@@ -49,7 +49,7 @@ public class AnnotationConfiguration {
         throw new IllegalStateException("No specs found.");
     }
 
-    public File htmlRunnerOutputDir() {
+    @Override public File htmlRunnerOutputDir() {
         StringBuilder outputPath = new StringBuilder(annotation.jsRootDir()).append("/runners");
         if (StringUtils.isNotBlank(annotation.specRunnerSubDir())) {
             outputPath.append('/').append(annotation.specRunnerSubDir());
@@ -57,15 +57,15 @@ public class AnnotationConfiguration {
         return new File(outputPath.toString());
     }
 
-    public boolean generateSpecRunner() {
+    @Override public boolean generateSpecRunner() {
         return annotation.generateSpecRunner();
     }
 
-    public boolean debug() {
+    @Override public boolean debug() {
         return annotation.debug();
     }
 
-    public boolean envJs() {
+    @Override public boolean envJs() {
         return annotation.envJs();
     }
 
@@ -73,7 +73,7 @@ public class AnnotationConfiguration {
         return new File(".").toURI().relativize(file.toURI()).toString();
     }
 
-    public String jsRootFile(String relativePath) {
+    @Override public String jsRootFile(String relativePath) {
         return fromPwd(new File(annotation.jsRootDir(), relativePath));
     }
 }

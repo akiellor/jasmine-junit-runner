@@ -1,80 +1,32 @@
 package be.klak.jasmine.junit;
 
-import be.klak.jasmine.It;
+import be.klak.jasmine.Configuration;
+import be.klak.jasmine.Hooks;
+import be.klak.jasmine.Jasmine;
 import be.klak.jasmine.generator.JasmineSpecRunnerGenerator;
 import be.klak.rhino.RhinoContext;
-import be.klak.utils.Futures;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.tools.debugger.Main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 public class JasmineTestRunner extends Runner {
-
-    private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
-            "js/lib/jasmine-1.0.2/jasmine.js",
-            "js/lib/jasmine-1.0.2/jasmine.delegator_reporter.js"
-    ));
-
-    public static final List<String> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
-            "js/lib/env.rhino.1.2.js",
-            "js/lib/env.utils.js"
-    ));
-
-    private be.klak.jasmine.Runner runner;
-
-    private final RhinoContext rhinoContext;
-    private final AnnotationConfiguration configuration;
     private final TestObject test;
-    private final ExecutorService executor;
+    private final Configuration configuration;
+    private final Jasmine jasmine;
 
     public JasmineTestRunner(Class<?> testClass) {
         this.test = new TestObject(testClass);
         this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), StringUtils.uncapitalize(test.getName()).replace("Test", "Spec") + ".js");
-        this.executor = Executors.newFixedThreadPool(10);
-        this.rhinoContext = setUpRhinoScope();
-
-        if (configuration.debug()) {
-            createDebugger().doBreak();
-        }
-
-        NativeObject baseSuites = (NativeObject) rhinoContext.evalJS("jasmine.getEnv().currentRunner()");
-        this.runner = new be.klak.jasmine.Runner(baseSuites, rhinoContext, Description.createSuiteDescription(testClass));
+        this.jasmine = new Jasmine(configuration, Description.createSuiteDescription(testClass));
     }
 
-    private RhinoContext setUpRhinoScope() {
-        RhinoContext context = new RhinoContext();
-
-        List<String> resources = new ArrayList<String>();
-        if (configuration.envJs()) {
-            resources.addAll(ENV_JS_LIBRARY);
-            resources.add(configuration.jsRootFile("envJsOptions.js"));
-        } else {
-            resources.add("js/lib/no-env.js");
-        }
-        resources.addAll(JASMINE_LIBRARY);
-        resources.addAll(configuration.sources());
-        resources.addAll(configuration.specs());
-
-        context.loadFromVirtualFileSystem(resources);
-
-        context.evalJS("jasmine.getEnv().addReporter(new jasmine.DelegatorJUnitReporter());");
-
-        return context;
+    protected JasmineTestRunner(Configuration configuration, TestObject test, Jasmine jasmine){
+        this.configuration = configuration;
+        this.test = test;
+        this.jasmine = jasmine;
     }
 
     private Main createDebugger() {
@@ -96,32 +48,26 @@ public class JasmineTestRunner extends Runner {
 
     @Override
     public Description getDescription() {
-        return runner.getDescription();
+        return jasmine.getDescription();
     }
 
     @Override
     public void run(final RunNotifier notifier) {
+        if (configuration.debug()) {
+            createDebugger().doBreak();
+        }
+
         generateSpecRunnerIfNeeded();
 
-        test.befores(rhinoContext);
-
-        Futures.await(Collections2.transform(runner.getAllIts(), new Function<It, Future<It>>() {
-            @Override public Future<It> apply(final It spec) {
-                return executor.submit(new Callable<It>() {
-                    @Override public It call() throws Exception {
-                        RhinoContext fork = rhinoContext.fork();
-
-                        spec.bind(fork).execute(new JUnitNotifier(notifier));
-
-                        return spec;
-                    }
-                });
+        jasmine.execute(new Hooks(){
+            @Override public void beforeAll(RhinoContext context) {
+                test.befores(context);
             }
-        }));
 
-        test.afters(rhinoContext);
-
-        this.rhinoContext.exit();
+            @Override public void afterAll(RhinoContext context) {
+                test.afters(context);
+            }
+        }, new JUnitNotifier(notifier));
     }
 
     private void generateSpecRunnerIfNeeded() {

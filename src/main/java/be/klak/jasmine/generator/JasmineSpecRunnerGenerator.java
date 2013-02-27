@@ -1,6 +1,6 @@
 package be.klak.jasmine.generator;
 
-import be.klak.jasmine.junit.AnnotationConfiguration;
+import be.klak.jasmine.Configuration;
 import be.klak.jasmine.generator.resources.ClasspathResource;
 import be.klak.jasmine.generator.resources.FileResource;
 import org.apache.commons.io.FileUtils;
@@ -13,10 +13,10 @@ import java.util.List;
 
 public class JasmineSpecRunnerGenerator {
 
-    private final AnnotationConfiguration configuration;
+    private final Configuration configuration;
 	private final String outputFileName;
 
-    public JasmineSpecRunnerGenerator(AnnotationConfiguration configuration, String outputFileName) {
+    public JasmineSpecRunnerGenerator(Configuration configuration, String outputFileName) {
         this.configuration = configuration;
 		this.outputFileName = outputFileName;
 	}

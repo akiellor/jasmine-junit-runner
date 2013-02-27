@@ -1,7 +1,6 @@
 package be.klak.jasmine.junit;
 
-import be.klak.jasmine.junit.AnnotationConfiguration;
-import be.klak.jasmine.junit.JasmineSuite;
+import be.klak.jasmine.Configuration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -22,7 +21,7 @@ public class AnnotationConfigurationTest {
         when(annotation.sourcesRootDir()).thenReturn("src/main/javascript");
         when(annotation.sources()).thenReturn(new String[]{"one.js", "two.js"});
 
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         assertThat(configuration.sources()).containsOnly(
                 "src/main/javascript/one.js",
@@ -34,7 +33,7 @@ public class AnnotationConfigurationTest {
         when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specs()).thenReturn(new String[]{"one.js", "two.js"});
 
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         assertThat(configuration.specs()).containsOnly(
                 "src/test/javascript/specs/one.js",
@@ -46,7 +45,7 @@ public class AnnotationConfigurationTest {
         when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specs()).thenReturn(new String[]{});
 
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, "blah.js");
+        Configuration configuration = new AnnotationConfiguration(annotation, "blah.js");
 
         assertThat(configuration.specs()).containsOnly("src/test/javascript/specs/blah.js");
     }
@@ -56,7 +55,7 @@ public class AnnotationConfigurationTest {
         when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specs()).thenReturn(new String[]{});
 
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         configuration.specs();
     }
@@ -65,7 +64,7 @@ public class AnnotationConfigurationTest {
     public void shouldGetHtmlRunnerDirectory() {
         when(annotation.jsRootDir()).thenReturn("src/test/javascript");
 
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners"));
     }
@@ -75,14 +74,14 @@ public class AnnotationConfigurationTest {
         when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specRunnerSubDir()).thenReturn("foo");
 
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners/foo"));
     }
 
     @Test
     public void shouldDelegateToAnnotationForWhetherToGenerateHtmlRunner() {
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         when(annotation.generateSpecRunner()).thenReturn(true);
         assertThat(configuration.generateSpecRunner()).isEqualTo(true);
@@ -93,7 +92,7 @@ public class AnnotationConfigurationTest {
 
     @Test
     public void shouldDelegateToAnnotationForWhetherToRunDebug() {
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         when(annotation.debug()).thenReturn(true);
         assertThat(configuration.debug()).isEqualTo(true);
@@ -104,7 +103,7 @@ public class AnnotationConfigurationTest {
 
     @Test
     public void shouldDelegateToAnnotationForWhetherToRunEnvJS() {
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         when(annotation.envJs()).thenReturn(true);
         assertThat(configuration.envJs()).isEqualTo(true);
@@ -115,7 +114,7 @@ public class AnnotationConfigurationTest {
 
     @Test
     public void shouldCreateFileResourceRelativeToJsRootDir() throws IOException {
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation);
 
         when(annotation.jsRootDir()).thenReturn("src/main/javascript");
         assertThat(configuration.jsRootFile("blah.js")).isEqualTo("src/main/javascript/blah.js");
