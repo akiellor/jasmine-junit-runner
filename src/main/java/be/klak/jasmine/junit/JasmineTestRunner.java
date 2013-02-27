@@ -29,21 +29,25 @@ public class JasmineTestRunner extends Runner {
             "js/lib/env.utils.js"
     ));
 
-    private be.klak.jasmine.Runner jasmineSuite;
+    private be.klak.jasmine.Runner runner;
 
     protected final RhinoContext rhinoContext;
-    private final Class<?> testClass;
     private final AnnotationConfiguration configuration;
     private final TestObject test;
+    private final ExecutorService executor;
 
     @JasmineSuite
-    private class DefaultSuite {
+    private static class DefaultSuite {
+        public static JasmineSuite getAnnotation(){
+            return DefaultSuite.class.getAnnotation(JasmineSuite.class);
+        }
     }
 
     public JasmineTestRunner(Class<?> testClass) {
-        this.testClass = testClass;
-        this.configuration = new AnnotationConfiguration(getJasmineSuiteAnnotationFromTestClass(), StringUtils.uncapitalize(testClass.getSimpleName()).replace("Test", "Spec") + ".js");
         this.test = new TestObject(testClass);
+        this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), StringUtils.uncapitalize(test.getName()).replace("Test", "Spec") + ".js");
+        this.executor = Executors.newFixedThreadPool(10);
+
 
         Main debugger = null;
         if (configuration.debug()) {
@@ -55,12 +59,13 @@ public class JasmineTestRunner extends Runner {
         if (configuration.debug()) {
             debugger.doBreak();
         }
+
+        NativeObject baseSuites = (NativeObject) rhinoContext.evalJS("jasmine.getEnv().currentRunner()");
+        this.runner = new be.klak.jasmine.Runner(baseSuites, rhinoContext, Description.createSuiteDescription(testClass));
     }
 
     private RhinoContext setUpRhinoScope() {
         RhinoContext context = new RhinoContext();
-
-        pre(context);
 
         List<String> resources = new ArrayList<String>();
         if (configuration.envJs()) {
@@ -80,9 +85,6 @@ public class JasmineTestRunner extends Runner {
         return context;
     }
 
-    protected void pre(RhinoContext context) {
-    }
-
     private Main createDebugger() {
         Main debugger = new Main("JS Debugger");
 
@@ -100,36 +102,18 @@ public class JasmineTestRunner extends Runner {
         return debugger;
     }
 
-    private JasmineSuite getJasmineSuiteAnnotationFromTestClass() {
-        JasmineSuite suiteAnnotation = testClass.getAnnotation(JasmineSuite.class);
-        if (suiteAnnotation == null) {
-            suiteAnnotation = DefaultSuite.class.getAnnotation(JasmineSuite.class);
-        }
-        return suiteAnnotation;
-    }
-
-    private be.klak.jasmine.Runner getJasmineDescriptions() {
-        if (this.jasmineSuite == null) {
-            NativeObject baseSuites = (NativeObject) rhinoContext.evalJS("jasmine.getEnv().currentRunner()");
-            this.jasmineSuite = new be.klak.jasmine.Runner(baseSuites, rhinoContext, Description.createSuiteDescription(testClass));
-        }
-        return this.jasmineSuite;
-    }
-
     @Override
     public Description getDescription() {
-        return getJasmineDescriptions().getDescription();
+        return runner.getDescription();
     }
 
     @Override
     public void run(final RunNotifier notifier) {
         generateSpecRunnerIfNeeded();
 
-        final ExecutorService executor = Executors.newFixedThreadPool(10);
-
         test.befores(rhinoContext);
 
-        Collection<Future<It>> results = Collections2.transform(getJasmineDescriptions().getAllIts(), new Function<It, Future<It>>() {
+        Collection<Future<It>> results = Collections2.transform(runner.getAllIts(), new Function<It, Future<It>>() {
             @Override public Future<It> apply(final It spec) {
                 return executor.submit(new Callable<It>() {
                     @Override public It call() throws Exception {
@@ -157,16 +141,12 @@ public class JasmineTestRunner extends Runner {
 
         test.afters(rhinoContext);
 
-        after();
-    }
-
-    protected void after() {
         this.rhinoContext.exit();
     }
 
     private void generateSpecRunnerIfNeeded() {
         if (configuration.generateSpecRunner()) {
-            new JasmineSpecRunnerGenerator(configuration, testClass.getSimpleName() + "Runner.html").generate();
+            new JasmineSpecRunnerGenerator(configuration, test.getName() + "Runner.html").generate();
         }
     }
 

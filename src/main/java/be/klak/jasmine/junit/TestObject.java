@@ -2,6 +2,7 @@ package be.klak.jasmine.junit;
 
 import be.klak.rhino.RhinoContext;
 import be.klak.utils.Exceptions;
+import com.google.common.base.Optional;
 import org.junit.After;
 import org.junit.Before;
 
@@ -27,6 +28,10 @@ public class TestObject {
         fireMethodsWithSpecifiedAnnotationIfAny(context, After.class);
     }
 
+    public Optional<JasmineSuite> getAnnotation(){
+        return Optional.fromNullable(instance.getClass().getAnnotation(JasmineSuite.class));
+    }
+
     private void fireMethodsWithSpecifiedAnnotationIfAny(RhinoContext fork, Class<? extends Annotation> annotation) {
         for (Method method : instance.getClass().getMethods()) {
 
@@ -47,5 +52,9 @@ public class TestObject {
                         "Exception while firing " + annotation.getSimpleName() + " method: " + method.getName(), ex);
             }
         }
+    }
+
+    public String getName() {
+        return instance.getClass().getSimpleName();
     }
 }
