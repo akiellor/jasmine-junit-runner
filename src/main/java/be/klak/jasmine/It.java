@@ -4,7 +4,6 @@ import be.klak.rhino.RhinoContext;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import org.junit.runner.Description;
-import org.junit.runner.notification.Failure;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
@@ -36,14 +35,6 @@ public class It {
         return description.get();
     }
 
-    public boolean isPassed() {
-        return getSpecResultStatus() == Status.PASSED;
-    }
-
-    public boolean isFailed() {
-        return getSpecResultStatus() == Status.FAILED;
-    }
-
     public Status getSpecResultStatus() {
         assertTrue(isDone());
 
@@ -55,11 +46,6 @@ public class It {
             return Status.SKIPPED;
         }
         return passed ? Status.PASSED : Status.FAILED;
-    }
-
-    public Failure getJunitFailure() {
-        assertTrue(isFailed());
-        return new Failure(description.get(), getFirstFailedStacktrace());
     }
 
     public boolean isBoundTo(RhinoContext context) {
