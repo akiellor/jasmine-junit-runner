@@ -31,7 +31,7 @@ public class JasmineTestRunner extends Runner {
 
     private be.klak.jasmine.Runner runner;
 
-    protected final RhinoContext rhinoContext;
+    private final RhinoContext rhinoContext;
     private final AnnotationConfiguration configuration;
     private final TestObject test;
     private final ExecutorService executor;
@@ -40,17 +40,10 @@ public class JasmineTestRunner extends Runner {
         this.test = new TestObject(testClass);
         this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), StringUtils.uncapitalize(test.getName()).replace("Test", "Spec") + ".js");
         this.executor = Executors.newFixedThreadPool(10);
-
-
-        Main debugger = null;
-        if (configuration.debug()) {
-            debugger = createDebugger();
-        }
-
         this.rhinoContext = setUpRhinoScope();
 
         if (configuration.debug()) {
-            debugger.doBreak();
+            createDebugger().doBreak();
         }
 
         NativeObject baseSuites = (NativeObject) rhinoContext.evalJS("jasmine.getEnv().currentRunner()");
@@ -110,12 +103,13 @@ public class JasmineTestRunner extends Runner {
             @Override public Future<It> apply(final It spec) {
                 return executor.submit(new Callable<It>() {
                     @Override public It call() throws Exception {
-                        RhinoContext fork = rhinoContext.fork();
-
                         notifier.fireTestStarted(spec.getDescription());
+
+                        RhinoContext fork = rhinoContext.fork();
 
                         spec.bind(fork).execute();
 
+                        reportSpecResultToNotifier(notifier, spec);
                         return spec;
                     }
                 });
@@ -124,7 +118,7 @@ public class JasmineTestRunner extends Runner {
 
         for (final Future<It> spec : results) {
             try {
-                reportSpecResultToNotifier(notifier, spec.get());
+                spec.get();
             } catch (InterruptedException e) {
                 throw Exceptions.unchecked(e);
             } catch (ExecutionException e) {
