@@ -34,7 +34,7 @@ Being translated into something like this:
 
 * * *
 
-Quite simple, it's a custsom Java Junit Runner that allows you to embed Javascript Unit tests (using Jasmine) in your Java-based projects. It fully integrates with your most beloved IDE, your most hated version control system and of course your most needed CI env. 
+Quite simple, it's a custom Java Junit Runner that allows you to embed Javascript Unit tests (using Jasmine) in your Java-based projects. It fully integrates with your most beloved IDE, your most hated version control system and of course your most needed CI env. 
 
 So let's rephrase:
 
