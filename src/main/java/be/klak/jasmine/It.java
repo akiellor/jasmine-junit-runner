@@ -13,12 +13,6 @@ import static org.junit.Assert.assertTrue;
 public class It {
     private static final int SLEEP_TIME_MILISECONDS = 50;
 
-    public enum JasmineSpecStatus {
-        PASSED,
-        FAILED,
-        SKIPPED
-    }
-
     private final Supplier<Description> description;
     private final RhinoContext context;
     private final NativeObject spec;
@@ -43,14 +37,14 @@ public class It {
     }
 
     public boolean isPassed() {
-        return getSpecResultStatus() == JasmineSpecStatus.PASSED;
+        return getSpecResultStatus() == Status.PASSED;
     }
 
     public boolean isFailed() {
-        return getSpecResultStatus() == JasmineSpecStatus.FAILED;
+        return getSpecResultStatus() == Status.FAILED;
     }
 
-    public JasmineSpecStatus getSpecResultStatus() {
+    public Status getSpecResultStatus() {
         assertTrue(isDone());
 
         NativeObject results = getSpecResults();
@@ -58,9 +52,9 @@ public class It {
         boolean skipped = (Boolean) results.get("skipped", results);
 
         if (skipped) {
-            return JasmineSpecStatus.SKIPPED;
+            return Status.SKIPPED;
         }
-        return passed ? JasmineSpecStatus.PASSED : JasmineSpecStatus.FAILED;
+        return passed ? Status.PASSED : Status.FAILED;
     }
 
     public Failure getJunitFailure() {
@@ -76,7 +70,7 @@ public class It {
         return new It(this.spec, context, this.description);
     }
 
-    private Throwable getFirstFailedStacktrace() {
+    public Throwable getFirstFailedStacktrace() {
         NativeArray resultItems = (NativeArray) context.executeFunction(getSpecResults(), "getItems");
         for (Object resultItemId : resultItems.getIds()) {
             NativeObject resultItem = (NativeObject) resultItems.get((Integer) resultItemId, resultItems);
