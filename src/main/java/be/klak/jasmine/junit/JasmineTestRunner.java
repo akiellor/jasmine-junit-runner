@@ -103,13 +103,10 @@ public class JasmineTestRunner extends Runner {
             @Override public Future<It> apply(final It spec) {
                 return executor.submit(new Callable<It>() {
                     @Override public It call() throws Exception {
-                        notifier.fireTestStarted(spec.getDescription());
-
                         RhinoContext fork = rhinoContext.fork();
 
-                        spec.bind(fork).execute();
+                        spec.bind(fork).execute(new JUnitNotifier(notifier));
 
-                        reportSpecResultToNotifier(notifier, spec);
                         return spec;
                     }
                 });
@@ -134,16 +131,6 @@ public class JasmineTestRunner extends Runner {
     private void generateSpecRunnerIfNeeded() {
         if (configuration.generateSpecRunner()) {
             new JasmineSpecRunnerGenerator(configuration, test.getName() + "Runner.html").generate();
-        }
-    }
-
-    private void reportSpecResultToNotifier(RunNotifier notifier, It spec) {
-        if (spec.isPassed()) {
-            notifier.fireTestFinished(spec.getDescription());
-        } else if (spec.isFailed()) {
-            notifier.fireTestFailure(spec.getJunitFailure());
-        } else {
-            throw new IllegalStateException("Unexpected spec status received: " + spec);
         }
     }
 }

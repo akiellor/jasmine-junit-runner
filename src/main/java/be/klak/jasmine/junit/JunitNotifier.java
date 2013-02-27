@@ -5,10 +5,10 @@ import be.klak.jasmine.Notifier;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
-public class JunitNotifier implements Notifier {
+public class JUnitNotifier implements Notifier {
     private final RunNotifier runNotifier;
 
-    public JunitNotifier(RunNotifier runNotifier) {
+    public JUnitNotifier(RunNotifier runNotifier) {
         this.runNotifier = runNotifier;
     }
 
@@ -22,5 +22,9 @@ public class JunitNotifier implements Notifier {
 
     @Override public void skipped(It it) {
         runNotifier.fireTestIgnored(it.getDescription());
+    }
+
+    @Override public void started(It it) {
+        runNotifier.fireTestStarted(it.getDescription());
     }
 }

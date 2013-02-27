@@ -97,6 +97,12 @@ public class It {
         while(!isDone()) { waitALittle(); }
     }
 
+    public void execute(Notifier notifier){
+        notifier.started(this);
+        execute();
+        getSpecResultStatus().notify(notifier, this);
+    }
+
     @Override
     public String toString() {
         return description.get().getDisplayName();

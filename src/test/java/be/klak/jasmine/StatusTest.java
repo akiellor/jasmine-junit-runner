@@ -23,13 +23,13 @@ public class StatusTest {
     public void shouldNotifyWithPassWhenPassed() {
         Status.PASSED.notify(notifier, it);
 
-        verify(notifier).fail(it);
+        verify(notifier).pass(it);
     }
 
     @Test
     public void shouldNotifyWithIgnoredWhenSkipped() {
-        Status.FAILED.notify(notifier, it);
+        Status.SKIPPED.notify(notifier, it);
 
-        verify(notifier).fail(it);
+        verify(notifier).skipped(it);
     }
 }

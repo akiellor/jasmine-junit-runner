@@ -15,16 +15,25 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class JunitNotifierTest {
+public class JUnitNotifierTest {
     @Mock RunNotifier runNotifier;
     @Mock It it;
     @Mock Exception exception;
 
     @Test
+    public void shouldDelegateToJunitRunNotifierForStarted() {
+        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+
+        new JUnitNotifier(runNotifier).started(it);
+
+        verify(runNotifier).fireTestStarted(Description.createTestDescription("Object", "test"));
+    }
+
+    @Test
     public void shouldDelegateToJunitRunNotifierForPass() {
         when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
 
-        new JunitNotifier(runNotifier).pass(it);
+        new JUnitNotifier(runNotifier).pass(it);
 
         verify(runNotifier).fireTestFinished(Description.createTestDescription("Object", "test"));
     }
@@ -33,7 +42,7 @@ public class JunitNotifierTest {
     public void shouldDelegateToJunitRunNotifierForSkipped() {
         when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
 
-        new JunitNotifier(runNotifier).skipped(it);
+        new JUnitNotifier(runNotifier).skipped(it);
 
         verify(runNotifier).fireTestIgnored(Description.createTestDescription("Object", "test"));
     }
@@ -43,7 +52,7 @@ public class JunitNotifierTest {
         when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
         when(it.getFirstFailedStacktrace()).thenReturn(exception);
 
-        new JunitNotifier(runNotifier).fail(it);
+        new JUnitNotifier(runNotifier).fail(it);
 
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
         verify(runNotifier).fireTestFailure(captor.capture());
