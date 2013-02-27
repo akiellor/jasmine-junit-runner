@@ -64,7 +64,7 @@ public class JasmineTestRunner extends Runner {
             resources.addAll(ENV_JS_LIBRARY);
             resources.add(configuration.jsRootFile("envJsOptions.js"));
         } else {
-            resources.add(configuration.jsRootFile("lib/no-env.js"));
+            resources.add("js/lib/no-env.js");
         }
         resources.addAll(JASMINE_LIBRARY);
         resources.addAll(configuration.sources());
