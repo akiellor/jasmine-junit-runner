@@ -3,7 +3,7 @@ package be.klak.jasmine.junit;
 import be.klak.jasmine.It;
 import be.klak.jasmine.generator.JasmineSpecRunnerGenerator;
 import be.klak.rhino.RhinoContext;
-import be.klak.utils.Exceptions;
+import be.klak.utils.Futures;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
@@ -14,8 +14,14 @@ import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.tools.debugger.Main;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class JasmineTestRunner extends Runner {
 
@@ -99,7 +105,7 @@ public class JasmineTestRunner extends Runner {
 
         test.befores(rhinoContext);
 
-        Collection<Future<It>> results = Collections2.transform(runner.getAllIts(), new Function<It, Future<It>>() {
+        Futures.await(Collections2.transform(runner.getAllIts(), new Function<It, Future<It>>() {
             @Override public Future<It> apply(final It spec) {
                 return executor.submit(new Callable<It>() {
                     @Override public It call() throws Exception {
@@ -111,17 +117,7 @@ public class JasmineTestRunner extends Runner {
                     }
                 });
             }
-        });
-
-        for (final Future<It> spec : results) {
-            try {
-                spec.get();
-            } catch (InterruptedException e) {
-                throw Exceptions.unchecked(e);
-            } catch (ExecutionException e) {
-                throw Exceptions.unchecked(e);
-            }
-        }
+        }));
 
         test.afters(rhinoContext);
 
