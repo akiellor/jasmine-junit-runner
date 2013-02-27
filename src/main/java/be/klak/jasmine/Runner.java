@@ -1,6 +1,7 @@
 package be.klak.jasmine;
 
 import be.klak.rhino.RhinoContext;
+import be.klak.utils.Futures;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -11,6 +12,10 @@ import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -18,10 +23,12 @@ public class Runner {
     private final NativeObject object;
     private final RhinoContext context;
     private final Supplier<Description> description;
+    private final ExecutorService executor;
 
     public Runner(NativeObject object, RhinoContext context, final Description description) {
         this.object = object;
         this.context = context;
+        this.executor = Executors.newFixedThreadPool(10);
         this.description = Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
                 for(Describe describe : getDescribes()){
@@ -40,6 +47,23 @@ public class Runner {
 
     public Description getDescription(){
         return description.get();
+    }
+
+    public void execute(final Notifier notifier){
+        Futures.await(Collections2.transform(getAllIts(), new Function<It, Future<It>>() {
+            @Override public Future<It> apply(final It spec) {
+                return executor.submit(new Callable<It>() {
+                    @Override public It call() throws Exception {
+                        RhinoContext fork = context.fork();
+
+                        spec.bind(fork).execute(notifier);
+
+                        return spec;
+                    }
+                });
+            }
+        }));
+
     }
 
     public List<It> getAllIts() {
