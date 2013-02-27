@@ -36,13 +36,6 @@ public class JasmineTestRunner extends Runner {
     private final TestObject test;
     private final ExecutorService executor;
 
-    @JasmineSuite
-    private static class DefaultSuite {
-        public static JasmineSuite getAnnotation(){
-            return DefaultSuite.class.getAnnotation(JasmineSuite.class);
-        }
-    }
-
     public JasmineTestRunner(Class<?> testClass) {
         this.test = new TestObject(testClass);
         this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), StringUtils.uncapitalize(test.getName()).replace("Test", "Spec") + ".js");
