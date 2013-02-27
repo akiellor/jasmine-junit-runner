@@ -7,8 +7,6 @@ import be.klak.utils.Exceptions;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -16,8 +14,6 @@ import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.tools.debugger.Main;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -38,6 +34,7 @@ public class JasmineTestRunner extends Runner {
     protected final RhinoContext rhinoContext;
     private final Class<?> testClass;
     private final AnnotationConfiguration configuration;
+    private final TestObject test;
 
     @JasmineSuite
     private class DefaultSuite {
@@ -46,6 +43,7 @@ public class JasmineTestRunner extends Runner {
     public JasmineTestRunner(Class<?> testClass) {
         this.testClass = testClass;
         this.configuration = new AnnotationConfiguration(getJasmineSuiteAnnotationFromTestClass(), StringUtils.uncapitalize(testClass.getSimpleName()).replace("Test", "Spec") + ".js");
+        this.test = new TestObject(testClass);
 
         Main debugger = null;
         if (configuration.debug()) {
@@ -129,8 +127,7 @@ public class JasmineTestRunner extends Runner {
 
         final ExecutorService executor = Executors.newFixedThreadPool(10);
 
-        Object testClassInstance = createTestClassInstance();
-        fireMethodsWithSpecifiedAnnotationIfAny(rhinoContext, testClassInstance, Before.class);
+        test.befores(rhinoContext);
 
         Collection<Future<It>> results = Collections2.transform(getJasmineDescriptions().getAllIts(), new Function<It, Future<It>>() {
             @Override public Future<It> apply(final It spec) {
@@ -158,44 +155,13 @@ public class JasmineTestRunner extends Runner {
             }
         }
 
-        fireMethodsWithSpecifiedAnnotationIfAny(rhinoContext, testClassInstance, After.class);
+        test.afters(rhinoContext);
 
         after();
     }
 
     protected void after() {
         this.rhinoContext.exit();
-    }
-
-    private Object createTestClassInstance() {
-        try {
-            return testClass.newInstance();
-        } catch (Exception ex) {
-            throw new RuntimeException("Unable to create a new instance of testClass " + testClass.getSimpleName()
-                    + " using a no-arg constructor", ex);
-        }
-    }
-
-    private void fireMethodsWithSpecifiedAnnotationIfAny(RhinoContext fork, Object testClassInstance, Class<? extends Annotation> annotation) {
-        for (Method method : testClass.getMethods()) {
-
-            try {
-                if (method.getAnnotation(annotation) != null) {
-                    method.setAccessible(true);
-                    Class<?>[] parameterTypes = method.getParameterTypes();
-                    if (parameterTypes.length == 0) {
-                        method.invoke(testClassInstance, (Object[]) null);
-                    } else if (parameterTypes.length == 1 && RhinoContext.class.isAssignableFrom(parameterTypes[0])) {
-                        method.invoke(testClassInstance, fork);
-                    } else {
-                        throw new IllegalStateException("Annotated method does not have zero or rhinoContext as parameterTypes");
-                    }
-                }
-            } catch (Exception ex) {
-                throw new RuntimeException(
-                        "Exception while firing " + annotation.getSimpleName() + " method: " + method.getName(), ex);
-            }
-        }
     }
 
     private void generateSpecRunnerIfNeeded() {
