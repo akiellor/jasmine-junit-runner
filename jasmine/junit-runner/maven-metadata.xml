@@ -3,10 +3,10 @@
   <groupId>jasmine</groupId>
   <artifactId>junit-runner</artifactId>
   <versioning>
-    <release>0.1</release>
+    <release>0.2</release>
     <versions>
-      <version>0.1</version>
+      <version>0.2</version>
     </versions>
-    <lastUpdated>20130308061552</lastUpdated>
+    <lastUpdated>20130308090101</lastUpdated>
   </versioning>
 </metadata>
