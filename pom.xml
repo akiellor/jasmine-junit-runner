@@ -85,6 +85,7 @@
         <configuration>
           <encoding>UTF-8</encoding>
         </configuration>
+        <version>2.5</version>
         <executions>
           <execution>
             <goals>
@@ -100,6 +101,7 @@
         <configuration>
           <scmCommentPrefix />
         </configuration>
+        <version>2.4</version>
       </plugin>
 
       <plugin>
