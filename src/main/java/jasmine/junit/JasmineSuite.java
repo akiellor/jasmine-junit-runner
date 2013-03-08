@@ -11,11 +11,11 @@ public @interface JasmineSuite {
 
     String[] sources() default {};
 
-    boolean generateSpecRunner() default false;
-
     boolean debug() default false;
 
     boolean envJs() default false;
+
+    boolean generateSpecRunner() default false;
 
     String specRunnerSubDir() default StringUtils.EMPTY;
 }
