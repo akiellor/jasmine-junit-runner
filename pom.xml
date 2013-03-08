@@ -151,4 +151,10 @@
       <url>file://${project.build.directory}/mvn-repo</url>
     </repository>
   </distributionManagement>
+
+  <scm>
+    <url>https://github.com/akiellor/jasmine-junit-runner</url>
+    <connection>scm:git:ssh://git@github.com/akiellor/jasmine-junit-runner.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/akiellor/jasmine-junit-runner.git</developerConnection>
+  </scm>
 </project>
