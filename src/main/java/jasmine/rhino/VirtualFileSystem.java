@@ -19,6 +19,10 @@ import static java.util.Arrays.asList;
 public class VirtualFileSystem {
     private final Iterable<Vfs.File> files;
 
+    protected VirtualFileSystem(Iterable<Vfs.File> files){
+        this.files = files;
+    }
+
     public VirtualFileSystem(Iterable<String> paths, Predicate<Vfs.File> candidateFilter) {
         Iterable<URL> pathUrls = Iterables.transform(Iterables.concat(paths, asList(".")), new Function<String, URL>() {
             @Override public URL apply(@Nullable String input) {
@@ -33,6 +37,20 @@ public class VirtualFileSystem {
         List<URL> sources = Lists.newArrayList(Iterables.concat(
                 ClasspathHelper.forJavaClassPath(), pathUrls));
         this.files = Lists.newArrayList(Vfs.findFiles(sources, candidateFilter));
+    }
+
+    public Iterable<Vfs.File> findAll(final String path) {
+        Iterable<Vfs.File> files = Iterables.filter(this.files, new Predicate<Vfs.File>() {
+            @Override public boolean apply(@Nullable Vfs.File input) {
+                return input != null && input.getRelativePath().matches(path);
+            }
+        });
+
+        if (Iterables.isEmpty(files)) {
+            throw new IllegalArgumentException("Could not find any resources for: " + path);
+        }
+
+        return files;
     }
 
     public Vfs.File find(final String path) {

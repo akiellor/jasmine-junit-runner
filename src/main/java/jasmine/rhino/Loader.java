@@ -1,8 +1,8 @@
 package jasmine.rhino;
 
-import jasmine.utils.Exceptions;
 import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import jasmine.utils.Exceptions;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.reflections.vfs.Vfs;
@@ -10,7 +10,6 @@ import org.reflections.vfs.Vfs;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -31,12 +30,30 @@ public class Loader {
     }
 
     public void loadFromVirtualFileSystem(final List<String> paths) {
-        Collection<Vfs.File> files = Collections2.transform(paths, new Function<String, Vfs.File>() {
+        Iterable<Vfs.File> files = Iterables.transform(paths, new Function<String, Vfs.File>() {
             @Override public Vfs.File apply(@Nullable String input) {
                 return fileSystem.find(input);
             }
         });
 
+        load(files);
+    }
+
+    @SuppressWarnings("UnusedDeclaration") public void loadAllFromVirtualFileSystem(final String path) {
+        loadAllFromVirtualFileSystem(asList(path));
+    }
+
+    public void loadAllFromVirtualFileSystem(final List<String> paths) {
+        Iterable<Vfs.File> files = Iterables.concat(Iterables.transform(paths, new Function<String, Iterable<Vfs.File>>() {
+            @Override public Iterable<Vfs.File> apply(@Nullable String input) {
+                return fileSystem.findAll(input);
+            }
+        }));
+
+        load(files);
+    }
+
+    private void load(Iterable<Vfs.File> files) {
         for(Vfs.File file : files){
             try {
                 this.context.evaluateReader(this.scope, new InputStreamReader(file.openInputStream()), file.getRelativePath(), 1, null);

@@ -6,4 +6,8 @@
   global.load = function(path){
     loader.loadFromVirtualFileSystem(path);
   }
+
+  global.loadAll = function(path){
+    loader.loadAllFromVirtualFileSystem(path);
+  }
 })(this)
