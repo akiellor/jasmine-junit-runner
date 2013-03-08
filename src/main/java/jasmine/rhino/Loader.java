@@ -2,6 +2,7 @@ package jasmine.rhino;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
+import jasmine.rhino.vfs.VirtualFileSystem;
 import jasmine.utils.Exceptions;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;

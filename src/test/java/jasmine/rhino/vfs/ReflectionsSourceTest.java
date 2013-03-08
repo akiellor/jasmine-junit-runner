@@ -1,4 +1,4 @@
-package jasmine.rhino;
+package jasmine.rhino.vfs;
 
 import org.junit.Test;
 import org.reflections.vfs.Vfs;
@@ -8,27 +8,27 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class VirtualFileSystemTest {
+public class ReflectionsSourceTest {
     @Test
     public void shouldFindAllFilesMatchingPattern() {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(asList(one, two));
+        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
 
-        Iterable<Vfs.File> files = fileSystem.findAll("source/.*?.js");
+        Iterable<Vfs.File> files = fileSystem.findMatching("source/.*?.js");
 
         assertThat(files).containsOnly(one, two);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldFailWhenNoFilesMatchProvidedRegex() {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(asList(one, two));
+        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
 
-        fileSystem.findAll("blah.js");
+        assertThat(fileSystem.findExact("blah.js")).isEmpty();
     }
 
     @Test
@@ -36,9 +36,9 @@ public class VirtualFileSystemTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(asList(one, two));
+        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
 
-        Iterable<Vfs.File> files = fileSystem.findAll("source/on.\\.js");
+        Iterable<Vfs.File> files = fileSystem.findMatching("source/on.\\.js");
 
         assertThat(files).containsOnly(one);
     }
@@ -48,21 +48,21 @@ public class VirtualFileSystemTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(asList(one, two));
+        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
 
-        Vfs.File file = fileSystem.find("source/one.js");
+        Iterable<Vfs.File> file = fileSystem.findExact("source/one.js");
 
-        assertThat(file).isEqualTo(one);
+        assertThat(file).containsOnly(one);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowIllegalArgumentExceptionWhenNoFileFound() {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(asList(one, two));
+        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
 
-        fileSystem.find("blah.js");
+        assertThat(fileSystem.findExact("blah.js")).isEmpty();
     }
 
     private Vfs.File mockFile(String path) {

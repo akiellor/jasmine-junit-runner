@@ -3,7 +3,7 @@ package jasmine.generator;
 import com.google.common.base.Predicate;
 import jasmine.generator.resources.ClasspathResource;
 import jasmine.generator.resources.FileResource;
-import jasmine.rhino.VirtualFileSystem;
+import jasmine.rhino.vfs.VirtualFileSystem;
 import jasmine.runtime.Configuration;
 import jasmine.utils.Exceptions;
 import org.apache.commons.io.FileUtils;
