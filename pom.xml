@@ -90,6 +90,10 @@
               <name>jasmine.html.outputDir</name>
               <value>${project.build.directory}/jasmine-out/</value>
             </property>
+            <property>
+              <name>javascript.path</name>
+              <value>src/test/javascript</value>
+            </property>
           </systemProperties>
         </configuration>
       </plugin>

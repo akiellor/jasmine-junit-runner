@@ -44,7 +44,7 @@ public class Jasmine {
         List<String> resources = new ArrayList<String>();
         if (configuration.envJs()) {
             resources.addAll(ENV_JS_LIBRARY);
-            resources.add(configuration.jsRootFile("envJsOptions.js"));
+            resources.add("envJsOptions.js");
         } else {
             resources.add("js/lib/no-env.js");
         }
