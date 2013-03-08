@@ -118,14 +118,6 @@ public class AnnotationConfigurationTest {
     }
 
     @Test
-    public void shouldCreateFileResourceRelativeToJsRootDir() throws IOException {
-        Configuration configuration = new AnnotationConfiguration(annotation);
-
-        when(annotation.jsRootDir()).thenReturn("src/main/javascript");
-        assertThat(configuration.jsRootFile("blah.js")).isEqualTo("src/main/javascript/blah.js");
-    }
-
-    @Test
     public void shouldOnlyBeAbleToUseHtmlGeneratorWhenOutputSystemPropertySpecified() {
         AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
 

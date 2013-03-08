@@ -17,7 +17,5 @@ public interface Configuration {
 
     boolean envJs();
 
-    String jsRootFile(String relativePath);
-
     List<String> getJavascriptPath();
 }

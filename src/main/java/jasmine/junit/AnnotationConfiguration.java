@@ -87,10 +87,6 @@ public class AnnotationConfiguration implements Configuration {
         return new File(".").toURI().relativize(file.toURI()).toString();
     }
 
-    @Override public String jsRootFile(String relativePath) {
-        return fromPwd(new File(annotation.jsRootDir(), relativePath));
-    }
-
     @Override public List<String> getJavascriptPath() {
         String javascriptPath = properties.get("javascript.path");
         if(javascriptPath == null) { return newArrayList(); }
