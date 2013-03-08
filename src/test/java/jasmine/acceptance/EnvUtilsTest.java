@@ -1,4 +1,4 @@
-package jasmine.utils;
+package jasmine.acceptance;
 
 import jasmine.junit.JasmineSuite;
 import jasmine.junit.JasmineTestRunner;
