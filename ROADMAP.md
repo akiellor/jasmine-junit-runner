@@ -1,14 +1,11 @@
 ROADMAP
 =======
 
-1. Fix path issues (includes annotation stuff?)
-2. autoload all the specs in src/test/javascript or classpath
-3. contact with jasmine folks (in pivotal repo)
-4. envJs turned off by default
-5. better file resolution (fully qualified files does not work...issue with VirtualFileSystem)
-6. readme/howto
-7. example project w/ maven and gradle
-8. Maybe a circular loading problem A -> B && B -> A
+1. contact with jasmine folks (in pivotal repo)
+2. better file resolution (fully qualified files does not work...issue with VirtualFileSystem)
+3. readme/howto
+4. example project w/ maven and gradle
+5. Maybe a circular loading problem A -> B && B -> A
 
 Nice to Haves
 =============
