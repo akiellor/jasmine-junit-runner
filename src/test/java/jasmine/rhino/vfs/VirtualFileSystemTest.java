@@ -14,42 +14,65 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VirtualFileSystemTest {
-    @Mock ReflectionsSource source;
+    @Mock Source sourceOne;
+    @Mock Source sourceTwo;
+
     @Mock Vfs.File one;
     @Mock Vfs.File two;
+    @Mock Vfs.File three;
 
     @Test
     public void shouldReturnFirstFileFound() {
-        when(source.findExact("someFile.js")).thenReturn(newArrayList(one, two));
+        when(sourceOne.findExact("someFile.js")).thenReturn(newArrayList(one, two));
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(source);
+        VirtualFileSystem fileSystem = new VirtualFileSystem(sourceOne);
+
+        assertThat(fileSystem.find("someFile.js")).isEqualTo(one);
+    }
+
+    @Test
+    public void shouldReturnFirstFileFoundFromManySources() {
+        when(sourceOne.findExact("someFile.js")).thenReturn(new ArrayList<Vfs.File>());
+        when(sourceTwo.findExact("someFile.js")).thenReturn(newArrayList(one, two));
+
+        VirtualFileSystem fileSystem = new VirtualFileSystem(sourceOne, sourceTwo);
 
         assertThat(fileSystem.find("someFile.js")).isEqualTo(one);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentWhenNoFileFoundWithFindExact() {
-        when(source.findExact("someFile.js")).thenReturn(new ArrayList<Vfs.File>());
+        when(sourceOne.findExact("someFile.js")).thenReturn(new ArrayList<Vfs.File>());
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(source);
+        VirtualFileSystem fileSystem = new VirtualFileSystem(sourceOne);
 
         fileSystem.find("someFile.js");
     }
 
     @Test
     public void shouldReturnAllFilesMatchingPattern() {
-        when(source.findMatching("someFile.js")).thenReturn(newArrayList(one, two));
+        when(sourceOne.findMatching("someFile.js")).thenReturn(newArrayList(one, two));
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(source);
+        VirtualFileSystem fileSystem = new VirtualFileSystem(sourceOne);
 
         assertThat(fileSystem.findAll("someFile.js")).containsOnly(one, two);
     }
 
+    @Test
+    public void shouldReturnAllFilesMatchingPatternFromAllSources() {
+        when(sourceOne.findMatching("someFile.js")).thenReturn(newArrayList(one, two));
+        when(sourceTwo.findMatching("someFile.js")).thenReturn(newArrayList(three));
+
+        VirtualFileSystem fileSystem = new VirtualFileSystem(sourceOne, sourceTwo);
+
+        assertThat(fileSystem.findAll("someFile.js")).containsOnly(one, two, three);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentWhenNoFileFoundWithFindMatching() {
-        when(source.findMatching("someFile.js")).thenReturn(new ArrayList<Vfs.File>());
+        when(sourceOne.findMatching("someFile.js")).thenReturn(new ArrayList<Vfs.File>());
 
-        VirtualFileSystem fileSystem = new VirtualFileSystem(source);
+        VirtualFileSystem fileSystem = new VirtualFileSystem(sourceOne);
 
         fileSystem.findAll("someFile.js");
     }

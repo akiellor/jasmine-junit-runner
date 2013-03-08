@@ -14,7 +14,7 @@ public class ReflectionsSourceTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
+        Source fileSystem = new ReflectionsSource(asList(one, two));
 
         Iterable<Vfs.File> files = fileSystem.findMatching("source/.*?.js");
 
@@ -26,7 +26,7 @@ public class ReflectionsSourceTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
+        Source fileSystem = new ReflectionsSource(asList(one, two));
 
         assertThat(fileSystem.findExact("blah.js")).isEmpty();
     }
@@ -36,7 +36,7 @@ public class ReflectionsSourceTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
+        Source fileSystem = new ReflectionsSource(asList(one, two));
 
         Iterable<Vfs.File> files = fileSystem.findMatching("source/on.\\.js");
 
@@ -48,7 +48,7 @@ public class ReflectionsSourceTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
+        Source fileSystem = new ReflectionsSource(asList(one, two));
 
         Iterable<Vfs.File> file = fileSystem.findExact("source/one.js");
 
@@ -60,7 +60,7 @@ public class ReflectionsSourceTest {
         Vfs.File one = mockFile("source/one.js");
         Vfs.File two = mockFile("source/two.js");
 
-        ReflectionsSource fileSystem = new ReflectionsSource(asList(one, two));
+        Source fileSystem = new ReflectionsSource(asList(one, two));
 
         assertThat(fileSystem.findExact("blah.js")).isEmpty();
     }
