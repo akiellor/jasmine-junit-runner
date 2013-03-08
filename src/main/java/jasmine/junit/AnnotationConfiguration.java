@@ -1,12 +1,9 @@
 package jasmine.junit;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import jasmine.runtime.Configuration;
 import jasmine.utils.SystemProperties;
 import org.apache.commons.lang.StringUtils;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -35,25 +32,18 @@ public class AnnotationConfiguration implements Configuration {
     }
 
     @Override public Collection<String> sources() {
-        return Collections2.transform(asList(annotation.sources()), new Function<String, String>() {
-            @Override public String apply(@Nullable String input) {
-                    return fromPwd(new File(annotation.sourcesRootDir(), input));
-            }
-        });
+        return asList(annotation.sources());
     }
 
     @Override public Collection<String> specs() {
-        Collection<String> specs = Collections2.transform(asList(annotation.specs()), new Function<String, String>() {
-            @Override public String apply(@Nullable String input) {
-                return fromPwd(new File(new File(annotation.jsRootDir(), "specs"), input));
-            }
-        });
+        Collection<String> specs = asList(annotation.specs());
 
         if (!specs.isEmpty()) {
             return specs;
         }
+
         if (defaultSpec != null) {
-            return asList(fromPwd(new File(new File(annotation.jsRootDir(), "specs"), defaultSpec)));
+            return asList(defaultSpec);
         }
 
         throw new IllegalStateException("No specs found.");

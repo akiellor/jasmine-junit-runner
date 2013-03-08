@@ -71,10 +71,10 @@ public class JasmineSuiteGeneratesRunnerTest {
 
         assertThat(runnerContent).contains("jasmine.getEnv().addReporter(new jasmine.TrivialReporter());");
         assertJSFileIncluded(runnerContent,
-                "file://" + new File("src/test/javascript/sources/source1.js").getAbsolutePath(),
-                "file://" + new File("src/test/javascript/sources/source2.js").getAbsolutePath(),
-                "file://" + new File("src/test/javascript/specs/spec1.js").getAbsolutePath(),
-                "file://" + new File("src/test/javascript/specs/spec2.js").getAbsolutePath());
+                "file://" + new File(RUNNERS_OUTPUT_DIR, "source1.js").getAbsolutePath(),
+                "file://" + new File(RUNNERS_OUTPUT_DIR, "source2.js").getAbsolutePath(),
+                "file://" + new File(RUNNERS_OUTPUT_DIR, "spec1.js").getAbsolutePath(),
+                "file://" + new File(RUNNERS_OUTPUT_DIR, "spec2.js").getAbsolutePath());
     }
 
     @Test
@@ -90,10 +90,10 @@ public class JasmineSuiteGeneratesRunnerTest {
 
       assertThat(runnerContent).contains("jasmine.getEnv().addReporter(new jasmine.TrivialReporter());");
       assertJSFileIncluded(runnerContent,
-              "file://" + new File("src/test/javascript/sources/source1.js").getAbsolutePath(),
-              "file://" + new File("src/test/javascript/sources/source2.js").getAbsolutePath(),
-              "file://" + new File("src/test/javascript/specs/spec1.js").getAbsolutePath(),
-              "file://" + new File("src/test/javascript/specs/spec2.js").getAbsolutePath());
+              "file://" + new File(RUNNERS_OUTPUT_DIR, "subDir1/subDir2/source1.js").getAbsolutePath(),
+              "file://" + new File(RUNNERS_OUTPUT_DIR, "subDir1/subDir2/source2.js").getAbsolutePath(),
+              "file://" + new File(RUNNERS_OUTPUT_DIR, "subDir1/subDir2/spec1.js").getAbsolutePath(),
+              "file://" + new File(RUNNERS_OUTPUT_DIR, "subDir1/subDir2/spec2.js").getAbsolutePath());
 
     }
 

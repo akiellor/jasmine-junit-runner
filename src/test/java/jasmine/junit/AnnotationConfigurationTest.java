@@ -28,36 +28,29 @@ public class AnnotationConfigurationTest {
 
         Configuration configuration = new AnnotationConfiguration(annotation);
 
-        assertThat(configuration.sources()).containsOnly(
-                "src/main/javascript/one.js",
-                "src/main/javascript/two.js");
+        assertThat(configuration.sources()).containsOnly("one.js", "two.js");
     }
 
     @Test
     public void shouldLoadSpecsAsFileResources() throws IOException {
-        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specs()).thenReturn(new String[]{"one.js", "two.js"});
 
         Configuration configuration = new AnnotationConfiguration(annotation);
 
-        assertThat(configuration.specs()).containsOnly(
-                "src/test/javascript/specs/one.js",
-                "src/test/javascript/specs/two.js");
+        assertThat(configuration.specs()).containsOnly("one.js", "two.js");
     }
 
     @Test
     public void shouldUseDefaultSpecWhenNoSpecsAreResolved() throws IOException {
-        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specs()).thenReturn(new String[]{});
 
         Configuration configuration = new AnnotationConfiguration(annotation, "blah.js");
 
-        assertThat(configuration.specs()).containsOnly("src/test/javascript/specs/blah.js");
+        assertThat(configuration.specs()).containsOnly("blah.js");
     }
 
     @Test(expected = IllegalStateException.class)
     public void shouldThrowWhenNoSpecsAreResolvedAndNoDefaultProvided() {
-        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
         when(annotation.specs()).thenReturn(new String[]{});
 
         Configuration configuration = new AnnotationConfiguration(annotation);
