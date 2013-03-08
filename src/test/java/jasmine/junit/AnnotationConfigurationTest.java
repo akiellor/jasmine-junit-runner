@@ -23,7 +23,6 @@ public class AnnotationConfigurationTest {
 
     @Test
     public void shouldLoadSourcesAsFileResources() throws IOException {
-        when(annotation.sourcesRootDir()).thenReturn("src/main/javascript");
         when(annotation.sources()).thenReturn(new String[]{"one.js", "two.js"});
 
         Configuration configuration = new AnnotationConfiguration(annotation);

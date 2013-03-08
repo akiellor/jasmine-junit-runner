@@ -1,17 +1,12 @@
 package jasmine.junit;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.apache.commons.lang.StringUtils;
-
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JasmineSuite {
-
-    String jsRootDir() default "src/test/javascript";
-
-    String sourcesRootDir() default "src/main/webapp/js";
-
     String[] specs() default {};
 
     String[] sources() default {};
