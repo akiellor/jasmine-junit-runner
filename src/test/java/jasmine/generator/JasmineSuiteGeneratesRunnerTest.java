@@ -1,5 +1,6 @@
 package jasmine.generator;
 
+import jasmine.junit.AnnotationConfiguration;
 import jasmine.junit.JasmineTestRunner;
 import jasmine.junit.classes.JasmineSuiteGeneratorClassWithRunner;
 import jasmine.junit.classes.JasmineSuiteGeneratorClassWithRunnerInSubDir;
@@ -21,14 +22,15 @@ import static org.fest.assertions.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class JasmineSuiteGeneratesRunnerTest {
 
-    private static final String RUNNERS_OUTPUT_DIR = "src/test/javascript/runners/";
+    private static final File RUNNERS_OUTPUT_DIR = new File(System.getProperty(AnnotationConfiguration.HTML_OUTPUT_DIR) + "/runners");
+
     @Mock
     private RunNotifier notifierMock;
 
     @Before
     public void clearRunnersOutputDirectory() throws IOException {
-        new File(RUNNERS_OUTPUT_DIR).mkdirs();
-        FileUtils.cleanDirectory(new File(RUNNERS_OUTPUT_DIR));
+        RUNNERS_OUTPUT_DIR.mkdirs();
+        FileUtils.cleanDirectory(RUNNERS_OUTPUT_DIR);
     }
 
     @Test
@@ -100,12 +102,11 @@ public class JasmineSuiteGeneratesRunnerTest {
     }
 
     private File getTestRunnerResultFile(Class<?> testClass, String subDir) {
-      StringBuffer filePath = new StringBuffer(RUNNERS_OUTPUT_DIR);
+      File file = RUNNERS_OUTPUT_DIR;
       if (StringUtils.isNotBlank(subDir)) {
-        filePath.append(subDir).append('/');
+        file = new File(file, subDir);
       }
-      filePath.append(testClass.getSimpleName()).append("Runner.html");
-      return new File(filePath.toString());
+      return new File(file, testClass.getSimpleName() + "Runner.html");
     }
 
     private void assertJSFileIncluded(String rawContent, String... files) {

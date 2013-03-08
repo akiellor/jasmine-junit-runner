@@ -3,6 +3,7 @@ package jasmine.junit;
 import jasmine.runtime.Configuration;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import jasmine.utils.SystemProperties;
 import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
@@ -12,7 +13,9 @@ import java.util.Collection;
 import static java.util.Arrays.asList;
 
 public class AnnotationConfiguration implements Configuration {
+    public static final String HTML_OUTPUT_DIR = "jasmine.html.outputDir";
     private final JasmineSuite annotation;
+    private final SystemProperties properties;
     private final String defaultSpec;
 
     public AnnotationConfiguration(JasmineSuite annotation) {
@@ -20,8 +23,13 @@ public class AnnotationConfiguration implements Configuration {
     }
 
     public AnnotationConfiguration(JasmineSuite annotation, String defaultSpec) {
+        this(annotation, defaultSpec, new SystemProperties());
+    }
+
+    public AnnotationConfiguration(JasmineSuite annotation, String defaultSpec, SystemProperties properties) {
         this.annotation = annotation;
         this.defaultSpec = defaultSpec;
+        this.properties = properties;
     }
 
     @Override public Collection<String> sources() {
@@ -50,7 +58,11 @@ public class AnnotationConfiguration implements Configuration {
     }
 
     @Override public File htmlRunnerOutputDir() {
-        StringBuilder outputPath = new StringBuilder(annotation.jsRootDir()).append("/runners");
+        String outputDir = properties.get(HTML_OUTPUT_DIR);
+        if(outputDir == null){
+            throw new IllegalStateException("Must specify SystemProperty '" + HTML_OUTPUT_DIR + "' in order to generate output");
+        }
+        StringBuilder outputPath = new StringBuilder(outputDir).append("/runners");
         if (StringUtils.isNotBlank(annotation.specRunnerSubDir())) {
             outputPath.append('/').append(annotation.specRunnerSubDir());
         }

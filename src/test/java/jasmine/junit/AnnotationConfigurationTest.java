@@ -1,6 +1,7 @@
 package jasmine.junit;
 
 import jasmine.runtime.Configuration;
+import jasmine.utils.SystemProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,11 +11,14 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AnnotationConfigurationTest {
     @Mock JasmineSuite annotation;
+    @Mock SystemProperties properties;
+    String defaultSpec = "defaultSpec.js";
 
     @Test
     public void shouldLoadSourcesAsFileResources() throws IOException {
@@ -62,19 +66,19 @@ public class AnnotationConfigurationTest {
 
     @Test
     public void shouldGetHtmlRunnerDirectory() {
-        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+        when(properties.get(AnnotationConfiguration.HTML_OUTPUT_DIR)).thenReturn("src/test/javascript");
 
-        Configuration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
 
         assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners"));
     }
 
     @Test
     public void shouldGetHtmlRunnerDirectoryWhenSubDirSpecified() {
-        when(annotation.jsRootDir()).thenReturn("src/test/javascript");
+        when(properties.get(AnnotationConfiguration.HTML_OUTPUT_DIR)).thenReturn("src/test/javascript");
         when(annotation.specRunnerSubDir()).thenReturn("foo");
 
-        Configuration configuration = new AnnotationConfiguration(annotation);
+        Configuration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
 
         assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners/foo"));
     }
@@ -118,5 +122,17 @@ public class AnnotationConfigurationTest {
 
         when(annotation.jsRootDir()).thenReturn("src/main/javascript");
         assertThat(configuration.jsRootFile("blah.js")).isEqualTo("src/main/javascript/blah.js");
+    }
+
+    @Test
+    public void shouldOnlyBeAbleToUseHtmlGeneratorWhenOutputSystemPropertySpecified() {
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
+
+        try{
+            configuration.htmlRunnerOutputDir();
+            fail();
+        }catch(IllegalStateException e){
+            assertThat(e.getMessage()).isEqualTo("Must specify SystemProperty 'jasmine.html.outputDir' in order to generate output");
+        }
     }
 }
