@@ -1,6 +1,6 @@
 package jasmine.runtime;
 
-import jasmine.runtime.rhino.RhinoContext;
+import jasmine.rhino.RhinoContext;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import org.junit.runner.Description;

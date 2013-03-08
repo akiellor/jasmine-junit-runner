@@ -1,7 +1,6 @@
 package jasmine.runtime;
 
-import jasmine.runtime.*;
-import jasmine.runtime.rhino.RhinoContext;
+import jasmine.rhino.RhinoContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;

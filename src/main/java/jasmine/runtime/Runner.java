@@ -1,7 +1,7 @@
 package jasmine.runtime;
 
-import jasmine.runtime.rhino.RhinoContext;
-import jasmine.runtime.utils.Futures;
+import jasmine.rhino.RhinoContext;
+import jasmine.utils.Futures;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;

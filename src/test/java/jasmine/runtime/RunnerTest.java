@@ -1,7 +1,6 @@
 package jasmine.runtime;
 
-import jasmine.runtime.Runner;
-import jasmine.runtime.rhino.RhinoContext;
+import jasmine.rhino.RhinoContext;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
