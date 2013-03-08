@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import static java.util.Arrays.asList;
 
@@ -19,6 +20,7 @@ public class Loader {
     private final Scriptable scope;
     private final Context context;
     private final VirtualFileSystem fileSystem;
+    private final CopyOnWriteArraySet<Vfs.File> loaded = new CopyOnWriteArraySet<Vfs.File>();
 
     public Loader(Scriptable scope, Context context, VirtualFileSystem fileSystem) {
         this.scope = scope;
@@ -54,8 +56,10 @@ public class Loader {
         load(files);
     }
 
-    private void load(Iterable<Vfs.File> files) {
+    private synchronized void load(Iterable<Vfs.File> files) {
         for(Vfs.File file : files){
+            if(loaded.contains(file)) { continue; }
+            loaded.add(file);
             try {
                 this.context.evaluateReader(this.scope, new InputStreamReader(file.openInputStream()), file.getRelativePath(), 1, null);
             } catch (IOException e) {

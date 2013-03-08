@@ -1,0 +1,1 @@
+load("sources/a.js");
