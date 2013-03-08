@@ -15,10 +15,7 @@ public @interface JasmineSuite {
 
     boolean debug() default false;
 
-    /**
-     * If set to false, does not load EnvJS support.
-     */
-    boolean envJs() default true;
+    boolean envJs() default false;
 
     String specRunnerSubDir() default StringUtils.EMPTY;
 }

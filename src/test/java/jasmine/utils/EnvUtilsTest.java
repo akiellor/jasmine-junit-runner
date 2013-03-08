@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 @RunWith(JasmineTestRunner.class)
-@JasmineSuite(sources = "jquery-1.6.1.js")
+@JasmineSuite(sources = "jquery-1.6.1.js", envJs = true)
 public class EnvUtilsTest {
 
 	@Before
