@@ -17,7 +17,7 @@ public class VirtualFileSystem {
     }
 
     public VirtualFileSystem(Iterable<String> paths, Predicate<Vfs.File> candidateFilter) {
-        this(new ReflectionsSource(paths, candidateFilter));
+        this(new ReflectionsSource(paths, candidateFilter), new FileSource());
     }
 
     public Iterable<Vfs.File> findAll(final String regex) {
