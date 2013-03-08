@@ -4,7 +4,6 @@ ROADMAP
 1. contact with jasmine folks (in pivotal repo)
 2. readme/howto
 3. example project w/ maven and gradle
-4. Maybe a circular loading problem A -> B && B -> A
 
 Nice to Haves
 =============
