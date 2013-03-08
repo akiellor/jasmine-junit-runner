@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>jasmine</groupId>
   <artifactId>junit-runner</artifactId>
-  <version>0.5</version>
+  <version>0.6-SNAPSHOT</version>
   <name>Jasmine Junit Runner</name>
   <properties>
     <github.global.server>github</github.global.server>
@@ -190,6 +190,6 @@
     <url>https://github.com/akiellor/jasmine-junit-runner</url>
     <connection>scm:git:ssh://git@github.com/akiellor/jasmine-junit-runner.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/akiellor/jasmine-junit-runner.git</developerConnection>
-    <tag>junit-runner-0.5</tag>
+    <tag>HEAD</tag>
   </scm>
 </project>
