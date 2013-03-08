@@ -2,10 +2,9 @@ ROADMAP
 =======
 
 1. contact with jasmine folks (in pivotal repo)
-2. better file resolution (fully qualified files does not work...issue with VirtualFileSystem)
-3. readme/howto
-4. example project w/ maven and gradle
-5. Maybe a circular loading problem A -> B && B -> A
+2. readme/howto
+3. example project w/ maven and gradle
+4. Maybe a circular loading problem A -> B && B -> A
 
 Nice to Haves
 =============
