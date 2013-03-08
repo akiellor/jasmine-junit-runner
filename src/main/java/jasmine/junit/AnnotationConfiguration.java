@@ -1,15 +1,17 @@
 package jasmine.junit;
 
-import jasmine.runtime.Configuration;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import jasmine.runtime.Configuration;
 import jasmine.utils.SystemProperties;
 import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 
 public class AnnotationConfiguration implements Configuration {
@@ -87,5 +89,12 @@ public class AnnotationConfiguration implements Configuration {
 
     @Override public String jsRootFile(String relativePath) {
         return fromPwd(new File(annotation.jsRootDir(), relativePath));
+    }
+
+    @Override public List<String> getJavascriptPath() {
+        String javascriptPath = properties.get("javascript.path");
+        if(javascriptPath == null) { return newArrayList(); }
+
+        return newArrayList(javascriptPath.split(File.pathSeparator));
     }
 }

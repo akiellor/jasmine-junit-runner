@@ -10,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.io.File;
 import java.io.IOException;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 import static org.mockito.Mockito.when;
@@ -134,5 +135,19 @@ public class AnnotationConfigurationTest {
         }catch(IllegalStateException e){
             assertThat(e.getMessage()).isEqualTo("Must specify SystemProperty 'jasmine.html.outputDir' in order to generate output");
         }
+    }
+
+    @Test
+    public void shouldGetAdditionalJavascriptSearchPathsFromSystemProperties() {
+        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
+
+        when(properties.get("javascript.path")).thenReturn(null);
+        assertThat(configuration.getJavascriptPath()).isEmpty();
+
+        when(properties.get("javascript.path")).thenReturn("some/path");
+        assertThat(configuration.getJavascriptPath()).isEqualTo(newArrayList("some/path"));
+
+        when(properties.get("javascript.path")).thenReturn("some/path" + File.pathSeparator + "another/path");
+        assertThat(configuration.getJavascriptPath()).isEqualTo(newArrayList("some/path", "another/path"));
     }
 }

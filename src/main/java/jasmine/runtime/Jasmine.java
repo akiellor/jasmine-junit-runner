@@ -39,7 +39,7 @@ public class Jasmine {
     }
 
     private RhinoContext setUpRhinoScope() {
-        RhinoContext context = new RhinoContext();
+        RhinoContext context = new RhinoContext(configuration.getJavascriptPath());
 
         List<String> resources = new ArrayList<String>();
         if (configuration.envJs()) {

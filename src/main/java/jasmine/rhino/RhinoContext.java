@@ -1,7 +1,7 @@
 package jasmine.rhino;
 
-import jasmine.utils.Exceptions;
 import com.google.common.base.Predicate;
+import jasmine.utils.Exceptions;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
 import org.reflections.vfs.Vfs;
@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -22,7 +23,11 @@ public class RhinoContext {
     private final VirtualFileSystem fileSystem;
 
     public RhinoContext() {
-        this.fileSystem = new VirtualFileSystem(new Predicate<Vfs.File>() {
+        this(new ArrayList<String>());
+    }
+
+    public RhinoContext(Iterable<String> paths) {
+        this.fileSystem = new VirtualFileSystem(paths, new Predicate<Vfs.File>() {
             @Override public boolean apply(@Nullable Vfs.File input) {
                 return input != null && input.getRelativePath().endsWith("js");
             }

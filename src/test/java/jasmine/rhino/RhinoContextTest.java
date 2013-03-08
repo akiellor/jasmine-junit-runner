@@ -9,6 +9,7 @@ import org.mozilla.javascript.ScriptableObject;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class RhinoContextTest {
@@ -81,6 +82,15 @@ public class RhinoContextTest {
         RhinoContext context = new RhinoContext();
 
         context.loadFromVirtualFileSystem("src/test/javascript/sources/source1.js");
+
+        assertThat(context.evalJS("source1")).isEqualTo(1.0);
+    }
+
+    @Test
+    public void shouldAllowSpecifyingASetOfSearchPathsForRequiringFiles() {
+        RhinoContext context = new RhinoContext(newArrayList("src/test/javascript"));
+
+        context.loadFromVirtualFileSystem("sources/source1.js");
 
         assertThat(context.evalJS("source1")).isEqualTo(1.0);
     }
