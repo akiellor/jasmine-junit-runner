@@ -14,3 +14,4 @@ Nice to Haves
 6. rip out file generator (separate module/delete feature)
 7. commonjs support / require.js support
 8. Runtime package is coupled to junit (Description).
+9. WebDriver backend
