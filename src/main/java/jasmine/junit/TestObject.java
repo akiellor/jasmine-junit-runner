@@ -3,6 +3,7 @@ package jasmine.junit;
 import jasmine.rhino.RhinoContext;
 import jasmine.utils.Exceptions;
 import com.google.common.base.Optional;
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 
@@ -56,5 +57,9 @@ public class TestObject {
 
     public String getName() {
         return instance.getClass().getSimpleName();
+    }
+
+    public String getDefaultSpecPath() {
+        return instance.getClass().getPackage().getName().replace(".", "/") + "/" + StringUtils.uncapitalize(instance.getClass().getSimpleName()).replaceAll("Test$", "Spec.js");
     }
 }

@@ -1,11 +1,10 @@
 package jasmine.junit;
 
+import jasmine.generator.JasmineSpecRunnerGenerator;
+import jasmine.rhino.RhinoContext;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;
 import jasmine.runtime.Jasmine;
-import jasmine.generator.JasmineSpecRunnerGenerator;
-import jasmine.rhino.RhinoContext;
-import org.apache.commons.lang.StringUtils;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -19,7 +18,7 @@ public class JasmineTestRunner extends Runner {
 
     public JasmineTestRunner(Class<?> testClass) {
         this.test = new TestObject(testClass);
-        this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), StringUtils.uncapitalize(test.getName()).replace("Test", "Spec") + ".js");
+        this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), test.getDefaultSpecPath());
         this.jasmine = new Jasmine(configuration, Description.createSuiteDescription(testClass));
     }
 
