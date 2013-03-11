@@ -3,7 +3,6 @@ ROADMAP
 
 1. contact with jasmine folks (in pivotal repo)
 2. readme/howto
-3. example project w/ gradle
 
 Nice to Haves
 =============
