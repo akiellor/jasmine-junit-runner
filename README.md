@@ -46,7 +46,7 @@ sourceSets {
 }
 
 dependencies {
-  testCompile 'jasmine:junit-runner:0.7'
+  testCompile 'jasmine:junit-runner:0.8'
 }
 
 ```
@@ -84,7 +84,7 @@ Jasmine JUnit Runner uses a standard JUnit test to run the Jasmine specs. Create
 
 If you run the test, it should fail with something like **"&lt;yourTestClass&gt;Spec.js could not be found"**. Go ahead and create it in **src/test/javascript**.
 
-If you run the test again, it should pass, but no tests will be run. Lets add a spec to that file:
+If you run the test again, and again it fails as no specs are present. Lets fix that and add a spec to that file:
 
 ```javascript
 describe("Calculator", function() {
