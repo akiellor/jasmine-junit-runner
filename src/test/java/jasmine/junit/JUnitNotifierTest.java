@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Fail.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,5 +60,15 @@ public class JUnitNotifierTest {
         Failure failure = captor.getValue();
         assertThat(failure.getDescription()).isEqualTo(Description.createTestDescription("Object", "test"));
         assertThat(failure.getException()).isEqualTo(exception);
+    }
+
+    @Test
+    public void shouldThrowInitializationErrorWhenNoSpecsToRun() {
+        try{
+            new JUnitNotifier(runNotifier).nothingToRun();
+            fail();
+        }catch(RuntimeException e){
+            assertThat(e.getMessage()).isEqualTo("No specs to run.");
+        }
     }
 }

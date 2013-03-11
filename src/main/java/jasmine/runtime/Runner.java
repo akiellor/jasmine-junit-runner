@@ -50,7 +50,10 @@ public class Runner {
     }
 
     public void execute(final Notifier notifier){
-        Futures.await(Collections2.transform(getAllIts(), new Function<It, Future<It>>() {
+        List<It> its = getAllIts();
+        if(its.isEmpty()) { notifier.nothingToRun(); return; }
+
+        Futures.await(Collections2.transform(its, new Function<It, Future<It>>() {
             @Override public Future<It> apply(final It spec) {
                 return executor.submit(new Callable<It>() {
                     @Override public It call() throws Exception {
