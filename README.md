@@ -1,216 +1,101 @@
 # Jasmine Junit Runner
-![Build Status](https://api.travis-ci.org/akiellor/jasmine-junit-runner.png)
+[![Build Status](https://api.travis-ci.org/akiellor/jasmine-junit-runner.png)](http://travis-ci.org/akiellor/jasmine-junit-runner)
 
-## What's this? 
+## What's this?
 
-Something like this:
+Jasmine Junit Runner allows <a href="https://github.com/pivotal/jasmine" target="_blank">Jasmine</a> specs to be executed
+anywhere a JUnit test can be executed. Be it an IDE (Eclipse/IntelliJ) or build tool (Gradle/Maven/Ant).
 
-```javascript
-describe("pure awesomeness", function() {
-	it("should be amazing!", function() {
-		expect(stuff).toEqual("amazing");
-	});
-	
-	it("should be awesome", function() {
-		expect(moreStuff).toBe("awesome");
-	});
-});
+## Getting Started
+This getting started assumes you are using Gradle, but the project doesn't require Gradle. There are currently working examples for the following:
 
-describe("coolness", function() {
-	it("should be cooler than ice when freezed", function() {
-		var coolness = CoolingRepository.beCool();
-		coolness.freeze();
-		expect(coolness.coolnessRatio).toBe(-100);
-	});
-	it("should be cool enough by default", function() {
-		expect(CoolingRepository.beCool().coolnessRatio).toBe(-5);
-	});
-});
+* Gradle [https://github.com/akiellor/jasmine-gradle](https://github.com/akiellor/jasmine-gradle)
+* Maven [https://github.com/akiellor/jasmine-maven](https://github.com/akiellor/jasmine-maven)
+
+### Get Gradle
+Gradle is a language agnostic build tool with a groovy buildscript DSL, you can get it from [Gradle.org](http://gradle.org).
+
+### Setting Up Your New Project
+
+To get started with gradle, we need a build.gradle. This file contains all of our build logic and dependency declarations.
+
+Create a new build.gradle in a new directory with the following content:
+
+```groovy
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+repositories {
+  maven { url 'https://raw.github.com/akiellor/jasmine-junit-runner/mvn-repo' }
+  mavenCentral()
+}
+
+sourceSets {
+  main {
+    resources {
+      srcDir 'src/main/javascript'
+    }
+  }
+  test {
+    resources {
+      srcDir 'src/test/javascript'
+    }
+  }
+}
+
+dependencies {
+  testCompile 'jasmine:junit-runner:0.7'
+}
+
 ```
 
-Being translated into something like this:
+So what does this do?
 
-![Junit Eclipse runner](http://i54.tinypic.com/rswjrl.jpg)
+* The plugins at the top declare that this project is a 'java' project and that we are going to use gradles 'idea' (IntelliJ) and 'eclipse' support. Typically you would use either eclipse or idea, feel free to remove the one you don't care about.
+* The repositories section declares that the artifact repositories we are going to use. In this case mavenCentral and the jasmine-junit-runner repository.
+* The sourceSets section declares where in the project Gradle can find the javascript sources and specs.
+* The dependencies section includes the one and only top level dependency jasmine:junit-runner.
 
-* * *
+To setup you IDE project files you should be able to run:
 
-Quite simple, it's a custom Java Junit Runner that allows you to embed Javascript Unit tests (using Jasmine) in your Java-based projects. It fully integrates with your most beloved IDE, your most hated version control system and of course your most needed CI env. 
+#### For Eclipse
 
-So let's rephrase:
-
-* Run Javascript (the <a href="https://github.com/pivotal/jasmine" target="_blank">Jasmine</a> - behavior driven - way) "specs" in Java
-* Talks like a duck-erhm, any other Junit Java test. Just use a custom annotation (see below)
-* Executes super-fast. No browser required. Hocus-pocus. (Rhino + Envjs magic)
-
-## Does this thing support ...
-
-### Generation of Junit XML Results?
-
-Yes and no. Not explicitly using the Jasmine Junit XML Reporter, but since it's a Java Junit Result, your build process will do that for you. 
-Maven surefire plugins will generate the needed result files, for Jenkins to pick up. Your stacktrace/failure message will be something like:
-
-> Expected x to be y (zz.js, #458)
-
-Just like the default Jasmine HTML reporter.
-(So, to answer the question: yes!)
-
-### GUI Testing with Envjs? 
-
-Yes! It allows you to test your jQuery plugins or your spaghetti GUI+Logic code, neatly woven together.
-You can use <a href="https://github.com/velesin/jasmine-jquery" target="_blank">jasmine-jquery</a> matchers. I've modified `jasmine.Fixtures` to support Envjs+Rhino. This means you can test stuff like this:
-
-```javascript
-beforeEach(function() {
-  loadFixtures("myFixture.html");
-});
-
-it("should be visible and blue", function() {
-  var div = $('#myDivInFixtureHtml');
-  expect(div).toBeVisible();
-  expect(div.css('color')).toBe('blue');
-});
+```
+gradle eclipse
 ```
 
-Fixtures are automatically cleaned up. See src/test/javascript/lib/jasminedir/jasmine-jquery-rhino.js
+#### For IntelliJ
 
-#### But wait, CSS Style Parsing does not work in Envjs 1.2, how come this does?
+```
+gradle idea
+```
 
-See env.utils.js. Cover your eyes - hacks present. 
+You should be able to open the project in you IDE of choice.
 
-### Debugging 'n stuff?
+### Lets write some specs!
 
-Yes! When the debug mode flag in `@JasmineSuite` has been set to `true`, you can use the <a href="http://www.mozilla.org/rhino/debugger.html" target="_blank">Rhino Debugger</a> to set breakpoints.
-After pressing "GO", the tests will run and you can inspect stuff and step through the code.
-
-#### What about integrated debugging inside my IDE?
-
-Tough luck. I've tried to get <a href="http://wiki.eclipse.org/JSDT" target="_blank">JSDT</a> working but no avail. 
-You can still use Firebug to debug when generating a specRunner HTML file (see below).
-
-## Excellent! What Do I need to do? 
-
-1. Fork this project. 
-2. Create some Jasmine specs, place them in some folder.
-3. Create a Junit test class, annotate it with `@RunWith(JasmineTestRunner.class)`
-4. Fill in the blanks using `@JasmineSuite`
-
-## More options
-
-`@JasmineSuite` allows you to set these options:
-
-* debug: use the built-in Rhino debugger (gives you the chance to set a breakpoint before firing the test suite)
-* jsRootDir: the javascript install root dir. Jasmine and other should be installed here (see source)
-* sourcesRootDir: your production JS files root dir.
-* specs: one or more spec file to run. Default behavior: use java Class name (replaces Test with Spec, see example)
-* sources: one or more JS production file which your spec needs (included before specs, d'uh)
-* generateSpecRunner: (the HTML output, useful for firefox/firebug debugging etc)
-* specRunnerSubDir: a subsidiary path to the default runner root directory where generated spec runners will be placed
-* envJs: load EnvJS support (defaults to true)
-
-## Requirements
-
-Currently, Jasmine Junit Runner relies on Rhino 1.7R2 (+ es5-shim) & Envjs 1.2 to interpret JS code. It also uses Jamsine 1.0.2 to read your spec files. All js libs are located in test/javascript/lib .
-
-### Dependencies Overview
-
-See the `pom.xml` (Maven2) - you can build the whole thing using:
-
-> mvn clean install  
-
-* Rhino 1.7R2 + es5-shim 0.0.4 (not needed if you'll be using 1.7R3)
-* Envjs 1.2 + required hacks in env.utils.js
-* Jasmine 1.0.2
-* Java libs: commons-io and commons-lang (test libs: mockito and fest assert)
- 
-* * *
-
-# Examples
-
-## Running a spec file as a Junit test
-
-### Use the default spec naming convention
-
-If you do not specify _specs_ with the annotation, the runner will auto-pick the spec name using your test class.
-The below test will load _myAwesomeSpec.js_ from the specs dir (jsRootDir + '/specs/').
+Jasmine JUnit Runner uses a standard JUnit test to run the Jasmine specs. Create a new empty JUnit test class in **src/test/java** and annotate it with:
 
 ```java
 @RunWith(JasmineTestRunner.class)
-@JasmineSuite(sources = { 'jQuery.js', 'myAwesomeCode.js' } )
-public class MyAwesomeTest {
-}
 ```
 
-your awesome production code relies on jQuery (of course it does), so you'll have to include it.
+If you run the test, it should fail with something like **"&lt;yourTestClass&gt;Spec.js could not be found"**. Go ahead and create it in **src/test/javascript**.
 
-Your spec file might look like this:
+If you run the test again, it should pass, but no tests will be run. Lets add a spec to that file:
 
 ```javascript
-describe("my awesome code", function() {
-	it("will always run", function() {
-		expect(stuff.DoCoolThings()).toBe("awesome");
+describe("Calculator", function() {
+	it("should add two numbers together", function() {
+		expect(1 + 2).toBe(3);
 	});
 });
 ```
 
-### Using Junit's `@Before` and `@After_`
+Running the test again should give you a single passing Spec and some output like (from IntelliJ):
 
-It's possible to do some extra work before and after each spec run:
+![Junit IntelliJ](http://oi45.tinypic.com/20j0g15.jpg)
 
-```java
-@RunWith(JasmineTestRunner.class)
-@JasmineSuite
-public class MyAwesomeTest {
 
-  @Before
-  public void beforeStuff(RhinoContext context) {
-    context.evalJS("var prefabVar = { cool: 'yeah!' };");
-  }
-  
-  @Before
-  public void beforeStuffNoContext() {
-    System.out.println("I'm gonna blow! Or Will I?");
-  }
-  
-  @After
-  public void afterStuff() {
-    // say cool things
-  }
-
-}
-```
-
-What's happening?
-
-* You can define n number of _PUBLIC_ methods annotated with `@Before` or `@After`
-* You can, but don't have to, take the `RhinoContext` object as the only parameter. This allows you to set stuff up in JS space before running the spec.
-
-### Generating a spec runner
-
-Your awesome test (example 1) would for instance generate this html file:
-
-```html
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
-	<head>
-		<title>Jasmine Test Runner</title>
-		<link rel="stylesheet" type="text/css" href="./../lib/jasmine-1.0.2/jasmine.css">
-		<script type="text/javascript" src="./../lib/jasmine-1.0.2/jasmine.js"></script>
-		<script type="text/javascript" src="./../lib/jasmine-1.0.2/jasmine-html.js"></script>
-		
-		<script type='text/javascript' src='./../../../main/webapp/js/jquery.js'></script>
-		<script type='text/javascript' src='./../../../main/webapp/js/myawesomecode.js'></script>
-		
-		<script type='text/javascript' src='./../specs/myawesomespec.js'></script>
-	</head>
-	<body>
-
-		<script type="text/javascript">		
-			jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-			jasmine.getEnv().execute();
-		</script>
-	</body>
-</html>
-```
-
-You can inspect the output using firefox, or debug in your spec file using firebug.
