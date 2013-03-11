@@ -4,8 +4,6 @@ ROADMAP
 1. contact with jasmine folks (in pivotal repo)
 2. readme/howto
 3. example project w/ gradle
-4. When classpath/path specified which doesn't exist Reflections will blow up.
-5. Make default spec to run respect the package the class file is in.
 
 Nice to Haves
 =============
