@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RhinoRuntime implements Backend {
+public class RhinoBackend implements Backend {
     public static final List<String> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
             "js/lib/env.rhino.1.2.js",
             "js/lib/env.utils.js"
@@ -25,7 +25,7 @@ public class RhinoRuntime implements Backend {
 
     private final Runner runner;
 
-    public RhinoRuntime(Configuration configuration, Description rootDescription){
+    public RhinoBackend(Configuration configuration, Description rootDescription){
         RhinoContext context = new RhinoContext(configuration.getJavascriptPath());
 
         List<String> resources = new ArrayList<String>();

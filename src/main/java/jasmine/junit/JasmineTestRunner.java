@@ -5,7 +5,7 @@ import jasmine.runtime.Backend;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;
 import jasmine.runtime.Jasmine;
-import jasmine.runtime.rhino.RhinoRuntime;
+import jasmine.runtime.rhino.RhinoBackend;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -20,7 +20,7 @@ public class JasmineTestRunner extends Runner {
     public JasmineTestRunner(Class<?> testClass) {
         this.test = new TestObject(testClass);
         this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), test.getDefaultSpecPath());
-        this.jasmine = new Jasmine(new RhinoRuntime(configuration, Description.createSuiteDescription(testClass)));
+        this.jasmine = new Jasmine(new RhinoBackend(configuration, Description.createSuiteDescription(testClass)));
     }
 
     protected JasmineTestRunner(Configuration configuration, TestObject test, Jasmine jasmine){
