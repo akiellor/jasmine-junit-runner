@@ -1,8 +1,10 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import jasmine.runtime.rhino.Describe;
+import jasmine.runtime.rhino.It;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;

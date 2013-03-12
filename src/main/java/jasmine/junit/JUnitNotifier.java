@@ -1,6 +1,6 @@
 package jasmine.junit;
 
-import jasmine.runtime.It;
+import jasmine.runtime.rhino.It;
 import jasmine.runtime.Notifier;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;

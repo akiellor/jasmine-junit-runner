@@ -1,8 +1,6 @@
 package jasmine.runtime;
 
-import jasmine.rhino.RhinoContext;
-
 public interface Hooks {
-    void beforeAll(RhinoContext context);
-    void afterAll(RhinoContext context);
+    void beforeAll(Backend context);
+    void afterAll(Backend context);
 }

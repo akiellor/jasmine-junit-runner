@@ -1,6 +1,5 @@
 package jasmine.runtime;
 
-import jasmine.rhino.RhinoContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -11,21 +10,19 @@ import static org.mockito.Mockito.inOrder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JasmineTest {
-    @Mock Configuration configuration;
-    @Mock RhinoContext context;
-    @Mock Runner runner;
+    @Mock Backend backend;
     @Mock Hooks hooks;
     @Mock Notifier notifier;
 
     @Test
     public void shouldExecuteHooksAroundTheExecutionOfTests() {
-        Jasmine jasmine = new Jasmine(configuration, context, runner);
+        Jasmine jasmine = new Jasmine(backend);
 
         jasmine.execute(hooks, notifier);
 
-        InOrder order = inOrder(hooks, runner);
-        order.verify(hooks).beforeAll(context);
-        order.verify(runner).execute(notifier);
-        order.verify(hooks).afterAll(context);
+        InOrder order = inOrder(hooks, backend);
+        order.verify(hooks).beforeAll(backend);
+        order.verify(backend).execute(notifier);
+        order.verify(hooks).afterAll(backend);
     }
 }

@@ -1,8 +1,9 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import jasmine.runtime.Notifier;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;

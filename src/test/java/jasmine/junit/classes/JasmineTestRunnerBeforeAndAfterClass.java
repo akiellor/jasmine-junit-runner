@@ -1,7 +1,7 @@
 package jasmine.junit.classes;
 
 import jasmine.junit.JasmineSuite;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.Backend;
 import org.junit.After;
 import org.junit.Before;
 
@@ -20,11 +20,11 @@ public class JasmineTestRunnerBeforeAndAfterClass extends JasmineTestRunnerBefor
     }
 
     @After
-    public void runMijAfterOok(RhinoContext context) throws NoSuchMethodException {
-        runs.add(this.getClass().getMethod("runMijAfterOok", RhinoContext.class));
+    public void runMijAfterOok(Backend backend) throws NoSuchMethodException {
+        runs.add(this.getClass().getMethod("runMijAfterOok", Backend.class));
     }
 
     public void runMijNiet() throws NoSuchMethodException {
-        runs.add(this.getClass().getMethod("runMijNiet", RhinoContext.class));
+        runs.add(this.getClass().getMethod("runMijNiet"));
     }
 }

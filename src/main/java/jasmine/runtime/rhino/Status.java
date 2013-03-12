@@ -1,4 +1,6 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
+
+import jasmine.runtime.Notifier;
 
 public enum Status {
     PASSED {

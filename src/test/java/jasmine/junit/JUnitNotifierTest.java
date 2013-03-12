@@ -1,6 +1,6 @@
 package jasmine.junit;
 
-import jasmine.runtime.It;
+import jasmine.runtime.rhino.It;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;

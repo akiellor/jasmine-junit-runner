@@ -1,6 +1,7 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.Notifier;
 import jasmine.utils.Futures;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;

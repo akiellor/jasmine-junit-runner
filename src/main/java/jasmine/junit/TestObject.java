@@ -1,8 +1,8 @@
 package jasmine.junit;
 
-import jasmine.rhino.RhinoContext;
-import jasmine.utils.Exceptions;
 import com.google.common.base.Optional;
+import jasmine.runtime.Backend;
+import jasmine.utils.Exceptions;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -21,11 +21,11 @@ public class TestObject {
         }
     }
 
-    public void befores(RhinoContext context){
+    public void befores(Backend context){
         fireMethodsWithSpecifiedAnnotationIfAny(context, Before.class);
     }
 
-    public void afters(RhinoContext context){
+    public void afters(Backend context){
         fireMethodsWithSpecifiedAnnotationIfAny(context, After.class);
     }
 
@@ -33,7 +33,7 @@ public class TestObject {
         return Optional.fromNullable(instance.getClass().getAnnotation(JasmineSuite.class));
     }
 
-    private void fireMethodsWithSpecifiedAnnotationIfAny(RhinoContext fork, Class<? extends Annotation> annotation) {
+    private void fireMethodsWithSpecifiedAnnotationIfAny(Backend fork, Class<? extends Annotation> annotation) {
         for (Method method : instance.getClass().getMethods()) {
 
             try {
@@ -42,7 +42,7 @@ public class TestObject {
                     Class<?>[] parameterTypes = method.getParameterTypes();
                     if (parameterTypes.length == 0) {
                         method.invoke(instance, (Object[]) null);
-                    } else if (parameterTypes.length == 1 && RhinoContext.class.isAssignableFrom(parameterTypes[0])) {
+                    } else if (parameterTypes.length == 1 && Backend.class.isAssignableFrom(parameterTypes[0])) {
                         method.invoke(instance, fork);
                     } else {
                         throw new IllegalStateException("Annotated method does not have zero or rhinoContext as parameterTypes");

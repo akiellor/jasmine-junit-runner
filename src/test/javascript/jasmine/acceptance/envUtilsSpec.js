@@ -1,3 +1,5 @@
+load('jquery-1.6.1.js');
+load('js/lib/jasmine-jquery-rhino.js');
 
 describe("envjs fixes", function() {
 

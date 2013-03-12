@@ -3,7 +3,7 @@ package jasmine.junit;
 
 import jasmine.junit.classes.JasmineTestRunnerBeforeAndAfterClass;
 import jasmine.junit.classes.JasmineTestRunnerBeforeAndAfterSuperClass;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.Backend;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.RunNotifier;
@@ -29,9 +29,9 @@ public class JasmineTestRunnerBeforeAndAfterTest {
 
         assertThat(JasmineTestRunnerBeforeAndAfterSuperClass.runs).containsOnly(
                 JasmineTestRunnerBeforeAndAfterClass.class.getMethod("runMij"),
-                JasmineTestRunnerBeforeAndAfterSuperClass.class.getMethod("runMijOok", RhinoContext.class),
+                JasmineTestRunnerBeforeAndAfterSuperClass.class.getMethod("runMijOok", Backend.class),
                 JasmineTestRunnerBeforeAndAfterClass.class.getMethod("runMijAfter"),
-                JasmineTestRunnerBeforeAndAfterClass.class.getMethod("runMijAfterOok", RhinoContext.class)
+                JasmineTestRunnerBeforeAndAfterClass.class.getMethod("runMijAfterOok", Backend.class)
         );
     }
 }

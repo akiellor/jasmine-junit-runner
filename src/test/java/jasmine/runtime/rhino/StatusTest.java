@@ -1,5 +1,8 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
+import jasmine.runtime.Notifier;
+import jasmine.runtime.rhino.It;
+import jasmine.runtime.rhino.Status;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
