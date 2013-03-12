@@ -18,9 +18,14 @@ public class RhinoRuntime implements Backend {
             "js/lib/env.utils.js"
     ));
 
+    private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
+            "js/lib/jasmine-1.3.1/jasmine.js",
+            "js/lib/jasmine.delegator_reporter.js"
+    ));
+
     private final Runner runner;
 
-    public RhinoRuntime(Configuration configuration, Description rootDescription, List<String> jasmineLibrary){
+    public RhinoRuntime(Configuration configuration, Description rootDescription){
         RhinoContext context = new RhinoContext(configuration.getJavascriptPath());
 
         List<String> resources = new ArrayList<String>();
@@ -30,7 +35,7 @@ public class RhinoRuntime implements Backend {
         } else {
             resources.add("js/lib/no-env.js");
         }
-        resources.addAll(jasmineLibrary);
+        resources.addAll(JASMINE_LIBRARY);
         resources.addAll(configuration.sources());
         resources.addAll(configuration.specs());
 
