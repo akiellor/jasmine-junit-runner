@@ -1,6 +1,6 @@
 package jasmine.junit;
 
-import jasmine.runtime.rhino.It;
+import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -18,42 +18,42 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JUnitNotifierTest {
     @Mock RunNotifier runNotifier;
-    @Mock It it;
+    @Mock RhinoIt rhinoIt;
     @Mock Exception exception;
 
     @Test
     public void shouldDelegateToJunitRunNotifierForStarted() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(rhinoIt.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
 
-        new JUnitNotifier(runNotifier).started(it);
+        new JUnitNotifier(runNotifier).started(rhinoIt);
 
         verify(runNotifier).fireTestStarted(Description.createTestDescription("Object", "test"));
     }
 
     @Test
     public void shouldDelegateToJunitRunNotifierForPass() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(rhinoIt.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
 
-        new JUnitNotifier(runNotifier).pass(it);
+        new JUnitNotifier(runNotifier).pass(rhinoIt);
 
         verify(runNotifier).fireTestFinished(Description.createTestDescription("Object", "test"));
     }
 
     @Test
     public void shouldDelegateToJunitRunNotifierForSkipped() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(rhinoIt.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
 
-        new JUnitNotifier(runNotifier).skipped(it);
+        new JUnitNotifier(runNotifier).skipped(rhinoIt);
 
         verify(runNotifier).fireTestIgnored(Description.createTestDescription("Object", "test"));
     }
 
     @Test
     public void shouldDelegateToRunNotifierForFail() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
-        when(it.getFirstFailedStacktrace()).thenReturn(exception);
+        when(rhinoIt.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(rhinoIt.getFirstFailedStacktrace()).thenReturn(exception);
 
-        new JUnitNotifier(runNotifier).fail(it);
+        new JUnitNotifier(runNotifier).fail(rhinoIt);
 
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
         verify(runNotifier).fireTestFailure(captor.capture());

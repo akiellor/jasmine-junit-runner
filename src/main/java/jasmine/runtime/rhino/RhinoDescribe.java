@@ -15,23 +15,23 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Describe {
+public class RhinoDescribe {
     private final NativeObject object;
     private final RhinoContext context;
     private Supplier<Description> description;
 
-    public Describe(final NativeObject object, RhinoContext context){
+    public RhinoDescribe(final NativeObject object, RhinoContext context){
         this.object = object;
         this.context = context;
 
         this.description = Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
                 Description description = Description.createSuiteDescription(String.valueOf(object.get("description")), object);
-                for(It it : getIts()){
-                    description.addChild(it.getDescription());
+                for(RhinoIt rhinoIt : getIts()){
+                    description.addChild(rhinoIt.getDescription());
                 }
-                for(Describe describe : getDescribes()){
-                    description.addChild(describe.getDescription());
+                for(RhinoDescribe rhinoDescribe : getDescribes()){
+                    description.addChild(rhinoDescribe.getDescription());
                 }
                 return description;
             }
@@ -42,35 +42,35 @@ public class Describe {
         return description.get();
     }
 
-    public List<Describe> getDescribes() {
+    public List<RhinoDescribe> getDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
-        List<Describe> describes = newArrayList();
+        List<RhinoDescribe> rhinoDescribes = newArrayList();
         for(Object id : suites.getIndexIds()){
-            describes.add(new Describe((NativeObject)suites.get(id), context));
+            rhinoDescribes.add(new RhinoDescribe((NativeObject)suites.get(id), context));
         }
-        return describes;
+        return rhinoDescribes;
     }
 
-    public List<It> getIts() {
+    public List<RhinoIt> getIts() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "specs");
-        List<It> its = newArrayList();
+        List<RhinoIt> rhinoIts = newArrayList();
         for(Object id : suites.getIndexIds()){
-            its.add(new It((NativeObject) suites.get(id), context));
+            rhinoIts.add(new RhinoIt((NativeObject) suites.get(id), context));
         }
-        return its;
+        return rhinoIts;
     }
 
     public boolean isBoundTo(RhinoContext context) {
         return this.context.equals(context);
     }
 
-    public Describe bind(RhinoContext newContext) {
-        return new Describe(object, newContext);
+    public RhinoDescribe bind(RhinoContext newContext) {
+        return new RhinoDescribe(object, newContext);
     }
 
-    public List<It> getAllIts() {
-        Iterable<It> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<It>>() {
-            @Override public List<It> apply(Describe input) {
+    public List<RhinoIt> getAllIts() {
+        Iterable<RhinoIt> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
+            @Override public List<RhinoIt> apply(RhinoDescribe input) {
                 return input.getAllIts();
             }
         }));
@@ -83,10 +83,10 @@ public class Describe {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Describe describe = (Describe) o;
+        RhinoDescribe rhinoDescribe = (RhinoDescribe) o;
 
-        if (context != null ? !context.equals(describe.context) : describe.context != null) return false;
-        if (object != null ? !object.equals(describe.object) : describe.object != null) return false;
+        if (context != null ? !context.equals(rhinoDescribe.context) : rhinoDescribe.context != null) return false;
+        if (object != null ? !object.equals(rhinoDescribe.object) : rhinoDescribe.object != null) return false;
 
         return true;
     }

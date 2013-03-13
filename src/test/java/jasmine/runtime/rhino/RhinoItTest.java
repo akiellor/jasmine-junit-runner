@@ -1,7 +1,6 @@
 package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
-import jasmine.runtime.rhino.It;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItTest {
+public class RhinoItTest {
     @Mock NativeObject object;
     @Mock RhinoContext context;
 
@@ -24,8 +23,8 @@ public class ItTest {
         NativeObject jsSpec2 = mock(NativeObject.class);
         when(jsSpec2.get("description", jsSpec2)).thenReturn("green");
 
-        It spec1 = new It(jsSpec1, context);
-        It spec2 = new It(jsSpec2, context);
+        RhinoIt spec1 = new RhinoIt(jsSpec1, context);
+        RhinoIt spec2 = new RhinoIt(jsSpec2, context);
 
         assertThat(spec1.getDescription()).isNotEqualTo(spec2.getDescription());
     }
@@ -35,10 +34,10 @@ public class ItTest {
         RhinoContext context1 = mock(RhinoContext.class);
         RhinoContext context2 = mock(RhinoContext.class);
 
-        It it = new It(object, context1);
+        RhinoIt rhinoIt = new RhinoIt(object, context1);
 
-        assertThat(it.isBoundTo(context1)).isTrue();
-        assertThat(it.isBoundTo(context2)).isFalse();
+        assertThat(rhinoIt.isBoundTo(context1)).isTrue();
+        assertThat(rhinoIt.isBoundTo(context2)).isFalse();
     }
 
     @Test
@@ -46,14 +45,14 @@ public class ItTest {
         RhinoContext context1 = mock(RhinoContext.class);
         RhinoContext context2 = mock(RhinoContext.class);
 
-        It it = new It(object, context1);
+        RhinoIt rhinoIt = new RhinoIt(object, context1);
 
-        assertThat(it.isBoundTo(context1)).isTrue();
-        assertThat(it.isBoundTo(context2)).isFalse();
+        assertThat(rhinoIt.isBoundTo(context1)).isTrue();
+        assertThat(rhinoIt.isBoundTo(context2)).isFalse();
 
-        it = it.bind(context2);
+        rhinoIt = rhinoIt.bind(context2);
 
-        assertThat(it.isBoundTo(context1)).isFalse();
-        assertThat(it.isBoundTo(context2)).isTrue();
+        assertThat(rhinoIt.isBoundTo(context1)).isFalse();
+        assertThat(rhinoIt.isBoundTo(context2)).isTrue();
     }
 }

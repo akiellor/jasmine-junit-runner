@@ -1,10 +1,8 @@
-package jasmine.generator;
+package jasmine.runtime.webdriver;
 
-import jasmine.generator.resources.FileResource;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 public class HtmlPageRunner {
     private enum Placeholders {
@@ -22,10 +20,10 @@ public class HtmlPageRunner {
         }
     }
 
-    private final List<FileResource> javascriptFiles;
-    private final List<FileResource> cssFiles;
+    private final Iterable<String> javascriptFiles;
+    private final Iterable<String> cssFiles;
 
-    public HtmlPageRunner(List<FileResource> javascriptFiles, List<FileResource> cssFiles){
+    public HtmlPageRunner(Iterable<String> javascriptFiles, Iterable<String> cssFiles){
         this.javascriptFiles = javascriptFiles;
         this.cssFiles = cssFiles;
     }
@@ -38,18 +36,18 @@ public class HtmlPageRunner {
 
     private String getCssFileIncludes() {
         StringBuilder sourceFileIncludes = new StringBuilder();
-        for (FileResource sourceFile : cssFiles) {
-            sourceFileIncludes.append("\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"" +
-                                           "file://" + sourceFile.getURL().getFile() + "\">\r\n");
+        for (String sourceFile : cssFiles) {
+            sourceFileIncludes.append("\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"/vfs/"
+                                           + sourceFile + "\">\r\n");
         }
         return sourceFileIncludes.toString();
     }
 
     private String getJavascriptFileIncludes() {
         StringBuilder sourceFileIncludes = new StringBuilder();
-        for (FileResource sourceFile : javascriptFiles) {
-            sourceFileIncludes.append("\t\t<script type='text/javascript' src='"
-                                        + "file://" + sourceFile.getURL().getFile() + "'></script>\r\n");
+        for (String sourceFile : javascriptFiles) {
+            sourceFileIncludes.append("\t\t<script type='text/javascript' src='/vfs/"
+                                        + sourceFile + "'></script>\r\n");
         }
         return sourceFileIncludes.toString();
     }
@@ -60,7 +58,7 @@ public class HtmlPageRunner {
                     Thread
                             .currentThread()
                             .getContextClassLoader()
-                            .getResourceAsStream("js/lib/specRunner.tpl")
+                            .getResourceAsStream("jasmine/runtime/webdriver/specRunner.tpl")
             );
         } catch (NullPointerException e) {
             throw new IllegalStateException("spec runner template file not found!");

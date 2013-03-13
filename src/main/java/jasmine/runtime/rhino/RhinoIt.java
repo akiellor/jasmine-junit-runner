@@ -3,6 +3,7 @@ package jasmine.runtime.rhino;
 import jasmine.rhino.RhinoContext;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import jasmine.runtime.It;
 import jasmine.runtime.Notifier;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
@@ -10,14 +11,14 @@ import org.mozilla.javascript.NativeObject;
 
 import static org.junit.Assert.assertTrue;
 
-public class It {
+public class RhinoIt implements It {
     private static final int SLEEP_TIME_MILISECONDS = 50;
 
     private final Supplier<Description> description;
     private final RhinoContext context;
     private final NativeObject spec;
 
-    It(final NativeObject spec, RhinoContext context) {
+    RhinoIt(final NativeObject spec, RhinoContext context) {
         this(spec, context, Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
                 final String descriptionString = String.valueOf(spec.get("description", spec));
@@ -26,7 +27,7 @@ public class It {
         }));
     }
 
-    private It(NativeObject spec, RhinoContext context, Supplier<Description> description) {
+    private RhinoIt(NativeObject spec, RhinoContext context, Supplier<Description> description) {
         this.spec = spec;
         this.context = context;
         this.description = description;
@@ -53,8 +54,8 @@ public class It {
         return this.context.equals(context);
     }
 
-    public It bind(RhinoContext context) {
-        return new It(this.spec, context, this.description);
+    public RhinoIt bind(RhinoContext context) {
+        return new RhinoIt(this.spec, context, this.description);
     }
 
     public Throwable getFirstFailedStacktrace() {

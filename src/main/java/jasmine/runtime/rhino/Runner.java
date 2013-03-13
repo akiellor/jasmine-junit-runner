@@ -32,18 +32,18 @@ public class Runner {
         this.executor = Executors.newFixedThreadPool(10);
         this.description = Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
-                for(Describe describe : getDescribes()){
-                    description.addChild(describe.getDescription());
+                for(RhinoDescribe rhinoDescribe : getDescribes()){
+                    description.addChild(rhinoDescribe.getDescription());
                 }
                 return description;
             }
         });
     }
 
-    public List<Describe> getDescribes(){
-        List<Describe> allDescribes = getAllDescribes();
-        allDescribes.removeAll(getChildDescribes());
-        return allDescribes;
+    public List<RhinoDescribe> getDescribes(){
+        List<RhinoDescribe> allRhinoDescribes = getAllDescribes();
+        allRhinoDescribes.removeAll(getChildDescribes());
+        return allRhinoDescribes;
     }
 
     public Description getDescription(){
@@ -51,13 +51,13 @@ public class Runner {
     }
 
     public void execute(final Notifier notifier){
-        List<It> its = getAllIts();
-        if(its.isEmpty()) { notifier.nothingToRun(); return; }
+        List<RhinoIt> rhinoIts = getAllIts();
+        if(rhinoIts.isEmpty()) { notifier.nothingToRun(); return; }
 
-        Futures.await(Collections2.transform(its, new Function<It, Future<It>>() {
-            @Override public Future<It> apply(final It spec) {
-                return executor.submit(new Callable<It>() {
-                    @Override public It call() throws Exception {
+        Futures.await(Collections2.transform(rhinoIts, new Function<RhinoIt, Future<RhinoIt>>() {
+            @Override public Future<RhinoIt> apply(final RhinoIt spec) {
+                return executor.submit(new Callable<RhinoIt>() {
+                    @Override public RhinoIt call() throws Exception {
                         RhinoContext fork = context.fork();
 
                         spec.bind(fork).execute(notifier);
@@ -70,28 +70,28 @@ public class Runner {
 
     }
 
-    public List<It> getAllIts() {
-        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<It>>() {
-            @Override public List<It> apply(Describe input) {
+    public List<RhinoIt> getAllIts() {
+        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
+            @Override public List<RhinoIt> apply(RhinoDescribe input) {
                 return input.getAllIts();
             }
         })));
     }
 
-    private List<Describe> getChildDescribes(){
-        return newArrayList(Iterables.concat(Iterables.transform(getAllDescribes(), new Function<Describe, List<Describe>>() {
-            @Override public List<Describe> apply(Describe input) {
+    private List<RhinoDescribe> getChildDescribes(){
+        return newArrayList(Iterables.concat(Iterables.transform(getAllDescribes(), new Function<RhinoDescribe, List<RhinoDescribe>>() {
+            @Override public List<RhinoDescribe> apply(RhinoDescribe input) {
                 return input.getDescribes();
             }
         })));
     }
 
-    private List<Describe> getAllDescribes() {
+    private List<RhinoDescribe> getAllDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
-        List<Describe> describes = newArrayList();
+        List<RhinoDescribe> rhinoDescribes = newArrayList();
         for(Object id : suites.getIndexIds()){
-            describes.add(new Describe((NativeObject)suites.get(id), context));
+            rhinoDescribes.add(new RhinoDescribe((NativeObject)suites.get(id), context));
         }
-        return describes;
+        return rhinoDescribes;
     }
 }

@@ -6,14 +6,11 @@ import jasmine.generator.resources.FileResource;
 import jasmine.rhino.vfs.VirtualFileSystem;
 import jasmine.runtime.Configuration;
 import jasmine.utils.Exceptions;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.reflections.vfs.Vfs;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +31,7 @@ public class JasmineSpecRunnerGenerator {
         });
 	}
 
-	public void generate() {
+    public void generate(OutputStream outputStream) {
         List<FileResource> javascriptFiles = new ArrayList<FileResource>();
 
         javascriptFiles.addAll(Arrays.asList(
@@ -53,11 +50,19 @@ public class JasmineSpecRunnerGenerator {
 
         HtmlPageRunner htmlPageRunner = new HtmlPageRunner(javascriptFiles, cssFiles);
         try {
-			FileUtils.writeStringToFile(new File(configuration.htmlRunnerOutputDir(), outputFileName), htmlPageRunner.render());
-		} catch (IOException e) {
-			throw new RuntimeException("unable to write spec runner contents to destination", e);
-		}
-	}
+            IOUtils.copy(new ByteArrayInputStream(htmlPageRunner.render().getBytes()), outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException("unable to write spec runner contents to destination", e);
+        }
+    }
+
+    public void generate() {
+        try {
+            generate(new FileOutputStream(new File(configuration.htmlRunnerOutputDir(), outputFileName)));
+        } catch (FileNotFoundException e) {
+            throw Exceptions.unchecked(e);
+        }
+    }
 
     private File findAndEnsureOnDisk(String source) {
         Vfs.File file = virtualFileSystem.find(source);
