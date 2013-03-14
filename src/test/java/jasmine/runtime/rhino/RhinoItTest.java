@@ -19,25 +19,6 @@ public class RhinoItTest {
     @Mock RhinoContext context;
 
     @Test
-    public void shouldSpecsWithTheSameNameShouldNotHaveTheSameDescription() {
-        NativeObject suite = mock(NativeObject.class);
-        when(suite.get("id", suite)).thenReturn(0);
-        NativeObject jsSpec1 = mock(NativeObject.class);
-        when(jsSpec1.get("id", jsSpec1)).thenReturn(0);
-        when(jsSpec1.get("description", jsSpec1)).thenReturn("green");
-        when(jsSpec1.get("suite", jsSpec1)).thenReturn(suite);
-        NativeObject jsSpec2 = mock(NativeObject.class);
-        when(jsSpec2.get("id", jsSpec2)).thenReturn(1);
-        when(jsSpec2.get("description", jsSpec2)).thenReturn("green");
-        when(jsSpec2.get("suite", jsSpec2)).thenReturn(suite);
-
-        RhinoIt spec1 = new RhinoIt(jsSpec1, context);
-        RhinoIt spec2 = new RhinoIt(jsSpec2, context);
-
-        assertThat(spec1.getDescription()).isNotEqualTo(spec2.getDescription());
-    }
-
-    @Test
     public void shouldHaveId() {
         NativeObject suite = mock(NativeObject.class);
         when(suite.get("id", suite)).thenReturn(0);

@@ -1,7 +1,8 @@
 package jasmine.junit;
 
-import jasmine.runtime.rhino.RhinoIt;
 import jasmine.runtime.Notifier;
+import jasmine.runtime.rhino.RhinoIt;
+import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
@@ -13,22 +14,26 @@ public class JUnitNotifier implements Notifier {
     }
 
     @Override public void pass(RhinoIt it) {
-        runNotifier.fireTestFinished(it.getDescription());
+        runNotifier.fireTestFinished(toDescription(it));
     }
 
     @Override public void fail(RhinoIt it) {
-        runNotifier.fireTestFailure(new Failure(it.getDescription(), it.getFirstFailedStacktrace()));
+        runNotifier.fireTestFailure(new Failure(toDescription(it), it.getFirstFailedStacktrace()));
     }
 
     @Override public void skipped(RhinoIt it) {
-        runNotifier.fireTestIgnored(it.getDescription());
+        runNotifier.fireTestIgnored(toDescription(it));
     }
 
     @Override public void started(RhinoIt it) {
-        runNotifier.fireTestStarted(it.getDescription());
+        runNotifier.fireTestStarted(toDescription(it));
     }
 
     @Override public void nothingToRun() {
         throw new RuntimeException("No specs to run.");
+    }
+
+    private Description toDescription(RhinoIt it) {
+        return Description.createSuiteDescription(it.getStringDescription(), it.getId());
     }
 }

@@ -29,7 +29,7 @@ public class RhinoDescribeTest {
         RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getIts()).hasSize(1);
-        assertThat(describe.getIts().iterator().next().getDescription().getDisplayName()).isEqualTo("CHILD");
+        assertThat(describe.getIts().iterator().next().getStringDescription()).isEqualTo("CHILD");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class RhinoDescribeTest {
         RhinoDescribe describe = new RhinoDescribe(object, context);
         Collection<String> its = Collections2.transform(describe.getAllIts(), new Function<RhinoIt, String>() {
             @Override public String apply(RhinoIt input) {
-                return input.getDescription().getDisplayName();
+                return input.getStringDescription();
             }
         });
 

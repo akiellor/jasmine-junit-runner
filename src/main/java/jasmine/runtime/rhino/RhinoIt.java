@@ -3,7 +3,6 @@ package jasmine.runtime.rhino;
 import jasmine.rhino.RhinoContext;
 import jasmine.runtime.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
@@ -38,10 +37,6 @@ public class RhinoIt implements It {
 
     @Override public void accept(JasmineVisitor visitor) {
         visitor.visit(this);
-    }
-
-    public Description getDescription() {
-        return Description.createSuiteDescription(getStringDescription(), getId());
     }
 
     public Status getSpecResultStatus() {

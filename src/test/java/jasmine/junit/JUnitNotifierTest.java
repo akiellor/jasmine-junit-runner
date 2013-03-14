@@ -23,34 +23,38 @@ public class JUnitNotifierTest {
 
     @Test
     public void shouldDelegateToJunitRunNotifierForStarted() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getId()).thenReturn("test");
 
         new JUnitNotifier(runNotifier).started(it);
 
-        verify(runNotifier).fireTestStarted(Description.createTestDescription("Object", "test"));
+        verify(runNotifier).fireTestStarted(Description.createSuiteDescription("Object", "test"));
     }
 
     @Test
     public void shouldDelegateToJunitRunNotifierForPass() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getId()).thenReturn("test");
 
         new JUnitNotifier(runNotifier).pass(it);
 
-        verify(runNotifier).fireTestFinished(Description.createTestDescription("Object", "test"));
+        verify(runNotifier).fireTestFinished(Description.createSuiteDescription("Object", "test"));
     }
 
     @Test
     public void shouldDelegateToJunitRunNotifierForSkipped() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getId()).thenReturn("test");
 
         new JUnitNotifier(runNotifier).skipped(it);
 
-        verify(runNotifier).fireTestIgnored(Description.createTestDescription("Object", "test"));
+        verify(runNotifier).fireTestIgnored(Description.createSuiteDescription("Object", "test"));
     }
 
     @Test
     public void shouldDelegateToRunNotifierForFail() {
-        when(it.getDescription()).thenReturn(Description.createTestDescription("Object", "test"));
+        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getId()).thenReturn("test");
         when(it.getFirstFailedStacktrace()).thenReturn(exception);
 
         new JUnitNotifier(runNotifier).fail(it);
@@ -58,7 +62,7 @@ public class JUnitNotifierTest {
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
         verify(runNotifier).fireTestFailure(captor.capture());
         Failure failure = captor.getValue();
-        assertThat(failure.getDescription()).isEqualTo(Description.createTestDescription("Object", "test"));
+        assertThat(failure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
         assertThat(failure.getException()).isEqualTo(exception);
     }
 
