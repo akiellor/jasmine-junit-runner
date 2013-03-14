@@ -1,7 +1,6 @@
 package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
-import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -84,5 +83,18 @@ public class RhinoItTest {
 
         assertThat(it.isBoundTo(context1)).isFalse();
         assertThat(it.isBoundTo(context2)).isTrue();
+    }
+
+    @Test
+    public void shouldHaveSuite() {
+        NativeObject suite = mock(NativeObject.class);
+        when(suite.get("id", suite)).thenReturn(0);
+        NativeObject spec = mock(NativeObject.class);
+        when(spec.get("id", spec)).thenReturn(1);
+        when(spec.get("suite", spec)).thenReturn(suite);
+
+        RhinoIt it = new RhinoIt(spec, context);
+
+        assertThat(it.getParent()).isEqualTo(new RhinoDescribe(suite, context));
     }
 }

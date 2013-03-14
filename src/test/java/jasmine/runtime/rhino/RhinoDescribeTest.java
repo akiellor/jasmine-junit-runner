@@ -1,6 +1,7 @@
 package jasmine.runtime.rhino;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import jasmine.rhino.RhinoContext;
 import org.junit.Test;
@@ -11,6 +12,8 @@ import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class RhinoDescribeTest {
     @Test
@@ -173,5 +176,28 @@ public class RhinoDescribeTest {
         RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getStringDescription()).isEqualTo("ROOT");
+    }
+
+    @Test
+    public void shouldHaveParentDescribe() {
+        RhinoContext context = mock(RhinoContext.class);
+        NativeObject parent = mock(NativeObject.class);
+        NativeObject suite = mock(NativeObject.class);
+        when(suite.get("parentSuite", suite)).thenReturn(parent);
+
+        RhinoDescribe describe = new RhinoDescribe(suite, context);
+
+        assertThat(describe.getParent()).isEqualTo(Optional.of(new RhinoDescribe(parent, context)));
+    }
+
+    @Test
+    public void shouldNotHaveParentDescribe() {
+        RhinoContext context = mock(RhinoContext.class);
+        NativeObject suite = mock(NativeObject.class);
+        when(suite.get("parentSuite", suite)).thenReturn(null);
+
+        RhinoDescribe describe = new RhinoDescribe(suite, context);
+
+        assertThat(describe.getParent()).isEqualTo(Optional.absent());
     }
 }

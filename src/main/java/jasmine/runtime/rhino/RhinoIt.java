@@ -1,10 +1,7 @@
 package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
-import jasmine.runtime.It;
-import jasmine.runtime.JasmineSpecFailureException;
-import jasmine.runtime.Notifier;
-import jasmine.runtime.Status;
+import jasmine.runtime.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
@@ -32,6 +29,11 @@ public class RhinoIt implements It {
 
     @Override public String getStringDescription() {
         return String.valueOf(spec.get("description", spec));
+    }
+
+    @Override public Describe getParent() {
+        NativeObject suite = (NativeObject) spec.get("suite", spec);
+        return new RhinoDescribe(suite, context);
     }
 
     public Description getDescription() {

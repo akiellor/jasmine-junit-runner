@@ -1,6 +1,7 @@
 package jasmine.runtime.rhino;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -99,5 +100,14 @@ public class RhinoDescribe implements Describe {
 
     @Override public String getStringDescription() {
         return String.valueOf(object.get("description", object));
+    }
+
+    @Override public Optional<Describe> getParent() {
+        NativeObject parentSuite = (NativeObject) object.get("parentSuite", object);
+        if(parentSuite == null){
+            return Optional.absent();
+        }else{
+            return Optional.<Describe>of(new RhinoDescribe(parentSuite, context));
+        }
     }
 }
