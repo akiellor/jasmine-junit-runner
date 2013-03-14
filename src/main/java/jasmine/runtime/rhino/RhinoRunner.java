@@ -1,12 +1,14 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import jasmine.rhino.RhinoContext;
-import jasmine.runtime.rhino.RhinoDescribe;
-import jasmine.runtime.rhino.RhinoIt;
+import jasmine.runtime.Describe;
+import jasmine.runtime.It;
+import jasmine.runtime.JasmineVisitor;
+import jasmine.runtime.Notifier;
 import jasmine.utils.Futures;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
@@ -22,14 +24,14 @@ import java.util.concurrent.Future;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Runner {
+public class RhinoRunner {
     private final NativeObject object;
     private final RhinoContext context;
     private final Description root;
     private final ExecutorService executor;
     private boolean descriptionInitialized = false;
 
-    public Runner(NativeObject object, RhinoContext context, final Description root) {
+    public RhinoRunner(NativeObject object, RhinoContext context, final Description root) {
         this.object = object;
         this.context = context;
         this.root = root;

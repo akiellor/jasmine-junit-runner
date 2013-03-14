@@ -1,6 +1,7 @@
 package jasmine.runtime;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoRunner;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ public class RunnerTest {
                 "var object = {suites: function(){ return [{parentSuite: null, id: 1, description: 'CHILD', specs: function(){ return [];}, suites: function() { return []; }}]}}; object;"
         );
 
-        Runner describe = new Runner(object, context, Description.createSuiteDescription("ROOT"));
+        RhinoRunner describe = new RhinoRunner(object, context, Description.createSuiteDescription("ROOT"));
 
         assertThat(describe.getDescription().getChildren()).hasSize(1);
         assertThat(describe.getDescription().getChildren().get(0).getDisplayName()).isEqualTo("CHILD");
@@ -35,7 +36,7 @@ public class RunnerTest {
                 "var object = {suites: function(){ return [{parentSuite: null, description: 'CHILD', specs: function(){ return [];}, suites: function() { return []; }}]}}; object;"
         );
 
-        Runner describe = new Runner(object, context, Description.createSuiteDescription("ROOT"));
+        RhinoRunner describe = new RhinoRunner(object, context, Description.createSuiteDescription("ROOT"));
 
         Description first = describe.getDescription();
         Description second = describe.getDescription();
@@ -50,7 +51,7 @@ public class RunnerTest {
                 "var object = {suites: function(){ return [];}}; object;"
         );
 
-        Runner runner = new Runner(object, context, Description.createSuiteDescription("ROOT"));
+        RhinoRunner runner = new RhinoRunner(object, context, Description.createSuiteDescription("ROOT"));
 
         runner.execute(notifier);
 

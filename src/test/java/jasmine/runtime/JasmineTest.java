@@ -1,6 +1,7 @@
 package jasmine.runtime;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -13,7 +14,7 @@ import static org.mockito.Mockito.inOrder;
 public class JasmineTest {
     @Mock Configuration configuration;
     @Mock RhinoContext context;
-    @Mock Runner runner;
+    @Mock RhinoRunner runner;
     @Mock Hooks hooks;
     @Mock Notifier notifier;
 

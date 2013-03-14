@@ -1,6 +1,7 @@
 package jasmine.runtime;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoRunner;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
 
@@ -22,17 +23,17 @@ public class Jasmine {
 
     private final Configuration configuration;
     private final RhinoContext context;
-    private final Runner runner;
+    private final RhinoRunner runner;
 
 
     public Jasmine(Configuration configuration, Description rootDescription) {
         this.configuration = configuration;
         this.context = setUpRhinoScope();
         NativeObject baseSuites = (NativeObject) context.evalJS("jasmine.getEnv().currentRunner()");
-        this.runner = new Runner(baseSuites, context, rootDescription);
+        this.runner = new RhinoRunner(baseSuites, context, rootDescription);
     }
 
-    protected Jasmine(Configuration configuration, RhinoContext context, Runner runner){
+    protected Jasmine(Configuration configuration, RhinoContext context, RhinoRunner runner){
         this.configuration = configuration;
         this.context = context;
         this.runner = runner;
