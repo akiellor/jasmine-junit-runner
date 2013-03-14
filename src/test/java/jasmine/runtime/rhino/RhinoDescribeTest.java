@@ -1,9 +1,8 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
-import jasmine.rhino.RhinoContext;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import jasmine.runtime.rhino.RhinoIt;
+import jasmine.rhino.RhinoContext;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
@@ -13,13 +12,13 @@ import java.util.Collection;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class DescribeTest {
+public class RhinoDescribeTest {
     @Test
     public void shouldHaveDescription() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS("var object = {description: 'DESCRIPTION', suites: function(){ return []; }, specs: function(){ return [];}}; object;");
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getDescription().getDisplayName()).isEqualTo("DESCRIPTION");
     }
@@ -29,7 +28,7 @@ public class DescribeTest {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS("var object = {description: 'DESCRIPTION', suites: function(){ return []; }, specs: function(){ return [];}}; object;");
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         Description first = describe.getDescription();
         Description second = describe.getDescription();
@@ -44,7 +43,7 @@ public class DescribeTest {
                 "var object = {suites: function(){ return [{description: 'CHILD', suites: function(){ return []; }, specs: function(){ return [];}}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getDescribes()).hasSize(1);
         assertThat(describe.getDescribes().iterator().next().getDescription().getDisplayName()).isEqualTo("CHILD");
@@ -57,7 +56,7 @@ public class DescribeTest {
                 "var object = {description: 'ROOT', specs: function() { return []; }, suites: function(){ return [{description: 'CHILD', suites: function(){ return []; }, specs: function(){ return [];}}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getDescription().getChildren()).hasSize(1);
         assertThat(describe.getDescription().getChildren().get(0).getDisplayName()).isEqualTo("CHILD");
@@ -70,7 +69,7 @@ public class DescribeTest {
                 "var object = {description: 'ROOT', suites: function(){ return [];}, specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD'}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getDescription().getChildren()).hasSize(1);
         assertThat(describe.getDescription().getChildren().get(0).getDisplayName()).isEqualTo("CHILD");
@@ -83,7 +82,7 @@ public class DescribeTest {
                 "var object = {specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD'}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.getIts()).hasSize(1);
         assertThat(describe.getIts().iterator().next().getDescription().getDisplayName()).isEqualTo("CHILD");
@@ -96,7 +95,7 @@ public class DescribeTest {
                 "var object = {specs: function(){ return [{description: 'CHILD'}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         assertThat(describe.isBoundTo(context)).isTrue();
         assertThat(describe.isBoundTo(context.fork())).isFalse();
@@ -109,10 +108,10 @@ public class DescribeTest {
                 "var object = {suites: function(){ return [{description: 'CHILD'}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
 
         RhinoContext newContext = context.fork();
-        Describe newDescribe = describe.bind(newContext);
+        RhinoDescribe newDescribe = describe.bind(newContext);
 
         assertThat(newDescribe.isBoundTo(newContext)).isTrue();
         assertThat(newDescribe.getDescribes().iterator().next().isBoundTo(newContext)).isTrue();
@@ -125,7 +124,7 @@ public class DescribeTest {
                 "var object = {specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD IT'}]; }, suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return [{id: 1, suite: {id: 2}, description: 'GRANDCHILD IT'}]; }}]}}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
         Collection<String> its = Collections2.transform(describe.getAllIts(), new Function<RhinoIt, String>() {
             @Override public String apply(RhinoIt input) {
                 return input.getDescription().getDisplayName();
@@ -142,7 +141,7 @@ public class DescribeTest {
                 "var object = {description: 'ROOT', suites: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return []; }}]}, specs: function(){ return [{id: 1, suite: {id: 2}, description: 'CHILD IT'}]; }}; object;"
         );
 
-        Describe describe = new Describe(object, context);
+        RhinoDescribe describe = new RhinoDescribe(object, context);
         Collection<String> its = newArrayList(Collections2.transform(describe.getDescription().getChildren(), new Function<Description, String>() {
             @Override public String apply(Description input) {
                 return input.getDisplayName();
@@ -150,5 +149,29 @@ public class DescribeTest {
         }));
 
         assertThat(its).isEqualTo(newArrayList("CHILD IT", "CHILD DESCRIBE"));
+    }
+
+    @Test
+    public void shouldHaveAnId() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {id: \"1\", description: 'ROOT', suites: function(){ return [];}, specs: function(){ return []; }}; object;"
+        );
+
+        RhinoDescribe describe = new RhinoDescribe(object, context);
+
+        assertThat(describe.getId()).isEqualTo("1");
+    }
+
+    @Test
+    public void shouldHaveAStringDescription() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {id: \"1\", description: 'ROOT', suites: function(){ return [];}, specs: function(){ return []; }}; object;"
+        );
+
+        RhinoDescribe describe = new RhinoDescribe(object, context);
+
+        assertThat(describe.getStringDescription()).isEqualTo("ROOT");
     }
 }

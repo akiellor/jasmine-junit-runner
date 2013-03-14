@@ -1,4 +1,4 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
 import jasmine.runtime.rhino.RhinoIt;

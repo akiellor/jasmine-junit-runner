@@ -1,6 +1,7 @@
 package jasmine.runtime;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoDescribe;
 import jasmine.runtime.rhino.RhinoIt;
 import jasmine.utils.Futures;
 import com.google.common.base.Function;
@@ -32,7 +33,7 @@ public class Runner {
         this.executor = Executors.newFixedThreadPool(10);
         this.description = Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
-                for(Describe describe : getDescribes()){
+                for(RhinoDescribe describe : getDescribes()){
                     description.addChild(describe.getDescription());
                 }
                 return description;
@@ -40,8 +41,8 @@ public class Runner {
         });
     }
 
-    public List<Describe> getDescribes(){
-        List<Describe> allDescribes = getAllDescribes();
+    public List<RhinoDescribe> getDescribes(){
+        List<RhinoDescribe> allDescribes = getAllDescribes();
         allDescribes.removeAll(getChildDescribes());
         return allDescribes;
     }
@@ -71,26 +72,26 @@ public class Runner {
     }
 
     public List<RhinoIt> getAllIts() {
-        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<RhinoIt>>() {
-            @Override public List<RhinoIt> apply(Describe input) {
+        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
+            @Override public List<RhinoIt> apply(RhinoDescribe input) {
                 return input.getAllIts();
             }
         })));
     }
 
-    private List<Describe> getChildDescribes(){
-        return newArrayList(Iterables.concat(Iterables.transform(getAllDescribes(), new Function<Describe, List<Describe>>() {
-            @Override public List<Describe> apply(Describe input) {
+    private List<RhinoDescribe> getChildDescribes(){
+        return newArrayList(Iterables.concat(Iterables.transform(getAllDescribes(), new Function<RhinoDescribe, List<RhinoDescribe>>() {
+            @Override public List<RhinoDescribe> apply(RhinoDescribe input) {
                 return input.getDescribes();
             }
         })));
     }
 
-    private List<Describe> getAllDescribes() {
+    private List<RhinoDescribe> getAllDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
-        List<Describe> describes = newArrayList();
+        List<RhinoDescribe> describes = newArrayList();
         for(Object id : suites.getIndexIds()){
-            describes.add(new Describe((NativeObject)suites.get(id), context));
+            describes.add(new RhinoDescribe((NativeObject)suites.get(id), context));
         }
         return describes;
     }
