@@ -28,19 +28,6 @@ public class RhinoDescribe implements Describe {
         this.context = context;
     }
 
-    public Description getDescription(){
-        if(description == null){
-            description = Description.createSuiteDescription(getStringDescription(), getId());
-            for(RhinoIt it : getIts()){
-                description.addChild(it.getDescription());
-            }
-            for(RhinoDescribe describe : getDescribes()){
-                description.addChild(describe.getDescription());
-            }
-        }
-        return description;
-    }
-
     public List<RhinoDescribe> getDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
         List<RhinoDescribe> describes = newArrayList();
