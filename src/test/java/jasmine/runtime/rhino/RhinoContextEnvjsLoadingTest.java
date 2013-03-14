@@ -1,6 +1,7 @@
-package jasmine.rhino;
+package jasmine.runtime.rhino;
 
 import jasmine.runtime.rhino.RhinoBackend;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Test;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.NativeObject;

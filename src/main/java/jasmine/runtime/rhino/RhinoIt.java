@@ -1,6 +1,5 @@
 package jasmine.runtime.rhino;
 
-import jasmine.rhino.RhinoContext;
 import jasmine.runtime.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mozilla.javascript.NativeArray;

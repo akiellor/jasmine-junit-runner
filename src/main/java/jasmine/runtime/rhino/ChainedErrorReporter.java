@@ -1,4 +1,4 @@
-package jasmine.rhino;
+package jasmine.runtime.rhino;
 
 import jasmine.utils.Exceptions;
 import org.mozilla.javascript.ErrorReporter;

@@ -4,7 +4,7 @@ import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;
 import jasmine.runtime.rhino.RhinoBackend;
 import jasmine.runtime.Notifier;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.RunNotifier;

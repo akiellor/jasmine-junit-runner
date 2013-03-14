@@ -1,7 +1,7 @@
 package jasmine.junit.classes;
 
 import jasmine.junit.JasmineSuite;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.After;
 import org.junit.Before;
 

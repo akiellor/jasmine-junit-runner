@@ -1,4 +1,4 @@
-package jasmine.rhino.vfs;
+package jasmine.runtime.vfs;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

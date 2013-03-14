@@ -1,6 +1,6 @@
 package jasmine.junit.classes;
 
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Before;
 
 import java.lang.reflect.Method;

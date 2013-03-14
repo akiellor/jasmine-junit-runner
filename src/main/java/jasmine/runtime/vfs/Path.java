@@ -1,4 +1,4 @@
-package jasmine.rhino.vfs;
+package jasmine.runtime.vfs;
 
 import com.google.common.collect.Iterables;
 import jasmine.utils.Exceptions;

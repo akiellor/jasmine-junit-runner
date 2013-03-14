@@ -2,7 +2,7 @@ package jasmine.acceptance;
 
 import jasmine.junit.JasmineSuite;
 import jasmine.junit.JasmineTestRunner;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 

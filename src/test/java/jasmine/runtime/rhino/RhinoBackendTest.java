@@ -1,6 +1,5 @@
 package jasmine.runtime.rhino;
 
-import jasmine.rhino.RhinoContext;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;
 import jasmine.runtime.Notifier;

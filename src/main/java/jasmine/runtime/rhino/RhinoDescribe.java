@@ -5,7 +5,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import jasmine.rhino.RhinoContext;
 import jasmine.runtime.Describe;
 import jasmine.runtime.JasmineVisitor;
 import org.apache.commons.lang.builder.ToStringBuilder;

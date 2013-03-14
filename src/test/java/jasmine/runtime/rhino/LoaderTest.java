@@ -1,6 +1,7 @@
-package jasmine.rhino;
+package jasmine.runtime.rhino;
 
-import jasmine.rhino.vfs.VirtualFileSystem;
+import jasmine.runtime.rhino.Loader;
+import jasmine.runtime.vfs.VirtualFileSystem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

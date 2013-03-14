@@ -1,4 +1,4 @@
-package jasmine.rhino;
+package jasmine.runtime.rhino;
 
 public interface RhinoRunnable {
 

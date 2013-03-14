@@ -3,7 +3,7 @@ package jasmine.junit;
 
 import jasmine.junit.classes.JasmineTestRunnerBeforeAndAfterClass;
 import jasmine.junit.classes.JasmineTestRunnerBeforeAndAfterSuperClass;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runner.notification.RunNotifier;

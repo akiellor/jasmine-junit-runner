@@ -1,6 +1,6 @@
 package jasmine.runtime;
 
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import jasmine.runtime.rhino.RhinoRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;

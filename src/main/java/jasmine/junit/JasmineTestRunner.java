@@ -1,7 +1,7 @@
 package jasmine.junit;
 
 import jasmine.generator.JasmineSpecRunnerGenerator;
-import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoContext;
 import jasmine.runtime.Backend;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;

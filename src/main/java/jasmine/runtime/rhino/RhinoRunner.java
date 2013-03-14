@@ -3,7 +3,6 @@ package jasmine.runtime.rhino;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import jasmine.rhino.RhinoContext;
 import jasmine.runtime.JasmineVisitor;
 import jasmine.runtime.Notifier;
 import jasmine.utils.Futures;

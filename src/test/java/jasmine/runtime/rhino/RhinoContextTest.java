@@ -1,7 +1,8 @@
-package jasmine.rhino;
+package jasmine.runtime.rhino;
 
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Test;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
