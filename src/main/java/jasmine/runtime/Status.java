@@ -10,7 +10,7 @@ public enum Status {
     },
     FAILED {
         @Override public void notify(Notifier notifier, RhinoIt it) {
-            notifier.fail(it);
+            notifier.fail(it, it.getFirstFailedStacktrace());
         }
     },
     SKIPPED {

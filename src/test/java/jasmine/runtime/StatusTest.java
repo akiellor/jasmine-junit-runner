@@ -17,7 +17,7 @@ public class StatusTest {
     public void shouldNotifyWithFailWhenFailed() {
         Status.FAILED.notify(notifier, it);
 
-        verify(notifier).fail(it);
+        verify(notifier).fail(it, it.getFirstFailedStacktrace());
     }
 
     @Test

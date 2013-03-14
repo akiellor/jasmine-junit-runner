@@ -57,7 +57,7 @@ public class JUnitNotifierTest {
         when(it.getId()).thenReturn("test");
         when(it.getFirstFailedStacktrace()).thenReturn(exception);
 
-        new JUnitNotifier(runNotifier).fail(it);
+        new JUnitNotifier(runNotifier).fail(it, it.getFirstFailedStacktrace());
 
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
         verify(runNotifier).fireTestFailure(captor.capture());
