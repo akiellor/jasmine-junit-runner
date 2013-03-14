@@ -35,7 +35,7 @@ public class RhinoIt implements It {
         return new RhinoDescribe(suite, context);
     }
 
-    @Override public void accept(JasmineVisitor visitor) {
+    public void accept(JasmineVisitor visitor) {
         visitor.visit(this);
     }
 
