@@ -7,6 +7,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import jasmine.rhino.RhinoContext;
 import jasmine.runtime.Describe;
+import jasmine.runtime.It;
+import jasmine.runtime.JasmineVisitor;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
@@ -109,5 +112,21 @@ public class RhinoDescribe implements Describe {
         }else{
             return Optional.<Describe>of(new RhinoDescribe(parentSuite, context));
         }
+    }
+    @Override public void accept(JasmineVisitor visitor) {
+        visitor.visit(this);
+        for(It it : getIts()){
+            it.accept(visitor);
+        }
+        for(Describe describe : getDescribes()){
+            describe.accept(visitor);
+        }
+    }
+
+    @Override public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", getId())
+                .append("description", getStringDescription())
+                .toString();
     }
 }

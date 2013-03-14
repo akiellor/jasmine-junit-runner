@@ -6,4 +6,5 @@ public interface Describe {
     String getId();
     String getStringDescription();
     Optional<Describe> getParent();
+    void accept(JasmineVisitor visitor);
 }

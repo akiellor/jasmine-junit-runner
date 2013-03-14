@@ -19,7 +19,7 @@ public class RunnerTest {
     public void shouldGetDescribesFromRhinoContext() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {suites: function(){ return [{description: 'CHILD', specs: function(){ return [];}, suites: function() { return []; }}]}}; object;"
+                "var object = {suites: function(){ return [{parentSuite: null, id: 1, description: 'CHILD', specs: function(){ return [];}, suites: function() { return []; }}]}}; object;"
         );
 
         Runner describe = new Runner(object, context, Description.createSuiteDescription("ROOT"));
@@ -32,7 +32,7 @@ public class RunnerTest {
     public void shouldHaveConsistentDescription() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {suites: function(){ return [{description: 'CHILD', specs: function(){ return [];}, suites: function() { return []; }}]}}; object;"
+                "var object = {suites: function(){ return [{parentSuite: null, description: 'CHILD', specs: function(){ return [];}, suites: function() { return []; }}]}}; object;"
         );
 
         Runner describe = new Runner(object, context, Description.createSuiteDescription("ROOT"));

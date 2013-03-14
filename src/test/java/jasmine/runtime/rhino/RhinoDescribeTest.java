@@ -4,11 +4,15 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.Describe;
+import jasmine.runtime.It;
+import jasmine.runtime.JasmineVisitor;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.Collection;
+import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
@@ -199,5 +203,34 @@ public class RhinoDescribeTest {
         RhinoDescribe describe = new RhinoDescribe(suite, context);
 
         assertThat(describe.getParent()).isEqualTo(Optional.absent());
+    }
+
+    @Test
+    public void shouldAcceptVisitor() {
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {description: 'ROOT', suites: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return []; }}]}, specs: function(){ return [{id: 1, suite: {id: 2}, description: 'CHILD IT'}]; }}; object;"
+        );
+
+        RhinoDescribe describe = new RhinoDescribe(object, context);
+
+        DescriptionTracingVisitor visitor = new DescriptionTracingVisitor();
+        describe.accept(visitor);
+
+        assertThat(visitor.sequence).isEqualTo(
+                newArrayList("ROOT", "CHILD IT", "CHILD DESCRIBE")
+        );
+    }
+
+    private static class DescriptionTracingVisitor implements JasmineVisitor{
+        List<String> sequence = newArrayList();
+
+        @Override public void visit(Describe describe) {
+            sequence.add(describe.getStringDescription());
+        }
+
+        @Override public void visit(It it) {
+            sequence.add(it.getStringDescription());
+        }
     }
 }

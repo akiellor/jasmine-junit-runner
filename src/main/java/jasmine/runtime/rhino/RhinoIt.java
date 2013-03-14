@@ -36,6 +36,10 @@ public class RhinoIt implements It {
         return new RhinoDescribe(suite, context);
     }
 
+    @Override public void accept(JasmineVisitor visitor) {
+        visitor.visit(this);
+    }
+
     public Description getDescription() {
         return Description.createSuiteDescription(getStringDescription(), getId());
     }

@@ -1,6 +1,7 @@
 package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.JasmineVisitor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -9,6 +10,7 @@ import org.mozilla.javascript.NativeObject;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -96,5 +98,17 @@ public class RhinoItTest {
         RhinoIt it = new RhinoIt(spec, context);
 
         assertThat(it.getParent()).isEqualTo(new RhinoDescribe(suite, context));
+    }
+
+    @Test
+    public void shouldAcceptVisitor() {
+        NativeObject spec = mock(NativeObject.class);
+        JasmineVisitor visitor = mock(JasmineVisitor.class);
+
+        RhinoIt it = new RhinoIt(spec, context);
+
+        it.accept(visitor);
+
+        verify(visitor).visit(it);
     }
 }
