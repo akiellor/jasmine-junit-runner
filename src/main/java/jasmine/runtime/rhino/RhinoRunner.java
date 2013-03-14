@@ -22,7 +22,6 @@ public class RhinoRunner {
     private final NativeObject object;
     private final RhinoContext context;
     private final ExecutorService executor;
-    private boolean descriptionInitialized = false;
 
     public RhinoRunner(NativeObject object, RhinoContext context) {
         this.object = object;
