@@ -67,7 +67,7 @@ public class DescribeTest {
     public void shouldHaveDescriptionWithChildrenIts() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {description: 'ROOT', suites: function(){ return [];}, specs: function(){ return [{description: 'CHILD'}]}}; object;"
+                "var object = {description: 'ROOT', suites: function(){ return [];}, specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD'}]}}; object;"
         );
 
         Describe describe = new Describe(object, context);
@@ -80,7 +80,7 @@ public class DescribeTest {
     public void shouldHaveChildSpecs() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {specs: function(){ return [{description: 'CHILD'}]}}; object;"
+                "var object = {specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD'}]}}; object;"
         );
 
         Describe describe = new Describe(object, context);
@@ -122,7 +122,7 @@ public class DescribeTest {
     public void shouldGetAllIts() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {specs: function(){ return [{description: 'CHILD IT'}]; }, suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return [{description: 'GRANDCHILD IT'}]; }}]}}; object;"
+                "var object = {specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD IT'}]; }, suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return [{id: 1, suite: {id: 2}, description: 'GRANDCHILD IT'}]; }}]}}; object;"
         );
 
         Describe describe = new Describe(object, context);
@@ -139,7 +139,7 @@ public class DescribeTest {
     public void shouldDefineItsBeforeDescribes() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
-                "var object = {description: 'ROOT', suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return []; }}]}, specs: function(){ return [{description: 'CHILD IT'}]; }}; object;"
+                "var object = {description: 'ROOT', suites: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return []; }}]}, specs: function(){ return [{id: 1, suite: {id: 2}, description: 'CHILD IT'}]; }}; object;"
         );
 
         Describe describe = new Describe(object, context);

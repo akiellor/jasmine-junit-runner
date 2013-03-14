@@ -1,9 +1,7 @@
 package jasmine.junit;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
+import jasmine.junit.classes.JasmineTestRunnerDoesNotLoadEnvJS;
+import jasmine.junit.classes.JasmineTestRunnerSuccessSpec;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -12,8 +10,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import jasmine.junit.classes.JasmineTestRunnerSuccessSpec;
-import jasmine.junit.classes.JasmineTestRunnerDoesNotLoadEnvJS;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JasmineFinishedSpecsTest {
@@ -34,7 +33,7 @@ public class JasmineFinishedSpecsTest {
         Description startedDescription = descriptionStartedCaptor.getValue();
         Description finishedDescription = descriptionFinishedCaptor.getValue();
 
-        assertThat(startedDescription).isSameAs(finishedDescription);
+        assertThat(startedDescription).isEqualTo(finishedDescription);
         assertThat(startedDescription.getDisplayName()).isEqualTo("will always run");
     }
 
@@ -51,7 +50,7 @@ public class JasmineFinishedSpecsTest {
         Description startedDescription = descriptionStartedCaptor.getValue();
         Description finishedDescription = descriptionFinishedCaptor.getValue();
 
-        assertThat(startedDescription).isSameAs(finishedDescription);
+        assertThat(startedDescription).isEqualTo(finishedDescription);
         assertThat(startedDescription.getDisplayName()).isEqualTo("is not loaded");
     }
 

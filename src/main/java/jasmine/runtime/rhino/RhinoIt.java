@@ -1,41 +1,41 @@
 package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import jasmine.runtime.It;
 import jasmine.runtime.JasmineSpecFailureException;
 import jasmine.runtime.Notifier;
 import jasmine.runtime.Status;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
 import static org.junit.Assert.assertTrue;
 
-public class RhinoIt {
+public class RhinoIt implements It {
     private static final int SLEEP_TIME_MILISECONDS = 50;
 
-    private final Supplier<Description> description;
     private final RhinoContext context;
     private final NativeObject spec;
 
-    public RhinoIt(final NativeObject spec, RhinoContext context) {
-        this(spec, context, Suppliers.memoize(new Supplier<Description>() {
-            @Override public Description get() {
-                final String descriptionString = String.valueOf(spec.get("description", spec));
-                return Description.createSuiteDescription(descriptionString, spec);
-            }
-        }));
-    }
-
-    private RhinoIt(NativeObject spec, RhinoContext context, Supplier<Description> description) {
+    public RhinoIt(NativeObject spec, RhinoContext context) {
         this.spec = spec;
         this.context = context;
-        this.description = description;
+    }
+
+    @Override public String getId() {
+        NativeObject parentSuite = (NativeObject)spec.get("suite", spec);
+        String suiteId = String.valueOf(parentSuite.get("id", parentSuite));
+        String specId = String.valueOf(spec.get("id", spec));
+        return suiteId + "-" + specId;
+    }
+
+    @Override public String getStringDescription() {
+        return String.valueOf(spec.get("description", spec));
     }
 
     public Description getDescription() {
-        return description.get();
+        return Description.createSuiteDescription(getStringDescription(), getId());
     }
 
     public Status getSpecResultStatus() {
@@ -56,7 +56,7 @@ public class RhinoIt {
     }
 
     public RhinoIt bind(RhinoContext context) {
-        return new RhinoIt(this.spec, context, this.description);
+        return new RhinoIt(this.spec, context);
     }
 
     public Throwable getFirstFailedStacktrace() {
@@ -92,9 +92,11 @@ public class RhinoIt {
         getSpecResultStatus().notify(notifier, this);
     }
 
-    @Override
-    public String toString() {
-        return description.get().getDisplayName();
+    @Override public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", getId())
+                .append("description", getStringDescription())
+                .toString();
     }
 
     private void waitALittle() {
