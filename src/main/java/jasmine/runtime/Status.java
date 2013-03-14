@@ -1,23 +1,43 @@
 package jasmine.runtime;
 
-import jasmine.runtime.rhino.RhinoIt;
+public abstract class Status {
+    public abstract void notify(Notifier notifier);
 
-public enum Status {
-    PASSED {
-        @Override public void notify(Notifier notifier, RhinoIt it) {
+    public static class Failed extends Status{
+        private final It it;
+        private final Throwable error;
+
+        public Failed(It it, Throwable error) {
+            this.it = it;
+            this.error = error;
+        }
+
+        public void notify(Notifier notifier) {
+            notifier.fail(it, error);
+        }
+    }
+
+    public static class Passed extends Status{
+        private final It it;
+
+        public Passed(It it) {
+            this.it = it;
+        }
+
+        public void notify(Notifier notifier) {
             notifier.pass(it);
         }
-    },
-    FAILED {
-        @Override public void notify(Notifier notifier, RhinoIt it) {
-            notifier.fail(it, it.getFirstFailedStacktrace());
+    }
+
+    public static class Skipped extends Status{
+        private final It it;
+
+        public Skipped(It it) {
+            this.it = it;
         }
-    },
-    SKIPPED {
-        @Override public void notify(Notifier notifier, RhinoIt it) {
+
+        public void notify(Notifier notifier) {
             notifier.skipped(it);
         }
-    };
-
-    public abstract void notify(Notifier notifier, RhinoIt it);
+    }
 }

@@ -47,9 +47,9 @@ public class RhinoIt implements It {
         boolean skipped = (Boolean) results.get("skipped", results);
 
         if (skipped) {
-            return Status.SKIPPED;
+            return new Status.Skipped(this);
         }
-        return passed ? Status.PASSED : Status.FAILED;
+        return passed ? new Status.Passed(this) : new Status.Failed(this, getFirstFailedStacktrace());
     }
 
     public boolean isBoundTo(RhinoContext context) {
@@ -90,7 +90,7 @@ public class RhinoIt implements It {
     public void execute(Notifier notifier){
         notifier.started(this);
         execute();
-        getSpecResultStatus().notify(notifier, this);
+        getSpecResultStatus().notify(notifier);
     }
 
     @Override public String toString() {

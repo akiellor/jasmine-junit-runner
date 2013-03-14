@@ -1,6 +1,5 @@
 package jasmine.runtime;
 
-import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,26 +9,27 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StatusTest {
-    @Mock RhinoIt it;
+    @Mock It it;
     @Mock Notifier notifier;
+    @Mock Exception exception;
 
     @Test
     public void shouldNotifyWithFailWhenFailed() {
-        Status.FAILED.notify(notifier, it);
+        new Status.Failed(it, exception).notify(notifier);
 
-        verify(notifier).fail(it, it.getFirstFailedStacktrace());
+        verify(notifier).fail(it, exception);
     }
 
     @Test
     public void shouldNotifyWithPassWhenPassed() {
-        Status.PASSED.notify(notifier, it);
+        new Status.Passed(it).notify(notifier);
 
         verify(notifier).pass(it);
     }
 
     @Test
     public void shouldNotifyWithIgnoredWhenSkipped() {
-        Status.SKIPPED.notify(notifier, it);
+        new Status.Skipped(it).notify(notifier);
 
         verify(notifier).skipped(it);
     }
