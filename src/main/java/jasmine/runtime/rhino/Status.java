@@ -1,4 +1,7 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
+
+import jasmine.runtime.It;
+import jasmine.runtime.Notifier;
 
 public abstract class Status {
     public abstract void notify(Notifier notifier);
