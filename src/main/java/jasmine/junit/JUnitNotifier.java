@@ -34,6 +34,6 @@ public class JUnitNotifier implements Notifier {
     }
 
     private Description toDescription(It it) {
-        return Description.createSuiteDescription(it.getStringDescription(), it.getId());
+        return Description.createSuiteDescription(it.getDescription(), it.getId());
     }
 }

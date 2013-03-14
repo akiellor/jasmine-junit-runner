@@ -26,7 +26,7 @@ public class RhinoIt implements It {
         return suiteId + "-" + specId;
     }
 
-    @Override public String getStringDescription() {
+    @Override public String getDescription() {
         return String.valueOf(spec.get("description", spec));
     }
 
@@ -96,7 +96,7 @@ public class RhinoIt implements It {
     @Override public String toString() {
         return new ToStringBuilder(this)
                 .append("id", getId())
-                .append("description", getStringDescription())
+                .append("description", getDescription())
                 .toString();
     }
 

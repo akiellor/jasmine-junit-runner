@@ -18,7 +18,7 @@ public class DescriptionBuilder implements JasmineVisitor {
     }
 
     @Override public void visit(Describe describe) {
-        Description description = Description.createSuiteDescription(describe.getStringDescription(), describe.getId());
+        Description description = Description.createSuiteDescription(describe.getDescription(), describe.getId());
         descriptions.put(describe.getId(), description);
 
         Optional<Describe> parent = describe.getParent();
@@ -30,7 +30,7 @@ public class DescriptionBuilder implements JasmineVisitor {
     }
 
     @Override public void visit(It it) {
-        Description description = Description.createSuiteDescription(it.getStringDescription(), it.getId());
+        Description description = Description.createSuiteDescription(it.getDescription(), it.getId());
         descriptions.get(it.getParent().getId()).addChild(description);
     }
 }

@@ -23,7 +23,7 @@ public class JUnitNotifierTest {
 
     @Test
     public void shouldDelegateToJunitRunNotifierForStarted() {
-        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
 
         new JUnitNotifier(runNotifier).started(it);
@@ -33,7 +33,7 @@ public class JUnitNotifierTest {
 
     @Test
     public void shouldDelegateToJunitRunNotifierForPass() {
-        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
 
         new JUnitNotifier(runNotifier).pass(it);
@@ -43,7 +43,7 @@ public class JUnitNotifierTest {
 
     @Test
     public void shouldDelegateToJunitRunNotifierForSkipped() {
-        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
 
         new JUnitNotifier(runNotifier).skipped(it);
@@ -53,7 +53,7 @@ public class JUnitNotifierTest {
 
     @Test
     public void shouldDelegateToRunNotifierForFail() {
-        when(it.getStringDescription()).thenReturn("Object");
+        when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
         when(it.getFirstFailedStacktrace()).thenReturn(exception);
 

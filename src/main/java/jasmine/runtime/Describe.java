@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 
 public interface Describe {
     String getId();
-    String getStringDescription();
+    String getDescription();
     Optional<Describe> getParent();
     void accept(JasmineVisitor visitor);
 }

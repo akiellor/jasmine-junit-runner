@@ -88,7 +88,7 @@ public class RhinoDescribe implements Describe {
         return String.valueOf(object.get("id", object));
     }
 
-    @Override public String getStringDescription() {
+    @Override public String getDescription() {
         return String.valueOf(object.get("description", object));
     }
 
@@ -113,7 +113,7 @@ public class RhinoDescribe implements Describe {
     @Override public String toString() {
         return new ToStringBuilder(this)
                 .append("id", getId())
-                .append("description", getStringDescription())
+                .append("description", getDescription())
                 .toString();
     }
 }

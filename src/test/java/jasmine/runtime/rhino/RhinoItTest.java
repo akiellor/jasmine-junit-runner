@@ -38,7 +38,7 @@ public class RhinoItTest {
 
         RhinoIt it = new RhinoIt(spec, context);
 
-        assertThat(it.getStringDescription()).isEqualTo("green");
+        assertThat(it.getDescription()).isEqualTo("green");
     }
 
     @Test
