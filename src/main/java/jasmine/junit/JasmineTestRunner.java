@@ -19,7 +19,7 @@ public class JasmineTestRunner extends Runner {
     public JasmineTestRunner(Class<?> testClass) {
         this.test = new TestObject(testClass);
         this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), test.getDefaultSpecPath());
-        this.jasmine = new Jasmine(configuration, Description.createSuiteDescription(testClass));
+        this.jasmine = new Jasmine(configuration);
     }
 
     protected JasmineTestRunner(Configuration configuration, TestObject test, Jasmine jasmine){
@@ -47,7 +47,10 @@ public class JasmineTestRunner extends Runner {
 
     @Override
     public Description getDescription() {
-        return jasmine.getDescription();
+        Description description = test.getDescription();
+        DescriptionBuilder descriptionBuilder = new DescriptionBuilder(description);
+        jasmine.accept(descriptionBuilder);
+        return description;
     }
 
     @Override

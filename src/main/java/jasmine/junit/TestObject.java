@@ -6,16 +6,19 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.Description;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public class TestObject {
     private final Object instance;
+    private final Description description;
 
     public TestObject(Class<?> testClass){
         try {
             this.instance = testClass.newInstance();
+            this.description = Description.createSuiteDescription(testClass);
         } catch (Exception e) {
             throw Exceptions.unchecked(e);
         }
@@ -61,5 +64,9 @@ public class TestObject {
 
     public String getDefaultSpecPath() {
         return instance.getClass().getPackage().getName().replace(".", "/") + "/" + StringUtils.uncapitalize(instance.getClass().getSimpleName()).replaceAll("Test$", "Spec.js");
+    }
+
+    public Description getDescription() {
+        return description;
     }
 }

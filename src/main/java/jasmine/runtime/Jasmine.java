@@ -2,7 +2,6 @@ package jasmine.runtime;
 
 import jasmine.rhino.RhinoContext;
 import jasmine.runtime.rhino.RhinoRunner;
-import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.ArrayList;
@@ -26,11 +25,11 @@ public class Jasmine {
     private final RhinoRunner runner;
 
 
-    public Jasmine(Configuration configuration, Description rootDescription) {
+    public Jasmine(Configuration configuration) {
         this.configuration = configuration;
         this.context = setUpRhinoScope();
         NativeObject baseSuites = (NativeObject) context.evalJS("jasmine.getEnv().currentRunner()");
-        this.runner = new RhinoRunner(baseSuites, context, rootDescription);
+        this.runner = new RhinoRunner(baseSuites, context);
     }
 
     protected Jasmine(Configuration configuration, RhinoContext context, RhinoRunner runner){
@@ -60,8 +59,8 @@ public class Jasmine {
         return context;
     }
 
-    public Description getDescription() {
-        return runner.getDescription();
+    public void accept(JasmineVisitor visitor){
+        runner.accept(visitor);
     }
 
     public void execute(Hooks hooks, final Notifier notifier) {
