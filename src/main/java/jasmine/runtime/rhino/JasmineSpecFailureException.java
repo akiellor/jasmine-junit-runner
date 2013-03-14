@@ -1,4 +1,4 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import org.mozilla.javascript.NativeObject;
 
