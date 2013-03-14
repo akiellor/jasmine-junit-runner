@@ -1,7 +1,7 @@
-package jasmine.runtime;
+package jasmine.runtime.rhino;
 
 import jasmine.rhino.RhinoContext;
-import jasmine.runtime.rhino.RhinoRunner;
+import jasmine.runtime.*;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Jasmine {
+public class RhinoBackend implements Backend {
     private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
             "js/lib/jasmine-1.3.1/jasmine.js",
             "js/lib/jasmine.delegator_reporter.js"
@@ -25,14 +25,14 @@ public class Jasmine {
     private final RhinoRunner runner;
 
 
-    public Jasmine(Configuration configuration) {
+    public RhinoBackend(Configuration configuration) {
         this.configuration = configuration;
         this.context = setUpRhinoScope();
         NativeObject baseSuites = (NativeObject) context.evalJS("jasmine.getEnv().currentRunner()");
         this.runner = new RhinoRunner(baseSuites, context);
     }
 
-    protected Jasmine(Configuration configuration, RhinoContext context, RhinoRunner runner){
+    protected RhinoBackend(Configuration configuration, RhinoContext context, RhinoRunner runner){
         this.configuration = configuration;
         this.context = context;
         this.runner = runner;

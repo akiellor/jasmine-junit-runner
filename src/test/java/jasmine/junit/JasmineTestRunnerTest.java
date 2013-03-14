@@ -2,7 +2,7 @@ package jasmine.junit;
 
 import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;
-import jasmine.runtime.Jasmine;
+import jasmine.runtime.rhino.RhinoBackend;
 import jasmine.runtime.Notifier;
 import jasmine.rhino.RhinoContext;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class JasmineTestRunnerTest {
     @Mock RhinoContext context;
     @Mock Configuration configuration;
     @Mock TestObject test;
-    @Mock Jasmine jasmine;
+    @Mock RhinoBackend jasmine;
     @Mock RunNotifier runNotifier;
 
     @Test

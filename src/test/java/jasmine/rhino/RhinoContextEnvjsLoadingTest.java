@@ -1,6 +1,6 @@
 package jasmine.rhino;
 
-import jasmine.runtime.Jasmine;
+import jasmine.runtime.rhino.RhinoBackend;
 import org.junit.Test;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.NativeObject;
@@ -14,7 +14,7 @@ public class RhinoContextEnvjsLoadingTest {
     public void loadEnvJSShouldSetWindowSpaceAndBeES5Complaint() {
         RhinoContext context = new RhinoContext();
 
-        context.loadFromVirtualFileSystem(Jasmine.ENV_JS_LIBRARY);
+        context.loadFromVirtualFileSystem(RhinoBackend.ENV_JS_LIBRARY);
         context.loadFromVirtualFileSystem("src/test/javascript/envJsOptions.js");
 
         assertThat(context.evalJS("window")).isInstanceOf(Global.class);
