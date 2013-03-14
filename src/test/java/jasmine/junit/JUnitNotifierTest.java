@@ -1,6 +1,6 @@
 package jasmine.junit;
 
-import jasmine.runtime.It;
+import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class JUnitNotifierTest {
     @Mock RunNotifier runNotifier;
-    @Mock It it;
+    @Mock RhinoIt it;
     @Mock Exception exception;
 
     @Test

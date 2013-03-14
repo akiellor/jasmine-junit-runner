@@ -7,6 +7,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import jasmine.runtime.rhino.RhinoIt;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
@@ -27,7 +28,7 @@ public class Describe {
         this.description = Suppliers.memoize(new Supplier<Description>() {
             @Override public Description get() {
                 Description description = Description.createSuiteDescription(String.valueOf(object.get("description")), object);
-                for(It it : getIts()){
+                for(RhinoIt it : getIts()){
                     description.addChild(it.getDescription());
                 }
                 for(Describe describe : getDescribes()){
@@ -51,11 +52,11 @@ public class Describe {
         return describes;
     }
 
-    public List<It> getIts() {
+    public List<RhinoIt> getIts() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "specs");
-        List<It> its = newArrayList();
+        List<RhinoIt> its = newArrayList();
         for(Object id : suites.getIndexIds()){
-            its.add(new It((NativeObject) suites.get(id), context));
+            its.add(new RhinoIt((NativeObject) suites.get(id), context));
         }
         return its;
     }
@@ -68,9 +69,9 @@ public class Describe {
         return new Describe(object, newContext);
     }
 
-    public List<It> getAllIts() {
-        Iterable<It> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<It>>() {
-            @Override public List<It> apply(Describe input) {
+    public List<RhinoIt> getAllIts() {
+        Iterable<RhinoIt> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<RhinoIt>>() {
+            @Override public List<RhinoIt> apply(Describe input) {
                 return input.getAllIts();
             }
         }));

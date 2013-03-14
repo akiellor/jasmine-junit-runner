@@ -1,6 +1,7 @@
 package jasmine.runtime;
 
 import jasmine.rhino.RhinoContext;
+import jasmine.runtime.rhino.RhinoIt;
 import jasmine.utils.Futures;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
@@ -50,13 +51,13 @@ public class Runner {
     }
 
     public void execute(final Notifier notifier){
-        List<It> its = getAllIts();
+        List<RhinoIt> its = getAllIts();
         if(its.isEmpty()) { notifier.nothingToRun(); return; }
 
-        Futures.await(Collections2.transform(its, new Function<It, Future<It>>() {
-            @Override public Future<It> apply(final It spec) {
-                return executor.submit(new Callable<It>() {
-                    @Override public It call() throws Exception {
+        Futures.await(Collections2.transform(its, new Function<RhinoIt, Future<RhinoIt>>() {
+            @Override public Future<RhinoIt> apply(final RhinoIt spec) {
+                return executor.submit(new Callable<RhinoIt>() {
+                    @Override public RhinoIt call() throws Exception {
                         RhinoContext fork = context.fork();
 
                         spec.bind(fork).execute(notifier);
@@ -69,9 +70,9 @@ public class Runner {
 
     }
 
-    public List<It> getAllIts() {
-        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<It>>() {
-            @Override public List<It> apply(Describe input) {
+    public List<RhinoIt> getAllIts() {
+        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<Describe, List<RhinoIt>>() {
+            @Override public List<RhinoIt> apply(Describe input) {
                 return input.getAllIts();
             }
         })));

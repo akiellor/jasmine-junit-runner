@@ -1,9 +1,11 @@
 package jasmine.runtime;
 
+import jasmine.runtime.rhino.RhinoIt;
+
 public interface Notifier {
-    void pass(It it);
-    void fail(It it);
-    void skipped(It it);
-    void started(It it);
+    void pass(RhinoIt it);
+    void fail(RhinoIt it);
+    void skipped(RhinoIt it);
+    void started(RhinoIt it);
     void nothingToRun();
 }

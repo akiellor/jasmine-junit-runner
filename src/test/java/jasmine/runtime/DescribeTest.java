@@ -3,6 +3,7 @@ package jasmine.runtime;
 import jasmine.rhino.RhinoContext;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.mozilla.javascript.NativeObject;
@@ -125,8 +126,8 @@ public class DescribeTest {
         );
 
         Describe describe = new Describe(object, context);
-        Collection<String> its = Collections2.transform(describe.getAllIts(), new Function<It, String>() {
-            @Override public String apply(It input) {
+        Collection<String> its = Collections2.transform(describe.getAllIts(), new Function<RhinoIt, String>() {
+            @Override public String apply(RhinoIt input) {
                 return input.getDescription().getDisplayName();
             }
         });

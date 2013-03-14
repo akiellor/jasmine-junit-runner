@@ -1,5 +1,6 @@
 package jasmine.runtime;
 
+import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -9,7 +10,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StatusTest {
-    @Mock It it;
+    @Mock RhinoIt it;
     @Mock Notifier notifier;
 
     @Test
