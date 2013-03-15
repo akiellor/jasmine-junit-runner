@@ -68,19 +68,6 @@ public class RhinoItTest {
     }
 
     @Test
-    public void shouldHaveSuite() {
-        NativeObject suite = mock(NativeObject.class);
-        when(suite.get("id", suite)).thenReturn(0);
-        NativeObject spec = mock(NativeObject.class);
-        when(spec.get("id", spec)).thenReturn(1);
-        when(spec.get("suite", spec)).thenReturn(suite);
-
-        RhinoIt it = new RhinoIt(spec, context);
-
-        assertThat(it.getParent()).isEqualTo(new RhinoDescribe(suite, context));
-    }
-
-    @Test
     public void shouldAcceptVisitor() {
         NativeObject spec = mock(NativeObject.class);
         JasmineVisitor visitor = mock(JasmineVisitor.class);

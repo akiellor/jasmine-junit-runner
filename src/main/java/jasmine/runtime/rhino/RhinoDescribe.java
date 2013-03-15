@@ -1,14 +1,12 @@
 package jasmine.runtime.rhino;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import jasmine.runtime.Describe;
 import jasmine.runtime.JasmineVisitor;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.junit.runner.Description;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
@@ -19,7 +17,6 @@ import static com.google.common.collect.Lists.newArrayList;
 public class RhinoDescribe implements Describe {
     private final NativeObject object;
     private final RhinoContext context;
-    private Description description;
 
     public RhinoDescribe(final NativeObject object, RhinoContext context){
         this.object = object;
@@ -90,22 +87,13 @@ public class RhinoDescribe implements Describe {
         return String.valueOf(object.get("description", object));
     }
 
-    @Override public Optional<Describe> getParent() {
-        NativeObject parentSuite = (NativeObject) object.get("parentSuite", object);
-        if(parentSuite == null){
-            return Optional.absent();
-        }else{
-            return Optional.<Describe>of(new RhinoDescribe(parentSuite, context));
-        }
-    }
-
     public void accept(JasmineVisitor visitor) {
         visitor.visit(this);
         for(RhinoIt it : getIts()){
-            it.accept(visitor);
+            it.accept(visitor.forNextLevel(this));
         }
         for(RhinoDescribe describe : getDescribes()){
-            describe.accept(visitor);
+            describe.accept(visitor.forNextLevel(this));
         }
     }
 

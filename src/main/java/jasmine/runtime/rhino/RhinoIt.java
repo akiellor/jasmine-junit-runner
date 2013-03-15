@@ -29,11 +29,6 @@ public class RhinoIt implements It {
         return String.valueOf(spec.get("description", spec));
     }
 
-    @Override public Describe getParent() {
-        NativeObject suite = (NativeObject) spec.get("suite", spec);
-        return new RhinoDescribe(suite, context);
-    }
-
     public void accept(JasmineVisitor visitor) {
         visitor.visit(this);
     }
