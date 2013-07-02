@@ -65,10 +65,6 @@ public class AnnotationConfiguration implements Configuration {
         return annotation.debug();
     }
 
-    @Override public boolean envJs() {
-        return annotation.envJs();
-    }
-
     @Override public List<String> getJavascriptPath() {
         String javascriptPath = properties.get("javascript.path");
         if(javascriptPath == null) { return newArrayList(); }

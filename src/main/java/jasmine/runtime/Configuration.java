@@ -13,7 +13,5 @@ public interface Configuration {
 
     boolean debug();
 
-    boolean envJs();
-
     List<String> getJavascriptPath();
 }

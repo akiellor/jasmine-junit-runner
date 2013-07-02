@@ -88,17 +88,6 @@ public class AnnotationConfigurationTest {
     }
 
     @Test
-    public void shouldDelegateToAnnotationForWhetherToRunEnvJS() {
-        Configuration configuration = new AnnotationConfiguration(annotation);
-
-        when(annotation.envJs()).thenReturn(true);
-        assertThat(configuration.envJs()).isEqualTo(true);
-
-        when(annotation.envJs()).thenReturn(false);
-        assertThat(configuration.envJs()).isEqualTo(false);
-    }
-
-    @Test
     public void shouldOnlyBeAbleToUseHtmlGeneratorWhenOutputSystemPropertySpecified() {
         AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
 

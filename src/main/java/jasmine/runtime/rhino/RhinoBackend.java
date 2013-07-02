@@ -41,12 +41,7 @@ public class RhinoBackend implements Backend {
         RhinoContext context = new RhinoContext(configuration.getJavascriptPath());
 
         List<String> resources = new ArrayList<String>();
-        if (configuration.envJs()) {
-            resources.addAll(ENV_JS_LIBRARY);
-            resources.add("envJsOptions.js");
-        } else {
-            resources.add("js/lib/no-env.js");
-        }
+        resources.add("js/lib/no-env.js");
         resources.addAll(JASMINE_LIBRARY);
         resources.addAll(configuration.sources());
         resources.addAll(configuration.specs());

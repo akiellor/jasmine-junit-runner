@@ -13,7 +13,5 @@ public @interface JasmineSuite {
 
     boolean debug() default false;
 
-    boolean envJs() default false;
-
     String specRunnerSubDir() default StringUtils.EMPTY;
 }
