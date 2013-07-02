@@ -5,15 +5,13 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import jasmine.runtime.JasmineVisitor;
 import jasmine.runtime.Notifier;
+import jasmine.runtime.utils.Exceptions;
 import jasmine.runtime.utils.Futures;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -23,9 +21,13 @@ public class RhinoRunner {
     private final ExecutorService executor;
 
     public RhinoRunner(NativeObject object, RhinoContext context) {
+        this(object, context, Executors.newFixedThreadPool(10));
+    }
+
+    RhinoRunner(NativeObject object, RhinoContext context, ExecutorService executor) {
         this.object = object;
         this.context = context;
-        this.executor = Executors.newFixedThreadPool(10);
+        this.executor = executor;
     }
 
     public List<RhinoDescribe> getDescribes(){
@@ -58,6 +60,12 @@ public class RhinoRunner {
             }
         }));
 
+        try {
+            executor.awaitTermination(1L, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw Exceptions.unchecked(e);
+        }
+        executor.shutdown();
     }
 
     public List<RhinoIt> getAllIts() {
