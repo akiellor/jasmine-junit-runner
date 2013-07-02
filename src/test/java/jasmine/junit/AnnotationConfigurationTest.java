@@ -77,17 +77,6 @@ public class AnnotationConfigurationTest {
     }
 
     @Test
-    public void shouldDelegateToAnnotationForWhetherToGenerateHtmlRunner() {
-        Configuration configuration = new AnnotationConfiguration(annotation);
-
-        when(annotation.generateSpecRunner()).thenReturn(true);
-        assertThat(configuration.generateSpecRunner()).isEqualTo(true);
-
-        when(annotation.generateSpecRunner()).thenReturn(false);
-        assertThat(configuration.generateSpecRunner()).isEqualTo(false);
-    }
-
-    @Test
     public void shouldDelegateToAnnotationForWhetherToRunDebug() {
         Configuration configuration = new AnnotationConfiguration(annotation);
 

@@ -11,8 +11,6 @@ public interface Configuration {
 
     File htmlRunnerOutputDir();
 
-    boolean generateSpecRunner();
-
     boolean debug();
 
     boolean envJs();

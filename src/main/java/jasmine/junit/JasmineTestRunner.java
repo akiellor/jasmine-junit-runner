@@ -1,6 +1,5 @@
 package jasmine.junit;
 
-import jasmine.generator.JasmineSpecRunnerGenerator;
 import jasmine.runtime.rhino.RhinoContext;
 import jasmine.runtime.Backend;
 import jasmine.runtime.Configuration;
@@ -60,8 +59,6 @@ public class JasmineTestRunner extends Runner {
             createDebugger().doBreak();
         }
 
-        generateSpecRunnerIfNeeded();
-
         jasmine.execute(new Hooks(){
             @Override public void beforeAll(RhinoContext context) {
                 test.befores(context);
@@ -71,11 +68,5 @@ public class JasmineTestRunner extends Runner {
                 test.afters(context);
             }
         }, new JUnitNotifier(notifier));
-    }
-
-    private void generateSpecRunnerIfNeeded() {
-        if (configuration.generateSpecRunner()) {
-            new JasmineSpecRunnerGenerator(configuration, test.getName() + "Runner.html").generate();
-        }
     }
 }

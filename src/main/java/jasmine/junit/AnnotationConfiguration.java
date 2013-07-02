@@ -61,20 +61,12 @@ public class AnnotationConfiguration implements Configuration {
         return new File(outputPath.toString());
     }
 
-    @Override public boolean generateSpecRunner() {
-        return annotation.generateSpecRunner();
-    }
-
     @Override public boolean debug() {
         return annotation.debug();
     }
 
     @Override public boolean envJs() {
         return annotation.envJs();
-    }
-
-    private String fromPwd(File file){
-        return new File(".").toURI().relativize(file.toURI()).toString();
     }
 
     @Override public List<String> getJavascriptPath() {
