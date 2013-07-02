@@ -12,6 +12,4 @@ public @interface JasmineSuite {
     String[] sources() default {};
 
     boolean debug() default false;
-
-    String specRunnerSubDir() default StringUtils.EMPTY;
 }

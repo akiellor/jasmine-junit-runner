@@ -58,25 +58,6 @@ public class AnnotationConfigurationTest {
     }
 
     @Test
-    public void shouldGetHtmlRunnerDirectory() {
-        when(properties.get(AnnotationConfiguration.HTML_OUTPUT_DIR)).thenReturn("src/test/javascript");
-
-        Configuration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
-
-        assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners"));
-    }
-
-    @Test
-    public void shouldGetHtmlRunnerDirectoryWhenSubDirSpecified() {
-        when(properties.get(AnnotationConfiguration.HTML_OUTPUT_DIR)).thenReturn("src/test/javascript");
-        when(annotation.specRunnerSubDir()).thenReturn("foo");
-
-        Configuration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
-
-        assertThat(configuration.htmlRunnerOutputDir()).isEqualTo(new File("src/test/javascript/runners/foo"));
-    }
-
-    @Test
     public void shouldDelegateToAnnotationForWhetherToRunDebug() {
         Configuration configuration = new AnnotationConfiguration(annotation);
 
@@ -85,18 +66,6 @@ public class AnnotationConfigurationTest {
 
         when(annotation.debug()).thenReturn(false);
         assertThat(configuration.debug()).isEqualTo(false);
-    }
-
-    @Test
-    public void shouldOnlyBeAbleToUseHtmlGeneratorWhenOutputSystemPropertySpecified() {
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
-
-        try{
-            configuration.htmlRunnerOutputDir();
-            fail();
-        }catch(IllegalStateException e){
-            assertThat(e.getMessage()).isEqualTo("Must specify SystemProperty 'jasmine.html.outputDir' in order to generate output");
-        }
     }
 
     @Test

@@ -9,8 +9,6 @@ public interface Configuration {
 
     Collection<String> specs();
 
-    File htmlRunnerOutputDir();
-
     boolean debug();
 
     List<String> getJavascriptPath();

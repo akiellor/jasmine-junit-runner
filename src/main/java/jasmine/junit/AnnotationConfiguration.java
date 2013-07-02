@@ -49,18 +49,6 @@ public class AnnotationConfiguration implements Configuration {
         throw new IllegalStateException("No specs found.");
     }
 
-    @Override public File htmlRunnerOutputDir() {
-        String outputDir = properties.get(HTML_OUTPUT_DIR);
-        if(outputDir == null){
-            throw new IllegalStateException("Must specify SystemProperty '" + HTML_OUTPUT_DIR + "' in order to generate output");
-        }
-        StringBuilder outputPath = new StringBuilder(outputDir).append("/runners");
-        if (StringUtils.isNotBlank(annotation.specRunnerSubDir())) {
-            outputPath.append('/').append(annotation.specRunnerSubDir());
-        }
-        return new File(outputPath.toString());
-    }
-
     @Override public boolean debug() {
         return annotation.debug();
     }
