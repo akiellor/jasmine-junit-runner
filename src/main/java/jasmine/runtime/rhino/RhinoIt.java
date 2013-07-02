@@ -1,6 +1,8 @@
 package jasmine.runtime.rhino;
 
-import jasmine.runtime.*;
+import jasmine.runtime.It;
+import jasmine.runtime.JasmineVisitor;
+import jasmine.runtime.Notifier;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;

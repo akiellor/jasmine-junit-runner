@@ -1,7 +1,5 @@
 package jasmine.junit;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

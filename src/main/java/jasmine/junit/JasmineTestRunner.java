@@ -1,10 +1,10 @@
 package jasmine.junit;
 
-import jasmine.runtime.rhino.RhinoContext;
 import jasmine.runtime.Backend;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.Hooks;
 import jasmine.runtime.rhino.RhinoBackend;
+import jasmine.runtime.rhino.RhinoContext;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
