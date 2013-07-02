@@ -1,5 +1,6 @@
 package jasmine.utils;
 
+import jasmine.runtime.utils.SystemProperties;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;

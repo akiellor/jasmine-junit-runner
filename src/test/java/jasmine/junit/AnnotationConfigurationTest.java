@@ -1,7 +1,7 @@
 package jasmine.junit;
 
 import jasmine.runtime.Configuration;
-import jasmine.utils.SystemProperties;
+import jasmine.runtime.utils.SystemProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

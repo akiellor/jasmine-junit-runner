@@ -1,6 +1,7 @@
 package jasmine.utils;
 
 import com.google.common.collect.Lists;
+import jasmine.runtime.utils.Futures;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

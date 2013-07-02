@@ -5,7 +5,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import jasmine.runtime.JasmineVisitor;
 import jasmine.runtime.Notifier;
-import jasmine.utils.Futures;
+import jasmine.runtime.utils.Futures;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 

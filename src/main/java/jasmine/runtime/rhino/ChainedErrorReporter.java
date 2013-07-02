@@ -1,6 +1,6 @@
 package jasmine.runtime.rhino;
 
-import jasmine.utils.Exceptions;
+import jasmine.runtime.utils.Exceptions;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.tools.ToolErrorReporter;

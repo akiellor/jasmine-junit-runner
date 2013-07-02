@@ -1,7 +1,7 @@
 package jasmine.runtime.vfs;
 
 import com.google.common.collect.Iterables;
-import jasmine.utils.Exceptions;
+import jasmine.runtime.utils.Exceptions;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.io.File;

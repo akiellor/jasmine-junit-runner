@@ -2,7 +2,7 @@ package jasmine.runtime.rhino;
 
 import com.google.common.base.Predicate;
 import jasmine.runtime.vfs.VirtualFileSystem;
-import jasmine.utils.Exceptions;
+import jasmine.runtime.utils.Exceptions;
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.tools.shell.Global;
 import org.reflections.vfs.Vfs;

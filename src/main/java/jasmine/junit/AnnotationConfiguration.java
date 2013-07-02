@@ -1,8 +1,7 @@
 package jasmine.junit;
 
 import jasmine.runtime.Configuration;
-import jasmine.utils.SystemProperties;
-import org.apache.commons.lang.StringUtils;
+import jasmine.runtime.utils.SystemProperties;
 
 import java.io.File;
 import java.util.Collection;

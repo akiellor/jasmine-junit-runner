@@ -1,8 +1,8 @@
 package jasmine.junit;
 
 import jasmine.runtime.rhino.RhinoContext;
-import jasmine.utils.Exceptions;
 import com.google.common.base.Optional;
+import jasmine.runtime.utils.Exceptions;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;

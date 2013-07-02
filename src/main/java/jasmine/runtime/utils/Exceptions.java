@@ -1,4 +1,4 @@
-package jasmine.utils;
+package jasmine.runtime.utils;
 
 public class Exceptions {
     public static RuntimeException unchecked(Throwable throwable){
