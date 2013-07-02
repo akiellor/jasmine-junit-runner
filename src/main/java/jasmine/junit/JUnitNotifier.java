@@ -6,7 +6,7 @@ import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
-public class JUnitNotifier implements Notifier {
+class JUnitNotifier implements Notifier {
     private final RunNotifier runNotifier;
 
     public JUnitNotifier(RunNotifier runNotifier) {

@@ -10,7 +10,7 @@ import org.junit.runner.Description;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DescriptionBuilder implements JasmineVisitor {
+class DescriptionBuilder implements JasmineVisitor {
     private final Map<String, Description> descriptions;
     private final Address<Describe> address;
 

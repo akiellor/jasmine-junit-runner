@@ -10,7 +10,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 
-public class AnnotationConfiguration implements Configuration {
+class AnnotationConfiguration implements Configuration {
     public static final String HTML_OUTPUT_DIR = "jasmine.html.outputDir";
     private final JasmineSuite annotation;
     private final SystemProperties properties;

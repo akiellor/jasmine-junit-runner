@@ -1,5 +1,6 @@
 package jasmine.junit;
 
+import jasmine.junit.JasmineSuite;
 import jasmine.runtime.rhino.RhinoContext;
 import com.google.common.base.Optional;
 import jasmine.runtime.utils.Exceptions;
@@ -11,7 +12,7 @@ import org.junit.runner.Description;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-public class TestObject {
+class TestObject {
     private final Object instance;
     private final Description description;
 
