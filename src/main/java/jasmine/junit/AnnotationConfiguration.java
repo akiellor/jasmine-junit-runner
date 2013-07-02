@@ -11,7 +11,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 
 class AnnotationConfiguration implements Configuration {
-    public static final String HTML_OUTPUT_DIR = "jasmine.html.outputDir";
     private final JasmineSuite annotation;
     private final SystemProperties properties;
     private final String defaultSpec;
@@ -46,10 +45,6 @@ class AnnotationConfiguration implements Configuration {
         }
 
         throw new IllegalStateException("No specs found.");
-    }
-
-    @Override public boolean debug() {
-        return annotation.debug();
     }
 
     @Override public List<String> getJavascriptPath() {

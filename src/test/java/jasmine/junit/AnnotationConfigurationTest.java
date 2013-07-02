@@ -58,17 +58,6 @@ public class AnnotationConfigurationTest {
     }
 
     @Test
-    public void shouldDelegateToAnnotationForWhetherToRunDebug() {
-        Configuration configuration = new AnnotationConfiguration(annotation);
-
-        when(annotation.debug()).thenReturn(true);
-        assertThat(configuration.debug()).isEqualTo(true);
-
-        when(annotation.debug()).thenReturn(false);
-        assertThat(configuration.debug()).isEqualTo(false);
-    }
-
-    @Test
     public void shouldGetAdditionalJavascriptSearchPathsFromSystemProperties() {
         AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
 

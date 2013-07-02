@@ -8,6 +8,4 @@ public @interface JasmineSuite {
     String[] specs() default {};
 
     String[] sources() default {};
-
-    boolean debug() default false;
 }

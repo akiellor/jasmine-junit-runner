@@ -8,7 +8,5 @@ public interface Configuration {
 
     Collection<String> specs();
 
-    boolean debug();
-
     List<String> getJavascriptPath();
 }

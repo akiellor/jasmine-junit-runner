@@ -8,8 +8,6 @@ import jasmine.runtime.rhino.RhinoContext;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
-import org.mozilla.javascript.ContextFactory;
-import org.mozilla.javascript.tools.debugger.Main;
 
 public class JasmineTestRunner extends Runner {
     private final TestObject test;
@@ -28,23 +26,6 @@ public class JasmineTestRunner extends Runner {
         this.jasmine = jasmine;
     }
 
-    private Main createDebugger() {
-        Main debugger = new Main("JS Debugger");
-
-        debugger.setExitAction(new Runnable() {
-            public void run() {
-                System.exit(0);
-            }
-        });
-
-        debugger.attachTo(ContextFactory.getGlobal());
-        debugger.pack();
-        debugger.setSize(600, 460);
-        debugger.setVisible(true);
-
-        return debugger;
-    }
-
     @Override
     public Description getDescription() {
         Description description = test.getDescription();
@@ -55,10 +36,6 @@ public class JasmineTestRunner extends Runner {
 
     @Override
     public void run(final RunNotifier notifier) {
-        if (configuration.debug()) {
-            createDebugger().doBreak();
-        }
-
         jasmine.execute(new Hooks(){
             @Override public void beforeAll(RhinoContext context) {
                 test.befores(context);
