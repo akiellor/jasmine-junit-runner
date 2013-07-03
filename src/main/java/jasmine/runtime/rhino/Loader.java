@@ -33,11 +33,11 @@ public class Loader {
     }
 
     public void loadFromVirtualFileSystem(final List<String> paths) {
-        Iterable<Vfs.File> files = Iterables.transform(paths, new Function<String, Vfs.File>() {
-            @Override public Vfs.File apply(@Nullable String input) {
-                return fileSystem.find(input);
+        Iterable<Vfs.File> files = Iterables.concat(Iterables.transform(paths, new Function<String, Iterable<Vfs.File>>() {
+            @Override public Iterable<Vfs.File> apply(@Nullable String input) {
+                return fileSystem.findAll(input);
             }
-        });
+        }));
 
         load(files);
     }

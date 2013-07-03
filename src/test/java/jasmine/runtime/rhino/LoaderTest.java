@@ -1,5 +1,6 @@
 package jasmine.runtime.rhino;
 
+import com.google.common.collect.Lists;
 import jasmine.runtime.rhino.Loader;
 import jasmine.runtime.vfs.VirtualFileSystem;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class LoaderTest {
     public void shouldLoadFromVirtualFileSystem() throws IOException {
         Vfs.File fileOne = new MockFile("someFile.js");
 
-        when(virtualFileSystem.find("someFile.js")).thenReturn(fileOne);
+        when(virtualFileSystem.findAll("someFile.js")).thenReturn(Lists.newArrayList(fileOne));
 
         Loader loader = new Loader(scope, context, virtualFileSystem);
 
@@ -46,7 +47,7 @@ public class LoaderTest {
     @Test
     public void shouldNotLoadSameFileTwiceWithLoad() throws IOException {
         Vfs.File fileOne = new MockFile("someFile.js");
-        when(virtualFileSystem.find("someFile.js")).thenReturn(fileOne);
+        when(virtualFileSystem.findAll("someFile.js")).thenReturn(Lists.newArrayList(fileOne));
         Loader loader = new Loader(scope, context, virtualFileSystem);
 
         loader.loadFromVirtualFileSystem("someFile.js");
@@ -55,7 +56,6 @@ public class LoaderTest {
         loader.loadFromVirtualFileSystem("someFile.js");
         verifyNoMoreInteractions(context);
     }
-
 
     @Test
     public void shouldLoadAllFromVirtualFileSystem() throws IOException {
