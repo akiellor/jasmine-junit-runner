@@ -44,7 +44,6 @@ public class RhinoRunner {
 
     public void execute(final Notifier notifier){
         List<RhinoIt> its = getAllIts();
-        if(its.isEmpty()) { notifier.nothingToRun(); return; }
 
         Futures.await(Collections2.transform(its, new Function<RhinoIt, Future<RhinoIt>>() {
             @Override public Future<RhinoIt> apply(final RhinoIt spec) {
@@ -66,6 +65,8 @@ public class RhinoRunner {
             throw Exceptions.unchecked(e);
         }
         executor.shutdown();
+
+        notifier.finished();
     }
 
     public List<RhinoIt> getAllIts() {

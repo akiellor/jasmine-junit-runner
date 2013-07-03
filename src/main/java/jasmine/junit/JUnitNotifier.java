@@ -29,8 +29,7 @@ class JUnitNotifier implements Notifier {
         runNotifier.fireTestStarted(toDescription(it));
     }
 
-    @Override public void nothingToRun() {
-        throw new RuntimeException("No specs to run.");
+    @Override public void finished() {
     }
 
     private Description toDescription(It it) {

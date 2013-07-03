@@ -2,8 +2,6 @@ package jasmine.runtime.rhino;
 
 import com.google.common.util.concurrent.Futures;
 import jasmine.runtime.Notifier;
-import jasmine.runtime.rhino.RhinoContext;
-import jasmine.runtime.rhino.RhinoRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -25,7 +23,7 @@ public class RhinoRunnerTest {
     @Mock RhinoIt it;
 
     @Test
-    public void shouldReportNoSpecsToRun() {
+    public void shouldReportFireFinishedWhenNoTestsToRun() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
                 "var object = {suites: function(){ return [];}}; object;"
@@ -35,7 +33,7 @@ public class RhinoRunnerTest {
 
         runner.execute(notifier);
 
-        verify(notifier).nothingToRun();
+        verify(notifier).finished();
     }
 
     @Test
@@ -53,5 +51,21 @@ public class RhinoRunnerTest {
 
         verify(executorService).awaitTermination(1L, TimeUnit.SECONDS);
         verify(executorService).shutdown();
+    }
+
+    @Test
+    public void shouldFireFinishedWhenTestsAreDone(){
+        when(executorService.submit(Mockito.<Callable<RhinoIt>>any())).thenReturn(Futures.immediateFuture(it));
+
+        RhinoContext context = new RhinoContext();
+        NativeObject object = (NativeObject) context.evalJS(
+                "var object = {specs: function(){ return [{id: 1, suite: {id: 1}, description: 'CHILD IT'}]; }, suites: function(){ return [{description: 'CHILD DESCRIBE', suites: function(){ return []; }, specs: function(){ return [{id: 1, suite: {id: 2}, description: 'GRANDCHILD IT'}]; }}]}}; object;"
+        );
+
+        RhinoRunner runner = new RhinoRunner(object, context, executorService);
+
+        runner.execute(notifier);
+
+        verify(notifier).finished();
     }
 }

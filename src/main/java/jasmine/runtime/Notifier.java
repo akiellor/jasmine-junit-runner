@@ -5,5 +5,5 @@ public interface Notifier {
     void fail(It it, Throwable error);
     void skipped(It it);
     void started(It it);
-    void nothingToRun();
+    void finished();
 }

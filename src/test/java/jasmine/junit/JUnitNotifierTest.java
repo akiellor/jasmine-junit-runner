@@ -12,8 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JUnitNotifierTest {
@@ -67,12 +66,9 @@ public class JUnitNotifierTest {
     }
 
     @Test
-    public void shouldThrowInitializationErrorWhenNoSpecsToRun() {
-        try{
-            new JUnitNotifier(runNotifier).nothingToRun();
-            fail();
-        }catch(RuntimeException e){
-            assertThat(e.getMessage()).isEqualTo("No specs to run.");
-        }
+    public void shouldDoNothingWhenNoTestsToRun() {
+        new JUnitNotifier(runNotifier).finished();
+
+        verifyNoMoreInteractions(runNotifier);
     }
 }

@@ -54,8 +54,7 @@ public class Main {
         }
 
         @Override
-        public void nothingToRun() {
-            System.out.println("No tests.");
+        public void finished() {
         }
     }
 }
