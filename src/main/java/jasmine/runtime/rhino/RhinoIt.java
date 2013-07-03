@@ -10,7 +10,7 @@ import org.mozilla.javascript.NativeObject;
 import static org.junit.Assert.assertTrue;
 
 public class RhinoIt implements It {
-    private static final int SLEEP_TIME_MILISECONDS = 50;
+    private static final int SLEEP_TIME_MILLISECONDS = 50;
 
     private final RhinoContext context;
     private final NativeObject spec;
@@ -98,7 +98,7 @@ public class RhinoIt implements It {
 
     private void waitALittle() {
         try {
-            Thread.sleep(SLEEP_TIME_MILISECONDS);
+            Thread.sleep(SLEEP_TIME_MILLISECONDS);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
