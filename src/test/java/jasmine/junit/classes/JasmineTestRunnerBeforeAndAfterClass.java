@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 
 
-@JasmineSuite(specs = { "emptySpec.js" })
+@JasmineSuite(specs = { "specs/emptySpec.js" })
 public class JasmineTestRunnerBeforeAndAfterClass extends JasmineTestRunnerBeforeAndAfterSuperClass {
 
     @Before

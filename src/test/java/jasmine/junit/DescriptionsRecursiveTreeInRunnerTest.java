@@ -7,7 +7,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class DescriptionsRecursiveTreeInRunnerTest {
 
-	@JasmineSuite(specs = { "recursiveSpec.js" })
+	@JasmineSuite(specs = { "specs/recursiveSpec.js" })
 	public static class RecursiveTreeTest {
 	}
 

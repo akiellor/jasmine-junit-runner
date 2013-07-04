@@ -127,7 +127,7 @@
                         </property>
                         <property>
                             <name>javascript.path</name>
-                            <value>src/test/javascript:src/test/javascript/specs:src/test/javascript/sources</value>
+                            <value>src/test/javascript</value>
                         </property>
                     </systemProperties>
                 </configuration>
