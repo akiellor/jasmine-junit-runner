@@ -18,7 +18,7 @@ public class ReflectionsSource implements Source {
     }
 
     public ReflectionsSource(Iterable<String> paths, Predicate<Vfs.File> candidateFilter){
-        Path path = Path.fromClasspath().append(paths).append(asList("."));
+        Path path = Path.fromClasspath().append(paths);
 
         this.files = Lists.newArrayList(Vfs.findFiles(path.toUrls(), candidateFilter));
     }
