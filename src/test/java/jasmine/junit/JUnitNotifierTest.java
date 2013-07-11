@@ -1,5 +1,6 @@
 package jasmine.junit;
 
+import jasmine.runtime.JasmineException;
 import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -19,6 +20,7 @@ public class JUnitNotifierTest {
     @Mock RunNotifier runNotifier;
     @Mock RhinoIt it;
     @Mock Exception exception;
+    @Mock jasmine.runtime.Failure failure;
 
     @Test
     public void shouldDelegateToJunitRunNotifierForStarted() {
@@ -70,5 +72,20 @@ public class JUnitNotifierTest {
         new JUnitNotifier(runNotifier).finished();
 
         verifyNoMoreInteractions(runNotifier);
+    }
+
+    @Test
+    public void shouldDelegateToRunNotifierForFailWithFailure() {
+        when(it.getDescription()).thenReturn("Object");
+        when(it.getId()).thenReturn("test");
+        when(failure.getThrowable()).thenReturn(new JasmineException());
+        new JUnitNotifier(runNotifier).fail(it, failure);
+
+        ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
+        verify(runNotifier).fireTestFailure(captor.capture());
+        Failure junitFailure = captor.getValue();
+
+        assertThat(junitFailure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
+        assertThat(junitFailure.getException()).isInstanceOf(JasmineException.class);
     }
 }

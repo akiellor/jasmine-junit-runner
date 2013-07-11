@@ -78,6 +78,13 @@ public class Main {
         }
 
         @Override
+        public void fail(It it, jasmine.runtime.Failure failure) {
+            System.out.print("F");
+            testRun = true;
+            failures.add(new Failure(it, failure.getThrowable()));
+        }
+
+        @Override
         public void skipped(It it) {
             testRun = true;
             System.out.print("-");
