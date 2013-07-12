@@ -1,6 +1,5 @@
 package jasmine.junit;
 
-import jasmine.runtime.JasmineException;
 import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -53,21 +52,6 @@ public class JUnitNotifierTest {
     }
 
     @Test
-    public void shouldDelegateToRunNotifierForFail() {
-        when(it.getDescription()).thenReturn("Object");
-        when(it.getId()).thenReturn("test");
-        when(it.getFirstFailedStacktrace()).thenReturn(exception);
-
-        new JUnitNotifier(runNotifier).fail(it, it.getFirstFailedStacktrace());
-
-        ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
-        verify(runNotifier).fireTestFailure(captor.capture());
-        Failure failure = captor.getValue();
-        assertThat(failure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
-        assertThat(failure.getException()).isEqualTo(exception);
-    }
-
-    @Test
     public void shouldDoNothingWhenNoTestsToRun() {
         new JUnitNotifier(runNotifier).finished();
 
@@ -78,7 +62,7 @@ public class JUnitNotifierTest {
     public void shouldDelegateToRunNotifierForFailWithFailure() {
         when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
-        when(failure.getThrowable()).thenReturn(new JasmineException());
+        when(failure.getThrowable()).thenReturn(new RuntimeException());
         new JUnitNotifier(runNotifier).fail(it, failure);
 
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
@@ -86,6 +70,6 @@ public class JUnitNotifierTest {
         Failure junitFailure = captor.getValue();
 
         assertThat(junitFailure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
-        assertThat(junitFailure.getException()).isInstanceOf(JasmineException.class);
+        assertThat(junitFailure.getException()).isInstanceOf(RuntimeException.class);
     }
 }

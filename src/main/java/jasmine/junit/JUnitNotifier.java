@@ -1,7 +1,6 @@
 package jasmine.junit;
 
 import jasmine.runtime.It;
-import jasmine.runtime.JasmineException;
 import jasmine.runtime.Notifier;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
@@ -16,10 +15,6 @@ class JUnitNotifier implements Notifier {
 
     @Override public void pass(It it) {
         runNotifier.fireTestFinished(toDescription(it));
-    }
-
-    @Override public void fail(It it, Throwable error) {
-        runNotifier.fireTestFailure(new Failure(toDescription(it), error));
     }
 
     @Override

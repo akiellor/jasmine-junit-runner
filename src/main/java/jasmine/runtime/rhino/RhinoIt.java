@@ -1,8 +1,6 @@
 package jasmine.runtime.rhino;
 
-import jasmine.runtime.It;
-import jasmine.runtime.JasmineVisitor;
-import jasmine.runtime.Notifier;
+import jasmine.runtime.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
@@ -45,7 +43,7 @@ public class RhinoIt implements It {
         if (skipped) {
             return new Status.Skipped(this);
         }
-        return passed ? new Status.Passed(this) : new Status.Failed(this, getFirstFailedStacktrace());
+        return passed ? new Status.Passed(this) : new Status.Failed(this, getFailure());
     }
 
     public boolean isBoundTo(RhinoContext context) {
@@ -56,13 +54,18 @@ public class RhinoIt implements It {
         return new RhinoIt(this.spec, context);
     }
 
-    public Throwable getFirstFailedStacktrace() {
+    private Failure getFailure() {
         NativeArray resultItems = (NativeArray) context.executeFunction(getSpecResults(), "getItems");
         for (Object resultItemId : resultItems.getIds()) {
-            NativeObject resultItem = (NativeObject) resultItems.get((Integer) resultItemId, resultItems);
+            final NativeObject resultItem = (NativeObject) resultItems.get((Integer) resultItemId, resultItems);
 
             if (!((Boolean) context.executeFunction(resultItem, "passed"))) {
-                return new JasmineSpecFailureException(resultItem);
+                return new Failure() {
+                    @Override
+                    public Throwable getThrowable() {
+                        return new JasmineSpecFailureException(resultItem);
+                    }
+                };
             }
         }
 

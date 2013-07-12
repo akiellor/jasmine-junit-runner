@@ -71,13 +71,6 @@ public class Main {
         }
 
         @Override
-        public void fail(It it, Throwable error) {
-            System.out.print("F");
-            testRun = true;
-            failures.add(new Failure(it, error));
-        }
-
-        @Override
         public void fail(It it, jasmine.runtime.Failure failure) {
             System.out.print("F");
             testRun = true;

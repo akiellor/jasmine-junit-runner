@@ -12,13 +12,13 @@ import static org.mockito.Mockito.verify;
 public class StatusTest {
     @Mock It it;
     @Mock Notifier notifier;
-    @Mock Exception exception;
+    @Mock Failure failure;
 
     @Test
     public void shouldNotifyWithFailWhenFailed() {
-        new Status.Failed(it, exception).notify(notifier);
+        new Status.Failed(it, failure).notify(notifier);
 
-        verify(notifier).fail(it, exception);
+        verify(notifier).fail(it, failure);
     }
 
     @Test

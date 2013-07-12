@@ -1,5 +1,6 @@
 package jasmine.runtime.rhino;
 
+import jasmine.runtime.Failure;
 import jasmine.runtime.It;
 import jasmine.runtime.Notifier;
 
@@ -8,15 +9,15 @@ public abstract class Status {
 
     public static class Failed extends Status{
         private final It it;
-        private final Throwable error;
+        private final Failure failure;
 
-        public Failed(It it, Throwable error) {
+        public Failed(It it, Failure failure) {
             this.it = it;
-            this.error = error;
+            this.failure = failure;
         }
 
         public void notify(Notifier notifier) {
-            notifier.fail(it, error);
+            notifier.fail(it, failure);
         }
     }
 

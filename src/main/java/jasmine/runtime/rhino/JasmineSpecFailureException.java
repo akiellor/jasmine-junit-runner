@@ -13,5 +13,4 @@ public class JasmineSpecFailureException extends Exception {
 	public String getMessage() {
 		return String.valueOf(result.get("message", result));
 	}
-
 }
