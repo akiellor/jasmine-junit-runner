@@ -1,10 +1,7 @@
 package jasmine.cli;
 
 import com.google.common.collect.Lists;
-import jasmine.runtime.Configuration;
-import jasmine.runtime.Hooks;
-import jasmine.runtime.It;
-import jasmine.runtime.Notifier;
+import jasmine.runtime.*;
 import jasmine.runtime.rhino.RhinoBackend;
 import jasmine.runtime.rhino.RhinoContext;
 
@@ -37,29 +34,6 @@ public class Main {
     }
 
     private static class CliNotifier implements Notifier {
-        private static class Failure{
-            private final String message;
-            private final It it;
-
-            public Failure(It it, String message){
-                this.it = it;
-                this.message = message;
-            }
-
-            public String format() {
-                StringBuilder builder = new StringBuilder()
-                    .append(it.getId())
-                    .append(" - ")
-                    .append(it.getDescription())
-                    .append("\n\n");
-
-
-                builder.append(message).append("\n\n");
-
-                return builder.toString();
-            }
-        }
-
         List<Failure> failures = new CopyOnWriteArrayList<Failure>();
         boolean testRun = false;
 
@@ -70,10 +44,10 @@ public class Main {
         }
 
         @Override
-        public void fail(It it, jasmine.runtime.Failure failure) {
+        public void fail(It it, Failure failure) {
             System.out.print("F");
             testRun = true;
-            failures.add(new Failure(it, failure.getMessage()));
+            failures.add(failure);
         }
 
         @Override
@@ -94,7 +68,9 @@ public class Main {
                 System.out.println();
 
                 for(Failure failure : failures){
-                    System.out.println(failure.format());
+                    System.out.println(failure.getMessage());
+                    System.out.println(failure.getStack());
+                    System.out.println();
                 }
             }
         }

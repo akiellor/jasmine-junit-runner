@@ -4,6 +4,7 @@ import jasmine.runtime.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.ScriptableObject;
 
 import static org.junit.Assert.assertTrue;
 
@@ -68,7 +69,7 @@ public class RhinoIt implements It {
 
                     @Override
                     public String getStack() {
-                        return String.valueOf(resultItem.get("stack"));
+                        return String.valueOf(((ScriptableObject) resultItem.get("trace")).get("stack"));
                     }
                 };
             }

@@ -4,6 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import jasmine.StackTraceAsserts;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -40,6 +41,8 @@ public class JasmineFailingSpecsTest {
         assertThat(failure.getDescription()).isEqualTo(startedDescription);
         assertThat(failure.getDescription().getDisplayName()).isEqualTo("will always fail");
         assertThat(failure.getMessage()).isEqualTo("Expected true to be false.");
+        StackTraceAsserts.assertThat(failure.getException())
+                .contains("failingSpec.js:3");
     }
 
     @Test
@@ -58,6 +61,8 @@ public class JasmineFailingSpecsTest {
         assertThat(failure.getDescription()).isEqualTo(startedDescription);
         assertThat(failure.getDescription().getDisplayName()).isEqualTo("will always crash");
         assertThat(failure.getMessage()).contains("ReferenceError: \"OEIWANU\"");
+        StackTraceAsserts.assertThat(failure.getException())
+                .contains("crashingSpec.js:3");
     }
 
     @Test(expected = EvaluatorException.class)

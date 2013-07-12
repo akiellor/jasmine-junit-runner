@@ -11,12 +11,8 @@ import java.util.List;
 public class RhinoBackend implements Backend {
     private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
             "js/lib/jasmine-1.3.1/jasmine.js",
-            "js/lib/jasmine.delegator_reporter.js"
-    ));
-
-    public static final List<String> ENV_JS_LIBRARY = Collections.unmodifiableList(Arrays.asList(
-            "js/lib/env.rhino.1.2.js",
-            "js/lib/env.utils.js"
+            "js/lib/jasmine.delegator_reporter.js",
+            "js/lib/jasmine.ExpectationResult.js"
     ));
 
     private final Configuration configuration;
