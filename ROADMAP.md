@@ -7,11 +7,6 @@ ROADMAP
 Nice to Haves
 =============
 1. core split out
-2. cli-runner
+2. cli-runner - more
 3. debugger support (big nice to have)
-4. nashorn backend
-5. testng backend?
-6. rip out file generator (separate module/delete feature)
-7. commonjs support / require.js support
-8. Runtime package is coupled to junit (Description).
-9. WebDriver backend
+5. commonjs support / require.js support
