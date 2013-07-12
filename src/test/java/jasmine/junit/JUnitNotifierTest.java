@@ -62,7 +62,7 @@ public class JUnitNotifierTest {
     public void shouldDelegateToRunNotifierForFailWithFailure() {
         when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
-        when(failure.getThrowable()).thenReturn(new RuntimeException());
+        when(failure.getMessage()).thenReturn("expected 'foo' to be 'bar'");
         new JUnitNotifier(runNotifier).fail(it, failure);
 
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
@@ -71,5 +71,6 @@ public class JUnitNotifierTest {
 
         assertThat(junitFailure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
         assertThat(junitFailure.getException()).isInstanceOf(RuntimeException.class);
+        assertThat(junitFailure.getMessage()).isEqualTo("expected 'foo' to be 'bar'");
     }
 }

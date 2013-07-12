@@ -62,8 +62,8 @@ public class RhinoIt implements It {
             if (!((Boolean) context.executeFunction(resultItem, "passed"))) {
                 return new Failure() {
                     @Override
-                    public Throwable getThrowable() {
-                        return new JasmineSpecFailureException(resultItem);
+                    public String getMessage() {
+                        return String.valueOf(resultItem.get("message"));
                     }
                 };
             }

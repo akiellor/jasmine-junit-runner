@@ -38,12 +38,12 @@ public class Main {
 
     private static class CliNotifier implements Notifier {
         private static class Failure{
-            private final Throwable error;
+            private final String message;
             private final It it;
 
-            public Failure(It it, Throwable error){
+            public Failure(It it, String message){
                 this.it = it;
-                this.error = error;
+                this.message = message;
             }
 
             public String format() {
@@ -54,8 +54,7 @@ public class Main {
                     .append("\n\n");
 
 
-                builder.append(error.getMessage())
-                        .append("\n\n");
+                builder.append(message).append("\n\n");
 
                 return builder.toString();
             }
@@ -74,7 +73,7 @@ public class Main {
         public void fail(It it, jasmine.runtime.Failure failure) {
             System.out.print("F");
             testRun = true;
-            failures.add(new Failure(it, failure.getThrowable()));
+            failures.add(new Failure(it, failure.getMessage()));
         }
 
         @Override

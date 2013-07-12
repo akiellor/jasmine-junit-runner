@@ -19,7 +19,7 @@ class JUnitNotifier implements Notifier {
 
     @Override
     public void fail(It it, jasmine.runtime.Failure failure) {
-        runNotifier.fireTestFailure(new Failure(toDescription(it), failure.getThrowable()));
+        runNotifier.fireTestFailure(new Failure(toDescription(it), new RuntimeException(failure.getMessage())));
     }
 
     @Override public void skipped(It it) {
