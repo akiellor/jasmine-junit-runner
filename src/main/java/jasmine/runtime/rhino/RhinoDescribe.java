@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class RhinoDescribe implements Describe {
+class RhinoDescribe implements Describe {
     private final NativeObject object;
     private final RhinoContext context;
 

@@ -1,8 +1,7 @@
 package jasmine.junit;
 
-import com.google.common.collect.Lists;
 import jasmine.StackTraceAsserts;
-import jasmine.runtime.rhino.RhinoIt;
+import jasmine.runtime.It;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -13,13 +12,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JUnitNotifierTest {
     @Mock RunNotifier runNotifier;
-    @Mock RhinoIt it;
+    @Mock It it;
     @Mock Exception exception;
     @Mock jasmine.runtime.Failure failure;
 
@@ -75,6 +73,7 @@ public class JUnitNotifierTest {
         assertThat(junitFailure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
         assertThat(junitFailure.getException()).isInstanceOf(RuntimeException.class);
         assertThat(junitFailure.getMessage()).isEqualTo("expected 'foo' to be 'bar'");
-        StackTraceAsserts.assertThat(junitFailure.getException()).isEqualTo("expected 'foo' to be 'bar'\n\tat foo.js:1\n\tat bar.js:1");
+        StackTraceAsserts.assertThat(junitFailure.getException())
+                .isEqualTo("expected 'foo' to be 'bar'\n\tat foo.js:1\n\tat bar.js:1");
     }
 }

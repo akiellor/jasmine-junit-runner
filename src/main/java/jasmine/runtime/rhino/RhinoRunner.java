@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class RhinoRunner {
+class RhinoRunner {
     private final NativeObject object;
     private final RhinoContext context;
     private final ExecutorService executor;

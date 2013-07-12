@@ -4,7 +4,7 @@ import jasmine.runtime.Failure;
 import jasmine.runtime.It;
 import jasmine.runtime.Notifier;
 
-public abstract class Status {
+abstract class Status {
     public abstract void notify(Notifier notifier);
 
     public static class Failed extends Status{

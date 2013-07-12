@@ -8,7 +8,7 @@ import org.mozilla.javascript.ScriptableObject;
 
 import static org.junit.Assert.assertTrue;
 
-public class RhinoIt implements It {
+class RhinoIt implements It {
     private static final int SLEEP_TIME_MILLISECONDS = 50;
 
     private final RhinoContext context;
