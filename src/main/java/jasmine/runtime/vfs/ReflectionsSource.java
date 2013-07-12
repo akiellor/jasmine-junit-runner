@@ -10,7 +10,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class ReflectionsSource implements Source {
+class ReflectionsSource implements Source {
     private final List<Vfs.File> files;
 
     protected ReflectionsSource(List<Vfs.File> files){

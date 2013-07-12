@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 public class VirtualFileSystem {
     private final List<Source> sources;
 
-    public VirtualFileSystem(Source... sources){
+    VirtualFileSystem(Source... sources){
         this.sources = asList(sources);
     }
 

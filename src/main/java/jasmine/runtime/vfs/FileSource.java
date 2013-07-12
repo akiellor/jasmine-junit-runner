@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class FileSource implements Source {
+class FileSource implements Source {
     @Override public Iterable<Vfs.File> findMatching(String regex) {
         return findExact(regex);
     }

@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 
-public class Path {
+class Path {
     private final Set<String> paths;
 
     public static Path fromClasspath() {
