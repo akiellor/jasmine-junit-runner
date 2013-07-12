@@ -53,11 +53,7 @@ public class RhinoBackend implements Backend {
         runner.accept(visitor);
     }
 
-    public void execute(Hooks hooks, final Notifier notifier) {
-        hooks.beforeAll(context);
-
+    public void execute(final Notifier notifier) {
         runner.execute(notifier);
-
-        hooks.afterAll(context);
     }
 }

@@ -1,7 +1,6 @@
 package jasmine.runtime.rhino;
 
 import jasmine.runtime.Configuration;
-import jasmine.runtime.Hooks;
 import jasmine.runtime.Notifier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,18 +15,15 @@ public class RhinoBackendTest {
     @Mock Configuration configuration;
     @Mock RhinoContext context;
     @Mock RhinoRunner runner;
-    @Mock Hooks hooks;
     @Mock Notifier notifier;
 
     @Test
     public void shouldExecuteHooksAroundTheExecutionOfTests() {
         RhinoBackend jasmine = new RhinoBackend(configuration, context, runner);
 
-        jasmine.execute(hooks, notifier);
+        jasmine.execute(notifier);
 
-        InOrder order = inOrder(hooks, runner);
-        order.verify(hooks).beforeAll(context);
+        InOrder order = inOrder(runner);
         order.verify(runner).execute(notifier);
-        order.verify(hooks).afterAll(context);
     }
 }

@@ -16,8 +16,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class RhinoContext {
-
+class RhinoContext {
     private final Context jsContext;
     private final Scriptable jsScope;
     private final Loader loader;

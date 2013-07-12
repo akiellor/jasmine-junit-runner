@@ -3,7 +3,6 @@ package jasmine.cli;
 import com.google.common.collect.Lists;
 import jasmine.runtime.*;
 import jasmine.runtime.rhino.RhinoBackend;
-import jasmine.runtime.rhino.RhinoContext;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,17 +19,7 @@ public class Main {
     }
 
     public void run() {
-        jasmine.execute(new CliHooks(), new CliNotifier());
-    }
-
-    private static class CliHooks implements Hooks {
-        @Override
-        public void beforeAll(RhinoContext context) {
-        }
-
-        @Override
-        public void afterAll(RhinoContext context) {
-        }
+        jasmine.execute(new CliNotifier());
     }
 
     private static class CliNotifier implements Notifier {

@@ -2,9 +2,7 @@ package jasmine.junit;
 
 import jasmine.runtime.Backend;
 import jasmine.runtime.Configuration;
-import jasmine.runtime.Hooks;
 import jasmine.runtime.rhino.RhinoBackend;
-import jasmine.runtime.rhino.RhinoContext;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -36,14 +34,6 @@ public class JasmineTestRunner extends Runner {
 
     @Override
     public void run(final RunNotifier notifier) {
-        jasmine.execute(new Hooks(){
-            @Override public void beforeAll(RhinoContext context) {
-                test.befores(context);
-            }
-
-            @Override public void afterAll(RhinoContext context) {
-                test.afters(context);
-            }
-        }, new JUnitNotifier(notifier));
+        jasmine.execute(new JUnitNotifier(notifier));
     }
 }
