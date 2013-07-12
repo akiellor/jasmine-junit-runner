@@ -10,7 +10,7 @@ public class DescriptionsWithMultipleSpecFilesTest {
 
     @Test
     public void getDescriptionsShouldIncludeBothSpec1AndSpec2SuiteInfo() {
-        Description root = new JasmineTestRunner(JasmineSuiteGeneratorClassWithRunner.class).getDescription();
+        Description root = new Jasmine(JasmineSuiteGeneratorClassWithRunner.class).getDescription();
 
         assertThat(root.getChildren()).hasSize(2);
         Description spec1 = root.getChildren().get(0);

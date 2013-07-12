@@ -13,7 +13,7 @@ public class DescriptionsRecursiveTreeInRunnerTest {
 
     @Test
     public void buildDescriptionsRecursively() {
-        Description baseTestDescription = new JasmineTestRunner(RecursiveTreeTest.class).getDescription();
+        Description baseTestDescription = new Jasmine(RecursiveTreeTest.class).getDescription();
         assertThat(baseTestDescription.getDisplayName()).contains(RecursiveTreeTest.class.getSimpleName());
 
         assertThat(baseTestDescription.getChildren()).hasSize(2);

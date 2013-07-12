@@ -26,7 +26,7 @@ public class JasmineFailingSpecsTest {
 
     @Test
     public void shouldNotifyOfSingleFailure() {
-        new JasmineTestRunner(JasmineTestRunnerFailingSpec.class).run(notifierMock);
+        new Jasmine(JasmineTestRunnerFailingSpec.class).run(notifierMock);
 
         ArgumentCaptor<Failure> failureCaptor = ArgumentCaptor.forClass(Failure.class);
         ArgumentCaptor<Description> descriptionCaptor = ArgumentCaptor.forClass(Description.class);
@@ -46,7 +46,7 @@ public class JasmineFailingSpecsTest {
 
     @Test
     public void shouldNotifyOfSingleExceptionWithinSpecFunction() {
-        new JasmineTestRunner(JasmineTestRunnerExceptionInSpec.class).run(notifierMock);
+        new Jasmine(JasmineTestRunnerExceptionInSpec.class).run(notifierMock);
 
         ArgumentCaptor<Failure> failureCaptor = ArgumentCaptor.forClass(Failure.class);
         ArgumentCaptor<Description> descriptionCaptor = ArgumentCaptor.forClass(Description.class);
@@ -66,6 +66,6 @@ public class JasmineFailingSpecsTest {
 
     @Test(expected = EvaluatorException.class)
     public void shouldCrashWhileTryingToLoadFaultyJSSpecFile() {
-        new JasmineTestRunner(JasmineTestRunnerExceptionInJSCode.class);
+        new Jasmine(JasmineTestRunnerExceptionInJSCode.class);
     }
 }

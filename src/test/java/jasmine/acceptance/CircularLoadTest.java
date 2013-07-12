@@ -1,10 +1,10 @@
 package jasmine.acceptance;
 
+import jasmine.junit.Jasmine;
 import jasmine.junit.JasmineSuite;
-import jasmine.junit.JasmineTestRunner;
 import org.junit.runner.RunWith;
 
-@RunWith(JasmineTestRunner.class)
+@RunWith(Jasmine.class)
 @JasmineSuite
 public class CircularLoadTest {
 }

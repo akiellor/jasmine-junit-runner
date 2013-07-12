@@ -15,6 +15,6 @@ public class JasmineTestRunnerComposedDescriptionTest {
 
     @Test
     public void useJasmineRunnerOnJasmineTestRunnerComposedDescriptionClass() throws NoSuchMethodException {
-        new JasmineTestRunner(JasmineTestRunnerComposedDescriptionSpec.class).run(notifierMock);
+        new Jasmine(JasmineTestRunnerComposedDescriptionSpec.class).run(notifierMock);
     }
 }

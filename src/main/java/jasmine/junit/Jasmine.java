@@ -7,18 +7,18 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 
-public class JasmineTestRunner extends Runner {
+public class Jasmine extends Runner {
     private final TestObject test;
     private final Configuration configuration;
     private final Backend jasmine;
 
-    public JasmineTestRunner(Class<?> testClass) {
+    public Jasmine(Class<?> testClass) {
         this.test = new TestObject(testClass);
         this.configuration = new AnnotationConfiguration(test.getAnnotation().or(DefaultSuite.getAnnotation()), test.getDefaultSpecPath());
         this.jasmine = new RhinoBackend(configuration);
     }
 
-    protected JasmineTestRunner(Configuration configuration, TestObject test, RhinoBackend jasmine) {
+    protected Jasmine(Configuration configuration, TestObject test, RhinoBackend jasmine) {
         this.configuration = configuration;
         this.test = test;
         this.jasmine = jasmine;

@@ -22,7 +22,7 @@ public class JasmineFinishedSpecsTest {
 
     @Test
     public void shouldNotifyOfSingleSuccess() {
-        new JasmineTestRunner(JasmineTestRunnerSuccessSpec.class).run(notifierMock);
+        new Jasmine(JasmineTestRunnerSuccessSpec.class).run(notifierMock);
 
         ArgumentCaptor<Description> descriptionStartedCaptor = ArgumentCaptor.forClass(Description.class);
         ArgumentCaptor<Description> descriptionFinishedCaptor = ArgumentCaptor.forClass(Description.class);
@@ -39,7 +39,7 @@ public class JasmineFinishedSpecsTest {
 
     @Test
     public void doesNotLoadEnvJsWhenSoConfigured() {
-        new JasmineTestRunner(JasmineTestRunnerDoesNotLoadEnvJS.class).run(notifierMock);
+        new Jasmine(JasmineTestRunnerDoesNotLoadEnvJS.class).run(notifierMock);
 
         ArgumentCaptor<Description> descriptionStartedCaptor = ArgumentCaptor.forClass(Description.class);
         ArgumentCaptor<Description> descriptionFinishedCaptor = ArgumentCaptor.forClass(Description.class);
