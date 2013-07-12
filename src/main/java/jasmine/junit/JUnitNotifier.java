@@ -6,6 +6,9 @@ import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 class JUnitNotifier implements Notifier {
     private final RunNotifier runNotifier;
 
@@ -19,7 +22,7 @@ class JUnitNotifier implements Notifier {
 
     @Override
     public void fail(It it, jasmine.runtime.Failure failure) {
-        runNotifier.fireTestFailure(new Failure(toDescription(it), new RuntimeException(failure.getMessage())));
+        runNotifier.fireTestFailure(new Failure(toDescription(it), new JUnitJasmineException(failure)));
     }
 
     @Override public void skipped(It it) {
@@ -35,5 +38,36 @@ class JUnitNotifier implements Notifier {
 
     private Description toDescription(It it) {
         return Description.createSuiteDescription(it.getDescription(), it.getId());
+    }
+
+    private static class JUnitJasmineException extends RuntimeException{
+        private final jasmine.runtime.Failure failure;
+
+        public JUnitJasmineException(jasmine.runtime.Failure failure) {
+            this.failure = failure;
+        }
+
+        @Override
+        public String getMessage(){
+            return failure.getMessage();
+        }
+
+        @Override
+        public void printStackTrace() {
+            printStackTrace(System.err);
+        }
+
+        @Override
+        public void printStackTrace(PrintStream s) {
+            printStackTrace(new PrintWriter(s));
+        }
+
+        @Override
+        public void printStackTrace(PrintWriter s) {
+            s.append(failure.getMessage());
+            s.append("\n");
+            s.append(failure.getStack());
+            s.flush();
+        }
     }
 }

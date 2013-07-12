@@ -65,6 +65,11 @@ public class RhinoIt implements It {
                     public String getMessage() {
                         return String.valueOf(resultItem.get("message"));
                     }
+
+                    @Override
+                    public String getStack() {
+                        return String.valueOf(resultItem.get("stack"));
+                    }
                 };
             }
         }

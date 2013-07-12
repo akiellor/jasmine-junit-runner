@@ -1,5 +1,7 @@
 package jasmine.junit;
 
+import com.google.common.collect.Lists;
+import jasmine.StackTraceAsserts;
 import jasmine.runtime.rhino.RhinoIt;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -63,6 +65,7 @@ public class JUnitNotifierTest {
         when(it.getDescription()).thenReturn("Object");
         when(it.getId()).thenReturn("test");
         when(failure.getMessage()).thenReturn("expected 'foo' to be 'bar'");
+        when(failure.getStack()).thenReturn("\tat foo.js:1\n\tat bar.js:1");
         new JUnitNotifier(runNotifier).fail(it, failure);
 
         ArgumentCaptor<Failure> captor = ArgumentCaptor.forClass(Failure.class);
@@ -72,5 +75,6 @@ public class JUnitNotifierTest {
         assertThat(junitFailure.getDescription()).isEqualTo(Description.createSuiteDescription("Object", "test"));
         assertThat(junitFailure.getException()).isInstanceOf(RuntimeException.class);
         assertThat(junitFailure.getMessage()).isEqualTo("expected 'foo' to be 'bar'");
+        StackTraceAsserts.assertThat(junitFailure.getException()).isEqualTo("expected 'foo' to be 'bar'\n\tat foo.js:1\n\tat bar.js:1");
     }
 }
