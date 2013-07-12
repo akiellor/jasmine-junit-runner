@@ -10,16 +10,18 @@ import java.io.InputStream;
 import static com.google.common.collect.Lists.newArrayList;
 
 class FileSource implements Source {
-    @Override public Iterable<Vfs.File> findMatching(String regex) {
+    @Override
+    public Iterable<Vfs.File> findMatching(String regex) {
         return findExact(regex);
     }
 
-    @Override public Iterable<Vfs.File> findExact(String path) {
+    @Override
+    public Iterable<Vfs.File> findExact(String path) {
         final File file = new File(path);
-        if(file.isFile()){
+        if (file.isFile()) {
             Vfs.File vfsFile = new FileBasedVfsFile(file);
             return newArrayList(vfsFile);
-        }else{
+        } else {
             return newArrayList();
         }
     }
@@ -31,15 +33,18 @@ class FileSource implements Source {
             this.file = file;
         }
 
-        @Override public String getName() {
+        @Override
+        public String getName() {
             return file.getName();
         }
 
-        @Override public String getRelativePath() {
+        @Override
+        public String getRelativePath() {
             return file.getPath();
         }
 
-        @Override public InputStream openInputStream() throws IOException {
+        @Override
+        public InputStream openInputStream() throws IOException {
             return new FileInputStream(file);
         }
     }

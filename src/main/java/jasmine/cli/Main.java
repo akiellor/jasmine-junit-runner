@@ -1,7 +1,9 @@
 package jasmine.cli;
 
-import com.google.common.collect.Lists;
-import jasmine.runtime.*;
+import jasmine.runtime.Configuration;
+import jasmine.runtime.Failure;
+import jasmine.runtime.It;
+import jasmine.runtime.Notifier;
 import jasmine.runtime.rhino.RhinoBackend;
 
 import java.util.List;
@@ -52,11 +54,11 @@ public class Main {
 
         @Override
         public void finished() {
-            if(testRun){
+            if (testRun) {
                 System.out.println();
                 System.out.println();
 
-                for(Failure failure : failures){
+                for (Failure failure : failures) {
                     System.out.println(failure.getMessage());
                     System.out.println(failure.getStack());
                     System.out.println();

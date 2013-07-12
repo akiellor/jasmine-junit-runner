@@ -12,10 +12,14 @@ import static org.mockito.Mockito.inOrder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RhinoBackendTest {
-    @Mock Configuration configuration;
-    @Mock RhinoContext context;
-    @Mock RhinoRunner runner;
-    @Mock Notifier notifier;
+    @Mock
+    Configuration configuration;
+    @Mock
+    RhinoContext context;
+    @Mock
+    RhinoRunner runner;
+    @Mock
+    Notifier notifier;
 
     @Test
     public void shouldExecuteHooksAroundTheExecutionOfTests() {

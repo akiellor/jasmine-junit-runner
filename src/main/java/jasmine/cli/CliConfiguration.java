@@ -22,7 +22,7 @@ public class CliConfiguration implements Configuration {
     @Argument
     private List<String> arguments = Lists.newArrayList();
 
-    public CliConfiguration(String... args){
+    public CliConfiguration(String... args) {
         CmdLineParser parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
@@ -38,7 +38,7 @@ public class CliConfiguration implements Configuration {
 
     @Override
     public Collection<String> specs() {
-        if(arguments.isEmpty()){
+        if (arguments.isEmpty()) {
             return Lists.newArrayList(".*Spec.js$");
         }
         return ImmutableList.copyOf(arguments);
@@ -46,7 +46,7 @@ public class CliConfiguration implements Configuration {
 
     @Override
     public List<String> getJavascriptPath() {
-        if(path == null){
+        if (path == null) {
             try {
                 return Lists.newArrayList(new File("").getAbsoluteFile().toURI().toURL().toExternalForm());
             } catch (MalformedURLException e) {

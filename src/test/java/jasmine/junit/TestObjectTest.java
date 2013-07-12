@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class TestObjectTest {
-    public static class TestClassWithInterestingNameTest{
+    public static class TestClassWithInterestingNameTest {
     }
 
     @Test

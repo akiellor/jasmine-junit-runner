@@ -28,13 +28,15 @@ public class Loader {
         this.fileSystem = fileSystem;
     }
 
-    @SuppressWarnings("UnusedDeclaration") public void loadFromVirtualFileSystem(final String path) {
+    @SuppressWarnings("UnusedDeclaration")
+    public void loadFromVirtualFileSystem(final String path) {
         loadFromVirtualFileSystem(asList(path));
     }
 
     public void loadFromVirtualFileSystem(final List<String> paths) {
         Iterable<Vfs.File> files = Iterables.concat(Iterables.transform(paths, new Function<String, Iterable<Vfs.File>>() {
-            @Override public Iterable<Vfs.File> apply(@Nullable String input) {
+            @Override
+            public Iterable<Vfs.File> apply(@Nullable String input) {
                 return fileSystem.findAll(input);
             }
         }));
@@ -42,13 +44,15 @@ public class Loader {
         load(files);
     }
 
-    @SuppressWarnings("UnusedDeclaration") public void loadAllFromVirtualFileSystem(final String path) {
+    @SuppressWarnings("UnusedDeclaration")
+    public void loadAllFromVirtualFileSystem(final String path) {
         loadAllFromVirtualFileSystem(asList(path));
     }
 
     public void loadAllFromVirtualFileSystem(final List<String> paths) {
         Iterable<Vfs.File> files = Iterables.concat(Iterables.transform(paths, new Function<String, Iterable<Vfs.File>>() {
-            @Override public Iterable<Vfs.File> apply(@Nullable String input) {
+            @Override
+            public Iterable<Vfs.File> apply(@Nullable String input) {
                 return fileSystem.findAll(input);
             }
         }));
@@ -57,8 +61,10 @@ public class Loader {
     }
 
     private synchronized void load(Iterable<Vfs.File> files) {
-        for(Vfs.File file : files){
-            if(loaded.contains(file)) { continue; }
+        for (Vfs.File file : files) {
+            if (loaded.contains(file)) {
+                continue;
+            }
             loaded.add(file);
             try {
                 this.context.evaluateReader(this.scope, new InputStreamReader(file.openInputStream()), file.getRelativePath(), 1, null);

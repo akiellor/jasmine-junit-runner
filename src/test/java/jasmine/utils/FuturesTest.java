@@ -17,14 +17,16 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class FuturesTest {
-    @Mock Future<Object> first;
-    @Mock Future<Object> second;
+    @Mock
+    Future<Object> first;
+    @Mock
+    Future<Object> second;
 
     @Test
     public void shouldAwaitAndReturnAllFutures() throws ExecutionException, InterruptedException {
         when(first.get()).thenReturn("1");
         when(second.get()).thenReturn("2");
-        
+
         Iterable<Object> objects = Futures.await(Lists.<Future<Object>>newArrayList(first, second));
 
         verify(first, atMost(1)).get();
@@ -37,10 +39,10 @@ public class FuturesTest {
         when(first.get()).thenReturn("1");
         when(second.get()).thenThrow(new InterruptedException());
 
-        try{
+        try {
             Futures.await(Lists.<Future<Object>>newArrayList(first, second));
             fail();
-        }catch(Exception e){
+        } catch (Exception e) {
             assertThat(e.getCause()).isExactlyInstanceOf(InterruptedException.class);
         }
     }
@@ -50,10 +52,10 @@ public class FuturesTest {
         when(first.get()).thenReturn("1");
         when(second.get()).thenThrow(new ExecutionException(new RuntimeException()));
 
-        try{
+        try {
             Futures.await(Lists.<Future<Object>>newArrayList(first, second));
             fail();
-        }catch(Exception e){
+        } catch (Exception e) {
             assertThat(e.getCause()).isExactlyInstanceOf(ExecutionException.class);
         }
     }

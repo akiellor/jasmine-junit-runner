@@ -8,14 +8,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.javascript.NativeObject;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RhinoItTest {
-    @Mock NativeObject object;
-    @Mock RhinoContext context;
+    @Mock
+    NativeObject object;
+    @Mock
+    RhinoContext context;
 
     @Test
     public void shouldHaveId() {

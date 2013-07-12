@@ -18,7 +18,7 @@ public class JasmineTestRunner extends Runner {
         this.jasmine = new RhinoBackend(configuration);
     }
 
-    protected JasmineTestRunner(Configuration configuration, TestObject test, RhinoBackend jasmine){
+    protected JasmineTestRunner(Configuration configuration, TestObject test, RhinoBackend jasmine) {
         this.configuration = configuration;
         this.test = test;
         this.jasmine = jasmine;

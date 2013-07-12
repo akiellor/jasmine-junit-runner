@@ -1,6 +1,9 @@
 package jasmine.runtime.rhino;
 
-import jasmine.runtime.*;
+import jasmine.runtime.Backend;
+import jasmine.runtime.Configuration;
+import jasmine.runtime.JasmineVisitor;
+import jasmine.runtime.Notifier;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public class RhinoBackend implements Backend {
         this.runner = new RhinoRunner(baseSuites, context);
     }
 
-    protected RhinoBackend(Configuration configuration, RhinoContext context, RhinoRunner runner){
+    protected RhinoBackend(Configuration configuration, RhinoContext context, RhinoRunner runner) {
         this.configuration = configuration;
         this.context = context;
         this.runner = runner;
@@ -49,7 +52,7 @@ public class RhinoBackend implements Backend {
         return context;
     }
 
-    public void accept(JasmineVisitor visitor){
+    public void accept(JasmineVisitor visitor) {
         runner.accept(visitor);
     }
 

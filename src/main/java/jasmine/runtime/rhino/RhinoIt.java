@@ -1,6 +1,9 @@
 package jasmine.runtime.rhino;
 
-import jasmine.runtime.*;
+import jasmine.runtime.Failure;
+import jasmine.runtime.It;
+import jasmine.runtime.JasmineVisitor;
+import jasmine.runtime.Notifier;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
@@ -19,14 +22,16 @@ class RhinoIt implements It {
         this.context = context;
     }
 
-    @Override public String getId() {
-        NativeObject parentSuite = (NativeObject)spec.get("suite", spec);
+    @Override
+    public String getId() {
+        NativeObject parentSuite = (NativeObject) spec.get("suite", spec);
         String suiteId = String.valueOf(parentSuite.get("id", parentSuite));
         String specId = String.valueOf(spec.get("id", spec));
         return suiteId + "-" + specId;
     }
 
-    @Override public String getDescription() {
+    @Override
+    public String getDescription() {
         return String.valueOf(spec.get("description", spec));
     }
 
@@ -87,18 +92,21 @@ class RhinoIt implements It {
         return doneResult instanceof Boolean && ((Boolean) doneResult);
     }
 
-    public void execute(){
+    public void execute() {
         context.executeFunction(spec, "execute");
-        while(!isDone()) { waitALittle(); }
+        while (!isDone()) {
+            waitALittle();
+        }
     }
 
-    public void execute(Notifier notifier){
+    public void execute(Notifier notifier) {
         notifier.started(this);
         execute();
         getSpecResultStatus().notify(notifier);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return new ToStringBuilder(this)
                 .append("id", getId())
                 .append("description", getDescription())

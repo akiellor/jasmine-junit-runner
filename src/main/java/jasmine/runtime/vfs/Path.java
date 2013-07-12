@@ -25,9 +25,9 @@ class Path {
 
     public Set<URL> toUrls() {
         Set<URL> urls = newHashSet();
-        for(String part : paths){
+        for (String part : paths) {
             File file = new File(part);
-            if(file.exists()){
+            if (file.exists()) {
                 try {
                     urls.add(file.toURI().toURL());
                 } catch (MalformedURLException e) {

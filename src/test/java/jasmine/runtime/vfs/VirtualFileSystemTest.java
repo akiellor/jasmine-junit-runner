@@ -14,12 +14,17 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VirtualFileSystemTest {
-    @Mock Source sourceOne;
-    @Mock Source sourceTwo;
+    @Mock
+    Source sourceOne;
+    @Mock
+    Source sourceTwo;
 
-    @Mock Vfs.File one;
-    @Mock Vfs.File two;
-    @Mock Vfs.File three;
+    @Mock
+    Vfs.File one;
+    @Mock
+    Vfs.File two;
+    @Mock
+    Vfs.File three;
 
     @Test
     public void shouldReturnFirstFileFound() {

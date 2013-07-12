@@ -9,7 +9,7 @@ class TestObject {
     private final Object instance;
     private final Description description;
 
-    public TestObject(Class<?> testClass){
+    public TestObject(Class<?> testClass) {
         try {
             this.instance = testClass.newInstance();
             this.description = Description.createSuiteDescription(testClass);
@@ -18,7 +18,7 @@ class TestObject {
         }
     }
 
-    public Optional<JasmineSuite> getAnnotation(){
+    public Optional<JasmineSuite> getAnnotation() {
         return Optional.fromNullable(instance.getClass().getAnnotation(JasmineSuite.class));
     }
 

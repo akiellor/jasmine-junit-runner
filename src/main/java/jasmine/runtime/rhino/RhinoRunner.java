@@ -30,25 +30,27 @@ class RhinoRunner {
         this.executor = executor;
     }
 
-    public List<RhinoDescribe> getDescribes(){
+    public List<RhinoDescribe> getDescribes() {
         List<RhinoDescribe> allDescribes = getAllDescribes();
         allDescribes.removeAll(getChildDescribes());
         return allDescribes;
     }
 
-    public void accept(JasmineVisitor visitor){
-        for(RhinoDescribe describe : getDescribes()){
+    public void accept(JasmineVisitor visitor) {
+        for (RhinoDescribe describe : getDescribes()) {
             describe.accept(visitor);
         }
     }
 
-    public void execute(final Notifier notifier){
+    public void execute(final Notifier notifier) {
         List<RhinoIt> its = getAllIts();
 
         Futures.await(Collections2.transform(its, new Function<RhinoIt, Future<RhinoIt>>() {
-            @Override public Future<RhinoIt> apply(final RhinoIt spec) {
+            @Override
+            public Future<RhinoIt> apply(final RhinoIt spec) {
                 return executor.submit(new Callable<RhinoIt>() {
-                    @Override public RhinoIt call() throws Exception {
+                    @Override
+                    public RhinoIt call() throws Exception {
                         RhinoContext fork = context.fork();
 
                         spec.bind(fork).execute(notifier);
@@ -71,15 +73,17 @@ class RhinoRunner {
 
     public List<RhinoIt> getAllIts() {
         return newArrayList(Iterables.concat(Iterables.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
-            @Override public List<RhinoIt> apply(RhinoDescribe input) {
+            @Override
+            public List<RhinoIt> apply(RhinoDescribe input) {
                 return input.getAllIts();
             }
         })));
     }
 
-    private List<RhinoDescribe> getChildDescribes(){
+    private List<RhinoDescribe> getChildDescribes() {
         return newArrayList(Iterables.concat(Iterables.transform(getAllDescribes(), new Function<RhinoDescribe, List<RhinoDescribe>>() {
-            @Override public List<RhinoDescribe> apply(RhinoDescribe input) {
+            @Override
+            public List<RhinoDescribe> apply(RhinoDescribe input) {
                 return input.getDescribes();
             }
         })));
@@ -88,8 +92,8 @@ class RhinoRunner {
     private List<RhinoDescribe> getAllDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
         List<RhinoDescribe> describes = newArrayList();
-        for(Object id : suites.getIndexIds()){
-            describes.add(new RhinoDescribe((NativeObject)suites.get(id), context));
+        for (Object id : suites.getIndexIds()) {
+            describes.add(new RhinoDescribe((NativeObject) suites.get(id), context));
         }
         return describes;
     }

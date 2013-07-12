@@ -29,11 +29,13 @@ class AnnotationConfiguration implements Configuration {
         this.properties = properties;
     }
 
-    @Override public Collection<String> sources() {
+    @Override
+    public Collection<String> sources() {
         return asList(annotation.sources());
     }
 
-    @Override public Collection<String> specs() {
+    @Override
+    public Collection<String> specs() {
         Collection<String> specs = asList(annotation.specs());
 
         if (!specs.isEmpty()) {
@@ -47,9 +49,12 @@ class AnnotationConfiguration implements Configuration {
         throw new IllegalStateException("No specs found.");
     }
 
-    @Override public List<String> getJavascriptPath() {
+    @Override
+    public List<String> getJavascriptPath() {
         String javascriptPath = properties.get("javascript.path");
-        if(javascriptPath == null) { return newArrayList(); }
+        if (javascriptPath == null) {
+            return newArrayList();
+        }
 
         return newArrayList(javascriptPath.split(File.pathSeparator));
     }

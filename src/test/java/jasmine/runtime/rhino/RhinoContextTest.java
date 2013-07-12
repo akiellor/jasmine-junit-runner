@@ -2,7 +2,6 @@ package jasmine.runtime.rhino;
 
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
-import jasmine.runtime.rhino.RhinoContext;
 import org.junit.Test;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
@@ -107,9 +106,10 @@ public class RhinoContextTest {
 
         final Timer loads = Metrics.newTimer(RhinoContext.class, "loads", TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
 
-        for(int i = 0; i < 100; i++){
+        for (int i = 0; i < 100; i++) {
             loads.time(new Callable<Void>() {
-                @Override public Void call() throws Exception {
+                @Override
+                public Void call() throws Exception {
                     context.fork().loadFromVirtualFileSystem("src/test/javascript/sources/source1.js");
                     return null;
                 }

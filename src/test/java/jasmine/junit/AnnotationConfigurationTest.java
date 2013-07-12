@@ -12,13 +12,14 @@ import java.io.IOException;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.Fail.fail;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AnnotationConfigurationTest {
-    @Mock JasmineSuite annotation;
-    @Mock SystemProperties properties;
+    @Mock
+    JasmineSuite annotation;
+    @Mock
+    SystemProperties properties;
     String defaultSpec = "defaultSpec.js";
 
     @Test

@@ -7,7 +7,7 @@ import jasmine.runtime.Notifier;
 abstract class Status {
     public abstract void notify(Notifier notifier);
 
-    public static class Failed extends Status{
+    public static class Failed extends Status {
         private final It it;
         private final Failure failure;
 
@@ -21,7 +21,7 @@ abstract class Status {
         }
     }
 
-    public static class Passed extends Status{
+    public static class Passed extends Status {
         private final It it;
 
         public Passed(It it) {
@@ -33,7 +33,7 @@ abstract class Status {
         }
     }
 
-    public static class Skipped extends Status{
+    public static class Skipped extends Status {
         private final It it;
 
         public Skipped(It it) {

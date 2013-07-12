@@ -1,7 +1,6 @@
 package jasmine.runtime.rhino;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import jasmine.runtime.Address;
 import jasmine.runtime.Describe;
@@ -15,8 +14,6 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class RhinoDescribeTest {
     @Test
@@ -46,7 +43,7 @@ public class RhinoDescribeTest {
     }
 
     @Test
-    public void shouldRebindTreeToNewContext(){
+    public void shouldRebindTreeToNewContext() {
         RhinoContext context = new RhinoContext();
         NativeObject object = (NativeObject) context.evalJS(
                 "var object = {suites: function(){ return [{description: 'CHILD'}]}}; object;"
@@ -70,7 +67,8 @@ public class RhinoDescribeTest {
 
         RhinoDescribe describe = new RhinoDescribe(object, context);
         Collection<String> its = Collections2.transform(describe.getAllIts(), new Function<RhinoIt, String>() {
-            @Override public String apply(RhinoIt input) {
+            @Override
+            public String apply(RhinoIt input) {
                 return input.getDescription();
             }
         });
@@ -119,33 +117,37 @@ public class RhinoDescribeTest {
         );
     }
 
-    private static class DescriptionTracingVisitor implements JasmineVisitor{
+    private static class DescriptionTracingVisitor implements JasmineVisitor {
         private final List<String> sequence;
         private final Address<Describe> address;
 
-        public DescriptionTracingVisitor(){
+        public DescriptionTracingVisitor() {
             this.sequence = newArrayList();
             this.address = new Address<Describe>();
         }
 
-        private DescriptionTracingVisitor(List<String> sequence, Address<Describe> address){
+        private DescriptionTracingVisitor(List<String> sequence, Address<Describe> address) {
             this.sequence = sequence;
             this.address = address;
         }
 
-        @Override public void visit(Describe describe) {
+        @Override
+        public void visit(Describe describe) {
             sequence.add(describe.getDescription());
         }
 
-        @Override public void visit(It it) {
+        @Override
+        public void visit(It it) {
             sequence.add(it.getDescription());
         }
 
-        @Override public JasmineVisitor forNextLevel(Describe describe) {
+        @Override
+        public JasmineVisitor forNextLevel(Describe describe) {
             return new DescriptionTracingVisitor(sequence, address.push(describe));
         }
 
-        @Override public Address<Describe> getCurrentAddress() {
+        @Override
+        public Address<Describe> getCurrentAddress() {
             return address;
         }
     }

@@ -28,7 +28,8 @@ class RhinoContext {
 
     public RhinoContext(Iterable<String> paths) {
         this.fileSystem = new VirtualFileSystem(paths, new Predicate<Vfs.File>() {
-            @Override public boolean apply(@Nullable Vfs.File input) {
+            @Override
+            public boolean apply(@Nullable Vfs.File input) {
                 return input != null && input.getRelativePath().endsWith("js");
             }
         });
@@ -109,7 +110,7 @@ class RhinoContext {
         loadFromVirtualFileSystem(asList(paths));
     }
 
-    public void loadFromVirtualFileSystem(List<String> paths){
+    public void loadFromVirtualFileSystem(List<String> paths) {
         loader.loadFromVirtualFileSystem(paths);
     }
 

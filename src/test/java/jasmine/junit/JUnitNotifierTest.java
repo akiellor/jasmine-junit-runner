@@ -16,10 +16,14 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JUnitNotifierTest {
-    @Mock RunNotifier runNotifier;
-    @Mock It it;
-    @Mock Exception exception;
-    @Mock jasmine.runtime.Failure failure;
+    @Mock
+    RunNotifier runNotifier;
+    @Mock
+    It it;
+    @Mock
+    Exception exception;
+    @Mock
+    jasmine.runtime.Failure failure;
 
     @Test
     public void shouldDelegateToJunitRunNotifierForStarted() {

@@ -18,7 +18,7 @@ class RhinoDescribe implements Describe {
     private final NativeObject object;
     private final RhinoContext context;
 
-    public RhinoDescribe(final NativeObject object, RhinoContext context){
+    public RhinoDescribe(final NativeObject object, RhinoContext context) {
         this.object = object;
         this.context = context;
     }
@@ -26,8 +26,8 @@ class RhinoDescribe implements Describe {
     public List<RhinoDescribe> getDescribes() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "suites");
         List<RhinoDescribe> describes = newArrayList();
-        for(Object id : suites.getIndexIds()){
-            describes.add(new RhinoDescribe((NativeObject)suites.get(id), context));
+        for (Object id : suites.getIndexIds()) {
+            describes.add(new RhinoDescribe((NativeObject) suites.get(id), context));
         }
         return describes;
     }
@@ -35,7 +35,7 @@ class RhinoDescribe implements Describe {
     public List<RhinoIt> getIts() {
         NativeArray suites = (NativeArray) context.executeFunction(object, "specs");
         List<RhinoIt> its = newArrayList();
-        for(Object id : suites.getIndexIds()){
+        for (Object id : suites.getIndexIds()) {
             its.add(new RhinoIt((NativeObject) suites.get(id), context));
         }
         return its;
@@ -51,7 +51,8 @@ class RhinoDescribe implements Describe {
 
     public List<RhinoIt> getAllIts() {
         Iterable<RhinoIt> allChildren = Iterables.concat(Collections2.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
-            @Override public List<RhinoIt> apply(RhinoDescribe input) {
+            @Override
+            public List<RhinoIt> apply(RhinoDescribe input) {
                 return input.getAllIts();
             }
         }));
@@ -79,25 +80,28 @@ class RhinoDescribe implements Describe {
         return result;
     }
 
-    @Override public String getId() {
+    @Override
+    public String getId() {
         return String.valueOf(object.get("id", object));
     }
 
-    @Override public String getDescription() {
+    @Override
+    public String getDescription() {
         return String.valueOf(object.get("description", object));
     }
 
     public void accept(JasmineVisitor visitor) {
         visitor.visit(this);
-        for(RhinoIt it : getIts()){
+        for (RhinoIt it : getIts()) {
             it.accept(visitor.forNextLevel(this));
         }
-        for(RhinoDescribe describe : getDescribes()){
+        for (RhinoDescribe describe : getDescribes()) {
             describe.accept(visitor.forNextLevel(this));
         }
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return new ToStringBuilder(this)
                 .append("id", getId())
                 .append("description", getDescription())

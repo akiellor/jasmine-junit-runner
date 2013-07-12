@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 public class VirtualFileSystem {
     private final List<Source> sources;
 
-    VirtualFileSystem(Source... sources){
+    VirtualFileSystem(Source... sources) {
         this.sources = asList(sources);
     }
 
@@ -22,7 +22,8 @@ public class VirtualFileSystem {
 
     public Iterable<Vfs.File> findAll(final String regex) {
         Iterable<Vfs.File> files = Iterables.concat(Iterables.transform(sources, new Function<Source, Iterable<Vfs.File>>() {
-            @Override public Iterable<Vfs.File> apply(Source input) {
+            @Override
+            public Iterable<Vfs.File> apply(Source input) {
                 return input.findMatching(regex);
             }
         }));
@@ -36,7 +37,8 @@ public class VirtualFileSystem {
 
     public Vfs.File find(final String path) {
         Iterable<Vfs.File> files = Iterables.concat(Iterables.transform(sources, new Function<Source, Iterable<Vfs.File>>() {
-            @Override public Iterable<Vfs.File> apply(Source input) {
+            @Override
+            public Iterable<Vfs.File> apply(Source input) {
                 return input.findExact(path);
             }
         }));

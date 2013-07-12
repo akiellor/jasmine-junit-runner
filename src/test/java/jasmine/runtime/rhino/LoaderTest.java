@@ -1,7 +1,6 @@
 package jasmine.runtime.rhino;
 
 import com.google.common.collect.Lists;
-import jasmine.runtime.rhino.Loader;
 import jasmine.runtime.vfs.VirtualFileSystem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,16 +19,17 @@ import java.io.Reader;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
 public class LoaderTest {
-    @Mock Scriptable scope;
-    @Mock Context context;
-    @Mock VirtualFileSystem virtualFileSystem;
+    @Mock
+    Scriptable scope;
+    @Mock
+    Context context;
+    @Mock
+    VirtualFileSystem virtualFileSystem;
 
     @Test
     public void shouldLoadFromVirtualFileSystem() throws IOException {
@@ -88,7 +88,7 @@ public class LoaderTest {
         private final String relativePath;
         private final ByteArrayInputStream inputStream;
 
-        public MockFile(String relativePath){
+        public MockFile(String relativePath) {
             this(relativePath, relativePath, new ByteArrayInputStream("".getBytes()));
         }
 
@@ -98,15 +98,18 @@ public class LoaderTest {
             this.inputStream = inputStream;
         }
 
-        @Override public String getName() {
+        @Override
+        public String getName() {
             return name;
         }
 
-        @Override public String getRelativePath() {
+        @Override
+        public String getRelativePath() {
             return relativePath;
         }
 
-        @Override public InputStream openInputStream() throws IOException {
+        @Override
+        public InputStream openInputStream() throws IOException {
             inputStream.reset();
             return inputStream;
         }

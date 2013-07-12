@@ -16,7 +16,8 @@ class JUnitNotifier implements Notifier {
         this.runNotifier = runNotifier;
     }
 
-    @Override public void pass(It it) {
+    @Override
+    public void pass(It it) {
         runNotifier.fireTestFinished(toDescription(it));
     }
 
@@ -25,22 +26,25 @@ class JUnitNotifier implements Notifier {
         runNotifier.fireTestFailure(new Failure(toDescription(it), new JUnitJasmineException(failure)));
     }
 
-    @Override public void skipped(It it) {
+    @Override
+    public void skipped(It it) {
         runNotifier.fireTestIgnored(toDescription(it));
     }
 
-    @Override public void started(It it) {
+    @Override
+    public void started(It it) {
         runNotifier.fireTestStarted(toDescription(it));
     }
 
-    @Override public void finished() {
+    @Override
+    public void finished() {
     }
 
     private Description toDescription(It it) {
         return Description.createSuiteDescription(it.getDescription(), it.getId());
     }
 
-    private static class JUnitJasmineException extends RuntimeException{
+    private static class JUnitJasmineException extends RuntimeException {
         private final jasmine.runtime.Failure failure;
 
         public JUnitJasmineException(jasmine.runtime.Failure failure) {
@@ -48,7 +52,7 @@ class JUnitNotifier implements Notifier {
         }
 
         @Override
-        public String getMessage(){
+        public String getMessage() {
             return failure.getMessage();
         }
 

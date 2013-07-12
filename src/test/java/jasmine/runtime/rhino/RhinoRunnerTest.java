@@ -18,9 +18,12 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RhinoRunnerTest {
-    @Mock Notifier notifier;
-    @Mock ExecutorService executorService;
-    @Mock RhinoIt it;
+    @Mock
+    Notifier notifier;
+    @Mock
+    ExecutorService executorService;
+    @Mock
+    RhinoIt it;
 
     @Test
     public void shouldReportFireFinishedWhenNoTestsToRun() {
@@ -54,7 +57,7 @@ public class RhinoRunnerTest {
     }
 
     @Test
-    public void shouldFireFinishedWhenTestsAreDone(){
+    public void shouldFireFinishedWhenTestsAreDone() {
         when(executorService.submit(Mockito.<Callable<RhinoIt>>any())).thenReturn(Futures.immediateFuture(it));
 
         RhinoContext context = new RhinoContext();

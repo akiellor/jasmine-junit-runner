@@ -1,10 +1,9 @@
 package jasmine.junit;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 import jasmine.StackTraceAsserts;
+import jasmine.junit.classes.JasmineTestRunnerExceptionInJSCode;
+import jasmine.junit.classes.JasmineTestRunnerExceptionInSpec;
+import jasmine.junit.classes.JasmineTestRunnerFailingSpec;
 import org.junit.Test;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -15,9 +14,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mozilla.javascript.EvaluatorException;
 
-import jasmine.junit.classes.JasmineTestRunnerExceptionInJSCode;
-import jasmine.junit.classes.JasmineTestRunnerExceptionInSpec;
-import jasmine.junit.classes.JasmineTestRunnerFailingSpec;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JasmineFailingSpecsTest {

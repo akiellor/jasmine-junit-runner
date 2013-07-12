@@ -10,7 +10,8 @@ import java.util.concurrent.Future;
 public class Futures {
     public static <T> Iterable<T> await(Iterable<Future<T>> futures) {
         return ImmutableList.copyOf(Iterables.transform(futures, new Function<Future<T>, T>() {
-            @Override public T apply(Future<T> input) {
+            @Override
+            public T apply(Future<T> input) {
                 try {
                     return input.get();
                 } catch (InterruptedException e) {
