@@ -70,7 +70,7 @@ public class RhinoRunner {
     }
 
     public List<RhinoIt> getAllIts() {
-        return newArrayList(Iterables.concat(Collections2.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
+        return newArrayList(Iterables.concat(Iterables.transform(getDescribes(), new Function<RhinoDescribe, List<RhinoIt>>() {
             @Override public List<RhinoIt> apply(RhinoDescribe input) {
                 return input.getAllIts();
             }
