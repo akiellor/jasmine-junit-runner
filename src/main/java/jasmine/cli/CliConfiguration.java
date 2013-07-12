@@ -15,12 +15,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class CliConfiguration implements Configuration {
+import static com.google.common.collect.Lists.newArrayList;
+
+class CliConfiguration implements Configuration {
     @Option(name = "-p")
     private String path;
 
     @Argument
-    private List<String> arguments = Lists.newArrayList();
+    private List<String> arguments = newArrayList();
 
     public CliConfiguration(String... args) {
         CmdLineParser parser = new CmdLineParser(this);
@@ -39,7 +41,7 @@ public class CliConfiguration implements Configuration {
     @Override
     public Collection<String> specs() {
         if (arguments.isEmpty()) {
-            return Lists.newArrayList(".*Spec.js$");
+            return newArrayList(".*Spec.js$");
         }
         return ImmutableList.copyOf(arguments);
     }
@@ -48,11 +50,11 @@ public class CliConfiguration implements Configuration {
     public List<String> getJavascriptPath() {
         if (path == null) {
             try {
-                return Lists.newArrayList(new File("").getAbsoluteFile().toURI().toURL().toExternalForm());
+                return newArrayList(new File("").getAbsoluteFile().toURI().toURL().toExternalForm());
             } catch (MalformedURLException e) {
                 throw Exceptions.unchecked(e);
             }
         }
-        return Arrays.asList(path.split(":"));
+        return newArrayList(path.split(":"));
     }
 }
