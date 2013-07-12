@@ -12,7 +12,7 @@ public class RhinoBackend implements Backend {
     private static final List<String> JASMINE_LIBRARY = Collections.unmodifiableList(Arrays.asList(
             "js/lib/jasmine-1.3.1/jasmine.js",
             "js/lib/jasmine.delegator_reporter.js",
-            "js/lib/jasmine.ExpectationResult.js"
+            "js/lib/jasmine.expectation_result.js"
     ));
 
     private final Configuration configuration;
