@@ -6,6 +6,7 @@ import jasmine.runtime.It;
 import jasmine.runtime.Notifier;
 import jasmine.runtime.rhino.RhinoBackend;
 
+import java.io.PrintStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -21,22 +22,59 @@ public class Main {
     }
 
     public void run() {
-        jasmine.execute(new CliNotifier());
+        jasmine.execute(new CliNotifier(new Terminal.Colour(System.out)));
+    }
+
+    private static interface Terminal {
+        void print(ColourCode colour, String message);
+
+        static final char ESCAPE = 27;
+
+        enum ColourCode{
+            GREEN(String.format("%s[32m", ESCAPE)),
+            RED(String.format("%s[31m", ESCAPE));
+
+            private String code;
+
+            ColourCode(String code) {
+                this.code = code;
+            }
+        }
+
+        static class Colour implements Terminal {
+            private PrintStream stream;
+
+            Colour(PrintStream stream){
+                this.stream = stream;
+            }
+
+            @Override
+            public void print(ColourCode colour, String message) {
+                stream.print(colour.code);
+                stream.print(message);
+                stream.print(String.format("%s[0m", ESCAPE));
+            }
+        }
     }
 
     private static class CliNotifier implements Notifier {
-        List<Failure> failures = new CopyOnWriteArrayList<Failure>();
+        private final Terminal terminal;
+        private final List<Failure> failures = new CopyOnWriteArrayList<Failure>();
         boolean testRun = false;
+
+        public CliNotifier(Terminal terminal) {
+            this.terminal = terminal;
+        }
 
         @Override
         public void pass(It it) {
-            System.out.print(".");
+            terminal.print(Terminal.ColourCode.GREEN, ".");
             testRun = true;
         }
 
         @Override
         public void fail(It it, Failure failure) {
-            System.out.print("F");
+            terminal.print(Terminal.ColourCode.RED, "F");
             testRun = true;
             failures.add(failure);
         }
@@ -55,13 +93,11 @@ public class Main {
         @Override
         public void finished() {
             if (testRun) {
-                System.out.println();
-                System.out.println();
+                terminal.print(Terminal.ColourCode.RED, "\n\n");
 
                 for (Failure failure : failures) {
-                    System.out.println(failure.getMessage());
-                    System.out.println(failure.getStack());
-                    System.out.println();
+                    terminal.print(Terminal.ColourCode.RED, failure.getMessage() + "\n");
+                    terminal.print(Terminal.ColourCode.RED, failure.getStack() + "\n");
                 }
             }
         }
