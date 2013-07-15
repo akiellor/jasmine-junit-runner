@@ -86,15 +86,6 @@ public class RhinoContextTest {
         assertThat(context.evalJS("source1")).isEqualTo(1.0);
     }
 
-    @Test
-    public void shouldAllowSpecifyingASetOfSearchPathsForRequiringFiles() {
-        RhinoContext context = new RhinoContext(newArrayList("src/test/javascript"));
-
-        context.loadFromVirtualFileSystem("sources/source1.js");
-
-        assertThat(context.evalJS("source1")).isEqualTo(1.0);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailToLoadFromVirtualFileSystem() {
         new RhinoContext().loadFromVirtualFileSystem("some/unknown/file.js");

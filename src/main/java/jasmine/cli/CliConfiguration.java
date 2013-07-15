@@ -1,14 +1,18 @@
 package jasmine.cli;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.utils.Exceptions;
+import jasmine.runtime.vfs.VirtualFileSystem;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+import org.reflections.vfs.Vfs;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
@@ -47,7 +51,11 @@ class CliConfiguration implements Configuration {
     }
 
     @Override
-    public List<String> getJavascriptPath() {
+    public VirtualFileSystem getFileSystem(){
+        return new VirtualFileSystem(getJavascriptPath(), VirtualFileSystem.Filters.JAVASCRIPT);
+    }
+
+    private List<String> getJavascriptPath() {
         if (path == null) {
             try {
                 return newArrayList(new File("").getAbsoluteFile().toURI().toURL().toExternalForm());

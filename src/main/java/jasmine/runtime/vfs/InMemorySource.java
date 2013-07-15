@@ -8,17 +8,11 @@ import org.reflections.vfs.Vfs;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ReflectionsSource implements Source {
+public class InMemorySource implements Source {
     private final List<Vfs.File> files;
 
-    protected ReflectionsSource(List<Vfs.File> files) {
+    public InMemorySource(List<Vfs.File> files) {
         this.files = files;
-    }
-
-    public ReflectionsSource(Iterable<String> paths, Predicate<Vfs.File> candidateFilter) {
-        Path path = Path.fromClasspath().append(paths);
-
-        this.files = Lists.newArrayList(Vfs.findFiles(path.toUrls(), candidateFilter));
     }
 
     @Override

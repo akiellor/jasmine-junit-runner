@@ -16,23 +16,9 @@ public class CliConfigurationTest {
     }
 
     @Test
-    public void shouldDefaultJavascriptToCurrentDirectory() throws MalformedURLException {
-        CliConfiguration configuration = new CliConfiguration();
-
-        assertThat(configuration.getJavascriptPath()).containsOnly(new File("").getAbsoluteFile().toURI().toURL().toExternalForm());
-    }
-
-    @Test
     public void shouldTreatTrailingArgumentsAsFilesToRun() {
         CliConfiguration configuration = new CliConfiguration("Spec.js$", "foo/bar.js");
 
         assertThat(configuration.specs()).containsOnly("Spec.js$", "foo/bar.js");
-    }
-
-    @Test
-    public void shouldSpecifyTheJavascriptPath() {
-        CliConfiguration configuration = new CliConfiguration("-p", "foo:bar");
-
-        assertThat(configuration.getJavascriptPath()).containsOnly("foo", "bar");
     }
 }

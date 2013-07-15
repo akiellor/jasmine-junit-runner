@@ -1,6 +1,7 @@
 package jasmine.runtime.rhino;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import jasmine.runtime.utils.Exceptions;
 import jasmine.runtime.vfs.VirtualFileSystem;
 import org.mozilla.javascript.*;
@@ -23,17 +24,16 @@ class RhinoContext {
     private final VirtualFileSystem fileSystem;
 
     public RhinoContext() {
-        this(new ArrayList<String>());
-    }
-
-    public RhinoContext(Iterable<String> paths) {
-        this.fileSystem = new VirtualFileSystem(paths, new Predicate<Vfs.File>() {
+        this(new VirtualFileSystem(Lists.<String>newArrayList(), new Predicate<Vfs.File>() {
             @Override
             public boolean apply(@Nullable Vfs.File input) {
                 return input != null && input.getRelativePath().endsWith("js");
             }
-        });
+        }));
+    }
 
+    public RhinoContext(VirtualFileSystem fileSystem) {
+        this.fileSystem = fileSystem;
         this.jsContext = createJavascriptContext();
         this.jsScope = createJavascriptScopeForContext(this.jsContext);
         this.loader = new Loader(jsScope, jsContext, fileSystem);

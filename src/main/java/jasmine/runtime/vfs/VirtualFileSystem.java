@@ -5,14 +5,24 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.reflections.vfs.Vfs;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
 public class VirtualFileSystem {
+    public static class Filters{
+        public static final Predicate<Vfs.File> JAVASCRIPT = new Predicate<Vfs.File>() {
+            @Override
+            public boolean apply(@Nullable Vfs.File input) {
+                return input != null && input.getRelativePath().endsWith("js");
+            }
+        };
+    }
+
     private final List<Source> sources;
 
-    VirtualFileSystem(Source... sources) {
+    public VirtualFileSystem(Source... sources) {
         this.sources = asList(sources);
     }
 

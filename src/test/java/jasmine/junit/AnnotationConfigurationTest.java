@@ -57,18 +57,4 @@ public class AnnotationConfigurationTest {
 
         configuration.specs();
     }
-
-    @Test
-    public void shouldGetAdditionalJavascriptSearchPathsFromSystemProperties() {
-        AnnotationConfiguration configuration = new AnnotationConfiguration(annotation, defaultSpec, properties);
-
-        when(properties.get("javascript.path")).thenReturn(null);
-        assertThat(configuration.getJavascriptPath()).isEmpty();
-
-        when(properties.get("javascript.path")).thenReturn("some/path");
-        assertThat(configuration.getJavascriptPath()).isEqualTo(newArrayList("some/path"));
-
-        when(properties.get("javascript.path")).thenReturn("some/path" + File.pathSeparator + "another/path");
-        assertThat(configuration.getJavascriptPath()).isEqualTo(newArrayList("some/path", "another/path"));
-    }
 }

@@ -1,8 +1,12 @@
 package jasmine.junit;
 
+import com.google.common.base.Predicate;
 import jasmine.runtime.Configuration;
 import jasmine.runtime.utils.SystemProperties;
+import jasmine.runtime.vfs.VirtualFileSystem;
+import org.reflections.vfs.Vfs;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +54,11 @@ class AnnotationConfiguration implements Configuration {
     }
 
     @Override
-    public List<String> getJavascriptPath() {
+    public VirtualFileSystem getFileSystem() {
+        return new VirtualFileSystem(getJavascriptPath(), VirtualFileSystem.Filters.JAVASCRIPT);
+    }
+
+    private List<String> getJavascriptPath() {
         String javascriptPath = properties.get("javascript.path");
         if (javascriptPath == null) {
             return newArrayList();

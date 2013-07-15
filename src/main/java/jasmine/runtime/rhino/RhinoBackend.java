@@ -37,7 +37,7 @@ public class RhinoBackend implements Backend {
     }
 
     private RhinoContext setUpRhinoScope() {
-        RhinoContext context = new RhinoContext(configuration.getJavascriptPath());
+        RhinoContext context = new RhinoContext(configuration.getFileSystem());
 
         List<String> resources = new ArrayList<String>();
         resources.add("js/lib/no-env.js");
